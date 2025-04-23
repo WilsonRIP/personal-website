@@ -1,8 +1,76 @@
 @import "tailwindcss";
 
-:root {
+/* Light mode variables */
+:root,
+.light {
   --background: #ffffff;
   --foreground: #171717;
+  --card-bg: #f8f9fa;
+  --card-border: #e9ecef;
+  --primary: #3b82f6; /* Blue-500 */
+  --primary-hover: #2563eb; /* Blue-600 */
+  --secondary: #6b7280; /* Gray-500 */
+  --accent: #10b981; /* Green-500 */
+  --muted: #9ca3af; /* Gray-400 */
+  --gradient-start: #e0f2fe; /* Light blue */
+  --gradient-end: #dcfce7; /* Light green */
+  --text-primary: #171717;
+  --text-secondary: #4b5563;
+  --navbar-bg: rgba(255, 255, 255, 0.8);
+  --focus-ring: #93c5fd; /* Blue-300 */
+  --button-text: #ffffff;
+  --button-secondary-bg: #e5e7eb; /* Gray-200 */
+  --button-secondary-text: #4b5563; /* Gray-600 */
+  --shadow-color: rgba(10, 8, 8, 0.1);
+  
+  /* Plugin card specific colors */
+  --plugin-card-bg: #ffffff;
+  --plugin-card-border: #e9ecef;
+  --plugin-card-shadow: rgba(0, 0, 0, 0.1);
+  --plugin-card-text: #171717;
+  --plugin-card-secondary-text: #4b5563;
+  --plugin-card-accent: #3b82f6;
+  --plugin-card-rating: #f59e0b; /* Amber-500 */
+  --plugin-card-tag-bg: #e0f2fe; /* Light blue */
+  --plugin-card-tag-text: #0284c7; /* Sky-600 */
+  --plugin-card-hover-transform: scale(1.03);
+  --plugin-card-transition: 0.3s ease-in-out;
+}
+
+/* Dark mode variables */
+.dark {
+  --background: #0f172a; /* Slate-900 */
+  --foreground: #f8fafc; /* Slate-50 */
+  --card-bg: #1e293b; /* Slate-800 */
+  --card-border: #334155; /* Slate-700 */
+  --primary: #3b82f6; /* Blue-500 */
+  --primary-hover: #60a5fa; /* Blue-400 */
+  --secondary: #9ca3af; /* Gray-400 */
+  --accent: #10b981; /* Green-500 */
+  --muted: #6b7280; /* Gray-500 */
+  --gradient-start: #0f172a; /* Slate-900 */
+  --gradient-end: #134e4a; /* Teal-900 */
+  --text-primary: #f8fafc; /* Slate-50 */
+  --text-secondary: #cbd5e1; /* Slate-300 */
+  --navbar-bg: rgba(15, 23, 42, 0.8); /* Slate-900 with opacity */
+  --focus-ring: #1d4ed8; /* Blue-700 */
+  --button-text: #ffffff;
+  --button-secondary-bg: #374151; /* Gray-700 */
+  --button-secondary-text: #e5e7eb; /* Gray-200 */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  
+  /* Plugin card specific colors - dark mode */
+  --plugin-card-bg: #1e293b; /* Slate-800 */
+  --plugin-card-border: #334155; /* Slate-700 */
+  --plugin-card-shadow: rgba(0, 0, 0, 0.5);
+  --plugin-card-text: #f8fafc; /* Slate-50 */
+  --plugin-card-secondary-text: #cbd5e1; /* Slate-300 */
+  --plugin-card-accent: #60a5fa; /* Blue-400 */
+  --plugin-card-rating: #fbbf24; /* Amber-400 - slightly brighter in dark mode */
+  --plugin-card-tag-bg: #1e40af; /* Blue-800 */
+  --plugin-card-tag-text: #93c5fd; /* Blue-300 */
+  --plugin-card-hover-transform: scale(1.03);
+  --plugin-card-transition: 0.3s ease-in-out;
 }
 
 @theme inline {
@@ -12,15 +80,29 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom utility classes for theme colors */
+.bg-theme-card {
+  background-color: var(--card-bg);
+}
+
+.text-theme-primary {
+  color: var(--text-primary);
+}
+
+.text-theme-secondary {
+  color: var(--text-secondary);
+}
+
+.bg-theme-gradient {
+  background: linear-gradient(to bottom right, var(--gradient-start), var(--gradient-end));
+}
+
+.border-theme {
+  border-color: var(--card-border);
 }
