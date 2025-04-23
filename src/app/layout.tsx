@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Alfa_Slab_One } from "next/font/google";
 import "./globals.css";
@@ -7,25 +7,73 @@ import Footer from "@/app/components/Footer";
 import { WEBSITE_NAME } from "@/lib/types";
 import ThemeProviderWrapper from "@/lib/ThemeProviderWrapper";
 
+// Optimize font loading
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const alfaSlabOne = Alfa_Slab_One({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-alfa-slab-one",
+  display: "swap",
 });
 
+// Enhanced viewport configuration
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+};
+
+// Enhanced metadata configuration
 export const metadata: Metadata = {
-  title: WEBSITE_NAME,
+  title: {
+    template: `%s | ${WEBSITE_NAME}`,
+    default: WEBSITE_NAME,
+  },
   description: `Official website for ${WEBSITE_NAME}`,
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  // Update with your actual domain when deploying
+  metadataBase: new URL('https://example.com'),
+  openGraph: {
+    type: 'website',
+    siteName: WEBSITE_NAME,
+    title: WEBSITE_NAME,
+    description: `Official website for ${WEBSITE_NAME}`,
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: WEBSITE_NAME,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: WEBSITE_NAME,
+    description: `Official website for ${WEBSITE_NAME}`,
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  }
 };
 
 export default function RootLayout({
@@ -34,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${alfaSlabOne.variable} antialiased`}
       >

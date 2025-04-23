@@ -114,7 +114,7 @@ export default function AboutPage() {
                 variants={fadeIn}
               >
                 <h2 className="text-2xl font-bold mb-4 text-teal-500">My Journey</h2>
-                <div className="space-y-4 dark:text-gray-300 text-gray-700">
+                <div className="space-y-4 text-gray-700 dark:text-gray-300">
                   <p>
                     Hello! I'm a passionate software developer with a strong focus on building 
                     intuitive and performant web applications. My journey in technology began
@@ -148,7 +148,7 @@ export default function AboutPage() {
                       </h3>
                       <ul className="list-disc list-inside space-y-1">
                         {skillGroup.items.map((skill, skillIndex) => (
-                          <li key={skillIndex} className="dark:text-gray-400 text-gray-600">{skill}</li>
+                          <li key={skillIndex} className="text-gray-600 dark:text-gray-400">{skill}</li>
                         ))}
                       </ul>
                     </div>
@@ -166,39 +166,39 @@ export default function AboutPage() {
                 
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-lg font-semibold mb-1 dark:text-gray-300 text-gray-700">
+                    <h3 className="text-lg font-semibold mb-1 text-gray-700 dark:text-gray-300">
                       Senior Developer
                     </h3>
-                    <p className="text-sm dark:text-gray-400 text-gray-600 mb-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                       Tech Company Inc. | 2021 - Present
                     </p>
-                    <p className="dark:text-gray-300 text-gray-700">
+                    <p className="text-gray-700 dark:text-gray-300">
                       Led development of web applications, mentored junior developers, 
                       and implemented modern development workflows.
                     </p>
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-semibold mb-1 dark:text-gray-300 text-gray-700">
+                    <h3 className="text-lg font-semibold mb-1 text-gray-700 dark:text-gray-300">
                       Web Developer
                     </h3>
-                    <p className="text-sm dark:text-gray-400 text-gray-600 mb-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                       Digital Agency | 2018 - 2021
                     </p>
-                    <p className="dark:text-gray-300 text-gray-700">
+                    <p className="text-gray-700 dark:text-gray-300">
                       Built responsive websites and applications for clients across various industries
                       using React, Node.js, and other modern technologies.
                     </p>
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-semibold mb-1 dark:text-gray-300 text-gray-700">
+                    <h3 className="text-lg font-semibold mb-1 text-gray-700 dark:text-gray-300">
                       B.S. Computer Science
                     </h3>
-                    <p className="text-sm dark:text-gray-400 text-gray-600 mb-2">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                       University Tech Institute | 2014 - 2018
                     </p>
-                    <p className="dark:text-gray-300 text-gray-700">
+                    <p className="text-gray-700 dark:text-gray-300">
                       Focused on software engineering, algorithms, and web technologies.
                       Graduated with honors.
                     </p>

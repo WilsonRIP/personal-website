@@ -1,14 +1,14 @@
 import { Variants } from 'framer-motion';
 
 export const ANIMATION_CONFIG = {
-  heroDuration: 0.8,
-  cardDuration: 0.5,
-  featuredDelay: 0.3,
-  staggerChildren: 0.2,
+  heroDuration: 0.6,
+  cardDuration: 0.4,
+  featuredDelay: 0.2,
+  staggerChildren: 0.1,
 };
 
 export const heroVariants: Variants = {
-  hidden: { opacity: 0, y: -30 },
+  hidden: { opacity: 0, y: -20 },
   visible: {
     opacity: 1,
     y: 0,
@@ -27,7 +27,7 @@ export const sectionVariants: Variants = {
 };
 
 export const cardVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.95 },
+  hidden: { opacity: 0, scale: 0.98 },
   visible: {
     opacity: 1,
     scale: 1,

@@ -1,4 +1,6 @@
-import { getGithubUsername } from './github';
+import { cache } from 'react';
+import 'server-only';
+import { getGithubUsername, getGithubRepos, type GithubRepo } from './github';
 
 export interface GithubUserStats {
   totalStars: number;
@@ -10,8 +12,13 @@ export interface GithubUserStats {
   totalCommits?: number; // Optional as this requires additional API calls
 }
 
-// Function to fetch GitHub user statistics
-export async function getGithubUserStats(): Promise<GithubUserStats> {
+// Optional preload function to initiate data fetch early
+export const preloadGithubUserStats = () => {
+  void getGithubUserStats();
+}
+
+// Function to fetch GitHub user statistics with React's cache
+export const getGithubUserStats = cache(async (): Promise<GithubUserStats> => {
   const username = getGithubUsername();
   
   // Default empty stats
@@ -44,8 +51,8 @@ export async function getGithubUserStats(): Promise<GithubUserStats> {
     const userData = await userResponse.json();
     
     // Step 2: Fetch all repositories to calculate stars, forks, etc.
-    // We can reuse our existing function
-    const repos = await fetchAllRepos(username);
+    // Use the cached getGithubRepos function instead of separate implementation
+    const repos: GithubRepo[] = await getGithubRepos();
     
     // Calculate total statistics
     let totalStars = 0;
@@ -96,41 +103,4 @@ export async function getGithubUserStats(): Promise<GithubUserStats> {
     console.error('Failed to fetch GitHub user statistics:', error);
     return emptyStats;
   }
-}
-
-// Helper function to fetch all repositories
-async function fetchAllRepos(username: string) {
-  let allRepos: any[] = [];
-  let page = 1;
-  let hasMorePages = true;
-  
-  while (hasMorePages) {
-    const response = await fetch(
-      `https://api.github.com/users/${username}/repos?sort=updated&per_page=100&page=${page}`, {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-        },
-        next: { revalidate: 3600 }
-      }
-    );
-    
-    if (!response.ok) {
-      throw new Error(`GitHub API error: ${response.status}`);
-    }
-    
-    const repos = await response.json();
-    
-    if (repos.length === 0 || repos.length < 100) {
-      hasMorePages = false;
-    }
-    
-    allRepos = [...allRepos, ...repos];
-    page++;
-    
-    if (page > 10) {
-      hasMorePages = false;
-    }
-  }
-  
-  return allRepos;
-}
+});
