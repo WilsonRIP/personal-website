@@ -6,6 +6,7 @@ import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { WEBSITE_NAME } from "@/lib/types";
 import ThemeProviderWrapper from "@/lib/ThemeProviderWrapper";
+import { Analytics } from "@vercel/analytics/react";
 
 // Optimize font loading
 const geistSans = Geist({
@@ -30,10 +31,10 @@ const alfaSlabOne = Alfa_Slab_One({
 // Enhanced viewport configuration
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
   ],
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
 };
 
@@ -45,19 +46,19 @@ export const metadata: Metadata = {
   },
   description: `Official website for ${WEBSITE_NAME}`,
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   // Update with your actual domain when deploying
-  metadataBase: new URL('https://example.com'),
+  metadataBase: new URL("https://example.com"),
   openGraph: {
-    type: 'website',
+    type: "website",
     siteName: WEBSITE_NAME,
     title: WEBSITE_NAME,
     description: `Official website for ${WEBSITE_NAME}`,
     images: [
       {
-        url: '/og-image.jpg',
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: WEBSITE_NAME,
@@ -65,15 +66,15 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: WEBSITE_NAME,
     description: `Official website for ${WEBSITE_NAME}`,
-    images: ['/og-image.jpg'],
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
     follow: true,
-  }
+  },
 };
 
 export default function RootLayout({
@@ -91,6 +92,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </ThemeProviderWrapper>
+        <Analytics />
       </body>
     </html>
   );
