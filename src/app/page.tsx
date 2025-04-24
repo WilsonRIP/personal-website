@@ -138,7 +138,7 @@ export default function Home() {
       {/* Footer - simplified */}
       <div className="mt-12 text-center">
         <p className="text-sm dark:text-gray-400 text-gray-600">
-          Built with Next.js and Tailwind CSS
+          Built with Next.js and Tailwind CSS By WilsonIIRIP/Luke
         </p>
       </div>
     </main>

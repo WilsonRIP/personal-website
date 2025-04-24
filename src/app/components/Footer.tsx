@@ -34,7 +34,7 @@ const footerLinks = [
     links: [
       { name: "Blog", url: "#" },
       { name: "Portfolio", url: "/projects" },
-      { name: "Resume", url: "#" },
+      { name: "Resume", url: "/resume" },
     ],
   },
 ];
