@@ -50,7 +50,7 @@ const fadeIn = {
 
 export default function Footer({
   backgroundImage = "/blank-sand.jpg",
-  backgroundOverlay = "bg-gray-900/90",
+  backgroundOverlay = "bg-white/90",
 }: FooterProps) {
   const [imageLoaded, setImageLoaded] = useState(!backgroundImage);
   const [currentYear] = useState(new Date().getFullYear());
@@ -64,8 +64,10 @@ export default function Footer({
   }, [backgroundImage]);
 
   return (
-    <footer className={`${mulish.className} relative text-white py-12 mt-16`}>
-      {/* Background - Using className-based styling approach to avoid hydration errors */}
+    <footer
+      className={`${mulish.className} relative text-gray-800 dark:text-white py-12 mt-16`}
+    >
+      {/* Background */}
       {backgroundImage && (
         <div
           className={`absolute inset-0 w-full h-full z-0 transition-opacity duration-500 bg-cover bg-center bg-no-repeat ${
@@ -78,10 +80,12 @@ export default function Footer({
       )}
       {backgroundImage && (
         <div
-          className={`absolute inset-0 w-full h-full z-1 ${backgroundOverlay}`}
+          className={`absolute inset-0 w-full h-full z-1 ${backgroundOverlay} dark:bg-gray-900/90`}
         />
       )}
-      {!backgroundImage && <div className="absolute inset-0 bg-gray-900 z-0" />}
+      {!backgroundImage && (
+        <div className="absolute inset-0 bg-gray-100 dark:bg-gray-900 z-0" />
+      )}
 
       {/* Content */}
       <motion.div
@@ -94,13 +98,13 @@ export default function Footer({
           visible: { transition: { staggerChildren: 0.1 } },
         }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-gray-700">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-gray-300 dark:border-gray-700">
           {/* About Section */}
           <motion.div variants={fadeIn} className="col-span-1 lg:col-span-1">
             <h3 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
               {WEBSITE_NAME}
             </h3>
-            <p className="text-gray-400 text-sm mb-6">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-6">
               A passionate developer focused on creating intuitive and engaging
               digital experiences.
             </p>
@@ -115,15 +119,13 @@ export default function Footer({
                   rel="noopener noreferrer"
                 >
                   <motion.div
-                    className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-blue-600 transition-all duration-300 overflow-hidden relative"
+                    className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center group-hover:bg-blue-500 dark:group-hover:bg-blue-600 transition-all duration-300 overflow-hidden relative"
                     whileHover={{
                       scale: 1.1,
-                      backgroundColor: "#3b82f6",
                       boxShadow: "0 0 10px rgba(59, 130, 246, 0.5)",
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    {/* Render the actual icon */}
                     <Image
                       src={social.icon}
                       alt={social.name}
@@ -133,8 +135,7 @@ export default function Footer({
                     />
                   </motion.div>
 
-                  {/* Tooltip */}
-                  <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+                  <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-800 dark:bg-gray-900 text-white dark:text-gray-200 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                     {social.name}
                   </span>
                 </a>
@@ -149,7 +150,7 @@ export default function Footer({
               variants={fadeIn}
               className="col-span-1"
             >
-              <h3 className="text-lg font-semibold mb-4 text-white">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
                 {section.title}
               </h3>
               <ul className="space-y-2">
@@ -157,7 +158,7 @@ export default function Footer({
                   <li key={link.name}>
                     <Link
                       href={link.url}
-                      className="text-gray-400 hover:text-teal-300 transition-colors duration-300 inline-block py-1"
+                      className="text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300 inline-block py-1"
                     >
                       {link.name}
                     </Link>
@@ -167,12 +168,12 @@ export default function Footer({
             </motion.div>
           ))}
 
-          {/* Newsletter Signup - Replaced with Coming Soon */}
+          {/* Newsletter/Coming Soon */}
           <motion.div variants={fadeIn} className="col-span-1 lg:col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-white">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
               Stay Updated
             </h3>
-            <p className="text-gray-400 text-sm mb-4">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
               Newsletter functionality is coming soon! Check back later for
               updates on projects and articles.
             </p>
@@ -184,20 +185,26 @@ export default function Footer({
           variants={fadeIn}
           className="flex flex-col md:flex-row justify-between items-center pt-6 mt-4"
         >
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 md:mb-0">
             &copy; {currentYear} {WEBSITE_NAME}. All rights reserved.
           </p>
           <div className="flex space-x-6">
             <Link
               href="/privacy"
-              className="text-gray-400 hover:text-white text-sm"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm"
             >
               Privacy Policy
             </Link>
-            <Link href="#" className="text-gray-400 hover:text-white text-sm">
+            <Link
+              href="#"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm"
+            >
               Terms of Service
             </Link>
-            <Link href="#" className="text-gray-400 hover:text-white text-sm">
+            <Link
+              href="#"
+              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm"
+            >
               Cookie Policy
             </Link>
           </div>

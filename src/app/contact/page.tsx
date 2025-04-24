@@ -94,7 +94,7 @@ export default function ContactPage() {
           <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4">
             Get In Touch
           </h1>
-          <p className="text-lg max-w-2xl mx-auto dark:text-gray-300 text-gray-700">
+          <p className="text-lg lg:text-xl text-theme-secondary mb-6">
             Have a question or want to work together? Feel free to contact me.
           </p>
         </motion.div>

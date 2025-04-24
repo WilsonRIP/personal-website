@@ -32,7 +32,7 @@ export default async function ProjectsPage() {
             My Projects
           </h1>
 
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
+          <p className="text-lg lg:text-xl text-theme-secondary mb-6">
             Browse through my GitHub repositories. These projects showcase my
             skills, interests, and development journey.
           </p>

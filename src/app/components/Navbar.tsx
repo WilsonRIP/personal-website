@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { Poetsen_One } from "next/font/google";
 import { useState, useEffect } from "react";
 import ThemeToggle from "./ThemeToggle";
-import { useTheme } from "@/lib/ThemeContext";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 
 // Load Poetsen One (Google Font) at build‑time
@@ -58,17 +58,19 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const { theme } = useTheme();
-
   return (
     <header
       className={`${
         poetsen.className
       } sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ${
         isScrolled ? "py-2" : "py-3"
-      } ${theme === "dark" ? "bg-gray-900/70" : "bg-white/70"} ${
-        theme === "dark" ? "text-white" : "text-gray-800"
-      } ${isScrolled ? "shadow-md" : "shadow-sm"}`}
+      } 
+      bg-white/70 dark:bg-gray-900/70 text-gray-800 dark:text-white 
+      ${
+        isScrolled
+          ? "shadow-md dark:shadow-gray-700"
+          : "shadow-sm dark:shadow-gray-800"
+      }`}
     >
       <div className="container mx-auto flex items-center px-4">
         {/* Logo */}
@@ -101,13 +103,13 @@ export default function Navbar() {
                       href={href}
                       className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md ${
                         isActive
-                          ? "text-teal-500 bg-teal-400/5"
-                          : "hover:text-teal-400 hover:bg-teal-400/5"
+                          ? "text-teal-500 dark:text-teal-400 bg-teal-400/5 dark:bg-teal-400/10"
+                          : "text-gray-600 dark:text-gray-300 hover:text-teal-500 dark:hover:text-teal-400 hover:bg-teal-400/5 dark:hover:bg-teal-400/10"
                       }`}
                     >
                       {label}
                       {isActive && (
-                        <span className="absolute left-0 -bottom-0.5 h-0.5 w-full rounded bg-teal-400" />
+                        <span className="absolute left-0 -bottom-0.5 h-0.5 w-full rounded bg-teal-500 dark:bg-teal-400" />
                       )}
                     </Link>
                   </li>
@@ -133,23 +135,17 @@ export default function Navbar() {
               aria-label="Toggle Menu"
             >
               <span
-                className={`w-6 h-0.5 ${
-                  theme === "dark" ? "bg-white" : "bg-gray-800"
-                } block transition-all duration-300 ${
+                className={`w-6 h-0.5 bg-gray-800 dark:bg-white block transition-all duration-300 ${
                   isOpen ? "transform rotate-45 translate-y-1.5" : ""
                 }`}
               />
               <span
-                className={`w-6 h-0.5 ${
-                  theme === "dark" ? "bg-white" : "bg-gray-800"
-                } block transition-all duration-300 ${
+                className={`w-6 h-0.5 bg-gray-800 dark:bg-white block transition-all duration-300 ${
                   isOpen ? "opacity-0" : "opacity-100"
                 }`}
               />
               <span
-                className={`w-6 h-0.5 ${
-                  theme === "dark" ? "bg-white" : "bg-gray-800"
-                } block transition-all duration-300 ${
+                className={`w-6 h-0.5 bg-gray-800 dark:bg-white block transition-all duration-300 ${
                   isOpen ? "transform -rotate-45 -translate-y-1.5" : ""
                 }`}
               />
@@ -161,9 +157,7 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       {isMobile && isOpen && (
         <div
-          className={`md:hidden absolute top-full left-0 right-0 ${
-            theme === "dark" ? "bg-gray-900/95" : "bg-white/95"
-          } backdrop-blur-md shadow-md`}
+          className={`md:hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md dark:shadow-gray-700`}
         >
           <ul className="flex flex-col items-center py-4 space-y-4">
             {navLinks.map(({ href, label }) => {
@@ -174,10 +168,8 @@ export default function Navbar() {
                     href={href}
                     className={`block py-3 mx-4 text-lg font-medium transition-colors rounded-md ${
                       isActive
-                        ? "text-teal-500 bg-teal-400/5"
-                        : `hover:text-teal-400 hover:bg-teal-400/5 ${
-                            theme === "dark" ? "" : "text-gray-800"
-                          }`
+                        ? "text-teal-500 dark:text-teal-400 bg-teal-400/5 dark:bg-teal-400/10"
+                        : "text-gray-800 dark:text-white hover:text-teal-500 dark:hover:text-teal-400 hover:bg-teal-400/5 dark:hover:bg-teal-400/10"
                     }`}
                   >
                     {label}

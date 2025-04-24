@@ -3,9 +3,16 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { WEBSITE_NAME } from "@/lib/types";
-import { useTheme } from "@/lib/ThemeContext";
 import { heroVariants, sectionVariants, cardVariants } from "@/lib/animations";
 import Link from "next/link";
+import { Saira_Stencil_One } from "next/font/google";
+
+const Saira = Saira_Stencil_One({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-saira-stencil-one",
+  display: "swap",
+});
 
 // Featured sections for homepage
 const featuredSections = [
@@ -30,7 +37,6 @@ const featuredSections = [
 ];
 
 export default function Home() {
-  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   // Fix hydration issues by only showing animations after mount
@@ -58,7 +64,7 @@ export default function Home() {
         <motion.div className="flex flex-wrap gap-4 justify-center">
           <Link href="/projects">
             <motion.button
-              className="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50"
+              className={`${Saira.className} px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
               whileHover={{ scale: 1.03 }} // Reduced from 1.05
               whileTap={{ scale: 0.98 }}
             >
@@ -68,11 +74,7 @@ export default function Home() {
 
           <Link href="/contact">
             <motion.button
-              className={`px-5 py-2 rounded-lg font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 ${
-                theme === "dark"
-                  ? "bg-gray-800 text-white"
-                  : "bg-white text-gray-900"
-              } border border-gray-300 dark:border-gray-700`}
+              className={`${Saira.className} px-5 py-2 rounded-lg font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
               whileHover={{ scale: 1.03 }} // Reduced from 1.05
               whileTap={{ scale: 0.98 }}
             >
@@ -95,9 +97,7 @@ export default function Home() {
               key={section.title}
               variants={cardVariants}
               whileHover={{ y: -5 }} // Reduced from -10
-              className={`relative overflow-hidden rounded-lg p-5 border dark:border-gray-700 border-gray-200 ${
-                theme === "dark" ? "bg-gray-800/70" : "bg-white/90"
-              } backdrop-blur-sm shadow-md`}
+              className={`relative overflow-hidden rounded-lg p-5 border dark:border-gray-700 border-gray-200 bg-white/90 dark:bg-gray-800/70 backdrop-blur-sm shadow-md`}
             >
               <Link href={section.link} className="block h-full">
                 {/* Card background gradient - less intense */}

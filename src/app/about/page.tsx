@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import LazyLoad from "@/lib/LazyLoad";
 import OptimizedImage from "../components/OptimizedImage";
-
+import { NAME } from "@/lib/types";
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -60,7 +60,7 @@ export default function AboutPage() {
           <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4">
             About Me
           </h1>
-          <p className="text-lg max-w-2xl mx-auto dark:text-gray-300 text-gray-700">
+          <p className="text-lg lg:text-xl text-theme-secondary mb-6">
             Developer. Creator. Tech enthusiast.
           </p>
         </motion.div>
@@ -91,7 +91,7 @@ export default function AboutPage() {
               </div>
               <div className="p-6">
                 <h2 className="text-2xl font-bold mb-3 text-teal-500">
-                  Wilson
+                  {NAME}
                 </h2>
                 <p className="text-sm dark:text-gray-300 text-gray-700 mb-4">
                   Software Developer based in the United States with a passion

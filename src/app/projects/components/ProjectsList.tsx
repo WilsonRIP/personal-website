@@ -34,7 +34,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
   return (
     <div id="projects-section" className="space-y-8">
       <div className="flex items-center space-x-3 mb-6">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-blue-500">
           Repository Showcase
         </h2>
         <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200">

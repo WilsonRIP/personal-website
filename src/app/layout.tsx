@@ -5,7 +5,7 @@ import "./globals.css";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import { WEBSITE_NAME } from "@/lib/types";
-import ThemeProviderWrapper from "@/lib/ThemeProviderWrapper";
+import { ThemeProvider } from "@/app/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 
 // Optimize font loading
@@ -86,12 +86,19 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${alfaSlabOne.variable} antialiased`}
+        suppressHydrationWarning
       >
-        <ThemeProviderWrapper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="website-theme"
+        >
           <Navbar />
           {children}
           <Footer />
-        </ThemeProviderWrapper>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>
