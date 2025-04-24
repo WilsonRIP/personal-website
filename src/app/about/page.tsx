@@ -111,7 +111,7 @@ export default function AboutPage() {
                       Experience:
                     </span>
                     <span className="dark:text-gray-300 text-gray-700">
-                      Less than a year
+                      Self-Taught
                     </span>
                   </p>
                   <p className="flex items-center text-sm">
@@ -150,17 +150,16 @@ export default function AboutPage() {
                     discovered the joy of solving problems through code.
                   </p>
                   <p>
-                    Over the years, I&apos;ve worked on a variety of projects
-                    ranging from small business websites to complex web
-                    applications. I&apos;m particularly interested in the
-                    intersection of technology and user experience, always
-                    striving to create products that are not only functional but
-                    also delightful to use.
+                    Over my short journey the past few months, I&apos;ve worked
+                    on a variety of projects ranging from small business
+                    websites to complex web applications. I&apos;m particularly
+                    interested in the intersection of technology and user
+                    experience, always striving to create products that are not
+                    only functional but also delightful to use.
                   </p>
                   <p>
                     When I&apos;m not coding, you can find me exploring new
-                    technologies, contributing to open-source projects, or
-                    sharing my knowledge through tutorials and blog posts.
+                    technologies, photography, or playing video games.
                   </p>
                 </div>
               </motion.div>
@@ -196,6 +195,8 @@ export default function AboutPage() {
               </motion.div>
             </LazyLoad>
 
+            {/* Experience & Education Section Removed */}
+            {/* 
             <LazyLoad>
               <motion.div
                 className="rounded-xl overflow-hidden shadow-lg dark:bg-gray-800/70 bg-white/80 backdrop-blur-md border border-gray-200 dark:border-gray-700 p-6"
@@ -248,6 +249,7 @@ export default function AboutPage() {
                 </div>
               </motion.div>
             </LazyLoad>
+            */}
           </motion.div>
         </div>
       </div>
