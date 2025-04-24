@@ -51,7 +51,7 @@ export default function Home() {
           {WEBSITE_NAME}
         </motion.h1>
 
-        <motion.p className="text-lg lg:text-xl dark:text-gray-300 text-gray-700 mb-6">
+        <motion.p className="text-lg lg:text-xl text-theme-secondary mb-6">
           Web & Software Developer • Creator • Problem Solver • Vibe Coder
         </motion.p>
 
@@ -106,10 +106,10 @@ export default function Home() {
                 ></div>
 
                 <div className="relative z-10">
-                  <h3 className="text-lg font-bold mb-2 dark:text-white text-gray-900">
+                  <h3 className="text-lg font-bold mb-2 text-theme-primary">
                     {section.title}
                   </h3>
-                  <p className="text-sm dark:text-gray-300 text-gray-700">
+                  <p className="text-sm text-theme-secondary">
                     {section.description}
                   </p>
 

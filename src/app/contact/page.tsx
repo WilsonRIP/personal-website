@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { socialLinks } from "@/app/data/socials";
 import Image from "next/image";
+import { EMAIL } from "@/lib/types";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -32,30 +33,52 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus("submitting");
 
-    // Simulate form submission
-    setTimeout(() => {
-      // In a real application, you would handle the form submission here
-      // For example, sending data to a server or API
-      console.log("Form submitted:", formData);
-      setFormStatus("success");
+    // Replace this URL with your actual API endpoint or third-party service URL
+    const endpoint = "/api/contact"; // Example using a Next.js API route
 
-      // Reset form after successful submission
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: "",
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
 
-      // Reset status after a few seconds
-      setTimeout(() => {
-        setFormStatus("idle");
-      }, 5000);
-    }, 1500);
+      if (response.ok) {
+        // Successfully submitted
+        console.log("Form submitted successfully");
+        setFormStatus("success");
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+        // Reset status after a few seconds
+        setTimeout(() => {
+          setFormStatus("idle");
+        }, 5000);
+      } else {
+        // Handle server errors or invalid responses
+        console.error("Form submission failed:", response.statusText);
+        setFormStatus("error");
+      }
+    } catch (error) {
+      // Handle network errors
+      console.error("An error occurred during form submission:", error);
+      setFormStatus("error");
+    } finally {
+      // Optional: Add any cleanup logic here, though setting status handles UI
+      // If not success/error, maybe reset to idle?
+      // Current logic resets to idle only after success timer.
+      // If an error occurs, it stays in 'error' state until next attempt.
+    }
   };
 
   return (
@@ -115,7 +138,7 @@ export default function ContactPage() {
                         Email
                       </p>
                       <p className="dark:text-gray-300 text-gray-700">
-                        contact@example.com
+                        {EMAIL}
                       </p>
                     </div>
                   </div>
