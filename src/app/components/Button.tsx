@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { motion, Transition } from 'framer-motion';
-import Link from 'next/link';
-import { ReactNode } from 'react';
-import { Poetsen_One } from 'next/font/google';
+import { motion, Transition } from "framer-motion";
+import Link from "next/link";
+import { ReactNode } from "react";
+import { Poetsen_One } from "next/font/google";
 
 const poetsen = Poetsen_One({
-  weight: '400',
-  subsets: ['latin'],
+  weight: "400",
+  subsets: ["latin"],
 });
 
 // simple size presets (padding + base font size)
-const sizeStyles: Record<'sm' | 'md' | 'lg', string> = {
-  sm: 'py-2 px-4 text-sm',
-  md: 'py-4 px-8 text-base',
-  lg: 'py-6 px-12 text-lg',
+const sizeStyles: Record<"sm" | "md" | "lg", string> = {
+  sm: "py-2 px-4 text-sm",
+  md: "py-4 px-8 text-base",
+  lg: "py-6 px-12 text-lg",
 };
 
 export type ButtonProps = {
@@ -40,7 +40,7 @@ export type ButtonProps = {
   tapScale?: number;
 
   /** Transition config */
-  transitionType?: 'tween' | 'spring';
+  transitionType?: "tween" | "spring";
   transitionDuration?: number; // in seconds
 
   /** Additional custom classes */
@@ -49,42 +49,45 @@ export type ButtonProps = {
   styleOverrides?: React.CSSProperties;
 
   /** Native button type (ignored if href is set) */
-  type?: 'button' | 'submit' | 'reset';
+  type?: "button" | "submit" | "reset";
 };
 
 export default function Button({
   href,
   onClick,
   children,
-  size = 'md',
-  bgClass = 'bg-green-300',
-  textClass = 'text-gray-800',
-  radiusClass = 'rounded-lg',
+  size = "md",
+  bgClass = "bg-green-300",
+  textClass = "text-gray-800",
+  radiusClass = "rounded-lg",
   hoverScale = 1.2,
   tapScale = 0.95,
-  transitionType = 'spring',
+  transitionType = "spring",
   transitionDuration = 0.3,
-  className = '',
+  className = "",
   styleOverrides = {},
-  type = 'button',
+  type = "button",
 }: ButtonProps) {
   // Build the Framer Motion transition object
   const transition: Transition =
-    transitionType === 'spring'
-      ? { type: 'spring', duration: transitionDuration, stiffness: 300, damping: 20 }
-      : { type: 'tween', duration: transitionDuration };
+    transitionType === "spring"
+      ? {
+          type: "spring",
+          duration: transitionDuration,
+          stiffness: 300,
+          damping: 20,
+        }
+      : { type: "tween", duration: transitionDuration };
 
   // Decide which tag to render
   const MotionTag = href ? motion(Link) : motion.button;
 
   // Common props for Link vs button
-  const tagProps = href
-    ? { href }
-    : { onClick, type };
+  const tagProps = href ? { href } : { onClick, type };
 
   return (
     <MotionTag
-      {...(tagProps as any)}
+      {...tagProps}
       className={`
         ${poetsen.className}
         inline-block
