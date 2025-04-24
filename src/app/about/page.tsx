@@ -31,7 +31,7 @@ export default function AboutPage() {
   const skills = [
     {
       category: "Languages",
-      items: ["JavaScript", "TypeScript", "Python", "HTML/CSS"],
+      items: ["JavaScript", "TypeScript", "Python", "HTML/CSS", "C#", "C++"],
     },
     {
       category: "Frameworks",
@@ -43,7 +43,7 @@ export default function AboutPage() {
     },
     {
       category: "Design",
-      items: ["Figma", "Responsive Design", "UI/UX", "Tailwind CSS"],
+      items: ["Figma (Learning)", "Responsive Design", "UI/UX", "Tailwind CSS"],
     },
   ];
 
