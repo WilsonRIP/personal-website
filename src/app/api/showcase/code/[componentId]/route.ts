@@ -3,13 +3,13 @@ import fs from "fs";
 import path from "path";
 
 // Define the context type containing params
-type Context = {
-  params: { componentId: string };
-};
+// type Context = {
+//   params: { componentId: string };
+// };
 
 export async function GET(
   req: NextRequest,
-  context: Context // Use the defined Context type
+  context: { params: { componentId: string } } // Use the defined Context type
 ) {
   const { componentId } = context.params; // Access params via context
   const mapping: Record<string, string> = {
