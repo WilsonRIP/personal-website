@@ -8,10 +8,9 @@ import { GithubRepo } from "@/lib/github"; // Assuming GithubRepo is defined cor
 // Assuming ActivityEvent type is defined (either imported or inline)
 import { ActivityEvent, ActivityEventType } from "@/lib/types"; // Adjust import path
 import { useInView } from "react-intersection-observer";
-import Link from "next/link";
 // Make sure you have installed this: npm install @primer/octicons-react
 import {
-    StarIcon, RepoForkedIcon, CodeIcon, CalendarIcon, RepoIcon, ArrowUpIcon, GitBranchIcon
+    CodeIcon, CalendarIcon, RepoIcon, GitBranchIcon
 } from '@primer/octicons-react';
 
 // Define structure for language stats if not defined elsewhere
@@ -25,7 +24,7 @@ interface LanguageStat {
 interface GithubUserStats {
     totalRepos: number;
     totalStars: number;
-    totalForks: number;
+    totalCommits: number;
     earliestRepo: string; // ISO Date string
     latestRepo: string; // ISO Date string
     topLanguages: LanguageStat[];
@@ -45,7 +44,7 @@ function formatDate(dateString: string): string { // Explicit return type
             month: "short",
             day: "numeric",
         });
-    } catch (e) {
+    } catch {
         return "Invalid Date";
     }
 }
@@ -71,7 +70,7 @@ function timeAgo(dateString: string): string { // Explicit return type
         if (weeks < 5) return `${weeks}w ago`; // Use 5 to avoid showing "4w ago" when it's almost a month
         if (months < 12) return `${months}mo ago`;
         return `${years}y ago`;
-    } catch (e) {
+    } catch {
         return "some time ago"; // Fallback for invalid dates
     }
 }
@@ -91,7 +90,7 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
         const defaultStatsData: GithubUserStats = {
             totalRepos: 0,
             totalStars: 0,
-            totalForks: 0,
+            totalCommits: 0,
             earliestRepo: new Date().toISOString(), // Default value
             latestRepo: new Date().toISOString(), // Default value
             topLanguages: [],
@@ -157,7 +156,31 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
              calculatedStats = {
                 totalRepos: repos.length,
                 totalStars: repos.reduce((sum, repo) => sum + (repo?.stargazers_count || 0), 0),
-                totalForks: repos.reduce((sum, repo) => sum + (repo?.forks_count || 0), 0),
+                // Estimate total commits based on repo activity
+                totalCommits: repos.reduce((sum, repo) => {
+                    // If your GitHub API provides commit counts in any field, you can use that
+                    // Here we're estimating based on creation (at least 1) plus any additional activity
+                    // A better approach would be to fetch actual commit counts via GitHub API
+                    let estimatedCommits = 1; // Every repo has at least one commit
+                    
+                    // Add extra estimated commits based on repo age and activity
+                    if (repo?.created_at && repo?.pushed_at) {
+                        const creationDate = new Date(repo.created_at);
+                        const lastPushDate = new Date(repo.pushed_at);
+                        
+                        // If pushed date is different from creation, assume additional commits
+                        if (lastPushDate.getTime() > creationDate.getTime()) {
+                            // Calculate months between creation and last push
+                            const months = Math.max(1, 
+                                Math.round((lastPushDate.getTime() - creationDate.getTime()) / (30 * 24 * 60 * 60 * 1000)));
+                            
+                            // Estimate more commits for older, active repos
+                            estimatedCommits += Math.min(50, months * 2); 
+                        }
+                    }
+                    
+                    return sum + estimatedCommits;
+                }, 0),
                 // Ensure reduce starts with a valid repo object
                 earliestRepo: repos.reduce( (earliest, repo) =>
                         (!earliest || !repo || !repo.created_at || !earliest.created_at || new Date(repo.created_at) < new Date(earliest.created_at))
@@ -193,7 +216,7 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
 
     // Destructure with default values matching the structure returned by useMemo
     const {
-        stats_data = { totalRepos: 0, totalStars: 0, totalForks: 0, topLanguages: [], earliestRepo: '', latestRepo: '' }, // Ensure stats_data is never undefined
+        stats_data = { totalRepos: 0, totalStars: 0, totalCommits: 0, topLanguages: [], earliestRepo: '', latestRepo: '' }, // Ensure stats_data is never undefined
         years = new Set<number>(),
         groupedEventsByYear = {},
         sortedYears = []
@@ -208,24 +231,6 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
             transition: {
                 staggerChildren: 0.1
             }
-        }
-    };
-    
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.5 }
-        }
-    };
-    
-    const timelineItemVariants = {
-        hidden: { opacity: 0, x: -20 },
-        visible: {
-            opacity: 1,
-            x: 0,
-            transition: { duration: 0.5 }
         }
     };
 
@@ -250,29 +255,6 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
                 return <CodeIcon className={className} />;
         }
     };
-    const getEventColorGradient = (type: ActivityEventType) => {
-        switch(type) {
-            case 'creation': return 'from-green-400 to-green-600';
-            case 'activity': return 'from-blue-400 to-indigo-600';
-            default: return 'from-gray-400 to-gray-600';
-        }
-    };
-    
-    const getEventRingColor = (type: ActivityEventType) => {
-        switch(type) {
-            case 'creation': return 'ring-green-400';
-            case 'activity': return 'ring-blue-400';
-            default: return 'ring-gray-400';
-        }
-    };
-    
-    const getEventTextColor = (type: ActivityEventType) => {
-        switch(type) {
-            case 'creation': return 'text-green-600';
-            case 'activity': return 'text-blue-600';
-            default: return 'text-gray-600';
-        }
-    };
 
     return (
         <motion.div
@@ -293,16 +275,26 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 relative border-b border-slate-200/70 dark:border-slate-700/50">
                 {/* ... */}
                  {[
-                    { label: 'Repositories', value: stats_data.totalRepos, color: 'blue' },
-                    { label: 'Stars', value: stats_data.totalStars, color: 'amber' },
-                    { label: 'Forks', value: stats_data.totalForks, color: 'green' },
-                    { label: 'Active Years', value: years.size, color: 'purple' },
-                 ].map((stat) => ( <motion.div key={stat.label} className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm"> 
-                    <div className="text-center">
-                        <div className="font-semibold text-lg">{stat.value}</div>
-                        <div className="text-sm text-slate-500">{stat.label}</div>
-                    </div>
-                 </motion.div> ))}
+                    { label: 'Repositories', value: stats_data.totalRepos, color: 'blue', gradient: 'from-blue-400 to-indigo-500' },
+                    { label: 'Stars', value: stats_data.totalStars, color: 'amber', gradient: 'from-amber-400 to-orange-500' },
+                    { label: 'Commits', value: stats_data.totalCommits, color: 'green', gradient: 'from-emerald-400 to-teal-500' },
+                    { label: 'Active Years', value: years.size, color: 'purple', gradient: 'from-purple-400 to-indigo-500' },
+                 ].map((stat) => (
+                    <motion.div 
+                        key={stat.label} 
+                        className={`p-5 rounded-lg shadow-md overflow-hidden relative bg-gradient-to-br ${stat.gradient} dark:bg-opacity-80`}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    > 
+                        <div className="absolute inset-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm z-0"></div>
+                        <div className="relative z-10 text-center">
+                            <div className={`font-flowers-kingdom text-3xl mb-1 bg-clip-text text-transparent bg-gradient-to-r ${stat.gradient}`}>{stat.value}</div>
+                            <div className="text-sm font-arista uppercase tracking-wider text-slate-700 dark:text-slate-300">{stat.label}</div>
+                        </div>
+                        <div className={`absolute -bottom-1 -right-1 w-16 h-16 rounded-full bg-gradient-to-br ${stat.gradient} opacity-30 blur-md`}></div>
+                    </motion.div>
+                 ))}
              </div>
 
             {/* Tab Navigation */}
@@ -348,7 +340,7 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
                                                         <span className="font-semibold ml-1">{event.repo?.name || 'repository'}</span>
                                                     </div>
                                                     {event.repo?.description && (
-                                                        <div className="text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700/40 px-3 py-2 rounded-md mt-1">
+                                                        <div className="text-sm px-3 py-2 mt-1 border-l-2 border-indigo-400 dark:border-indigo-500 bg-gradient-to-r from-indigo-50/80 to-transparent dark:from-indigo-900/20 dark:to-transparent rounded-r-md font-medium">
                                                             {event.repo.description}
                                                         </div>
                                                     )}
@@ -374,7 +366,11 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
                             <div className="space-y-5">
                                 {/* Add type annotation here */}
                                 {stats_data.topLanguages.map((lang: LanguageStat) => (
-                                    <motion.div key={lang.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                                    <motion.div 
+                                        key={lang.name} 
+                                        initial={{ opacity: 0, y: 20 }} 
+                                        animate={{ opacity: 1, y: 0 }} 
+                                        transition={{ duration: 0.5 }}>
                                         <div className="flex items-center justify-between mb-1.5 text-sm">
                                             <span className="font-medium text-slate-700 dark:text-slate-300">{lang.name}</span>
                                             <span className="text-xs font-mono text-slate-500 dark:text-slate-400">

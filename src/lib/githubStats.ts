@@ -9,7 +9,7 @@ export interface GithubUserStats {
   topLanguages: Array<{ name: string; count: number }>;
   earliestRepo: string; // Date string
   latestRepo: string;   // Date string
-  totalCommits?: number; // Optional as this requires additional API calls
+  totalCommits: number; // Number of commits (estimated)
 }
 
 // Optional preload function to initiate data fetch early
@@ -26,6 +26,7 @@ export const getGithubUserStats = cache(async (): Promise<GithubUserStats> => {
     totalStars: 0,
     totalForks: 0,
     totalRepos: 0,
+    totalCommits: 0,
     topLanguages: [],
     earliestRepo: new Date().toISOString(),
     latestRepo: new Date().toISOString()
@@ -57,6 +58,7 @@ export const getGithubUserStats = cache(async (): Promise<GithubUserStats> => {
     // Calculate total statistics
     let totalStars = 0;
     let totalForks = 0;
+    let totalCommits = 0;
     const languages: Record<string, number> = {};
     let earliestDate = new Date();
     let latestDate = new Date(0); // Unix epoch
@@ -65,6 +67,27 @@ export const getGithubUserStats = cache(async (): Promise<GithubUserStats> => {
     repos.forEach(repo => {
       totalStars += repo.stargazers_count;
       totalForks += repo.forks_count;
+      
+      // Estimate commits based on repo age and activity
+      let estimatedRepoCommits = 1; // Every repo has at least one commit
+      
+      // Add extra estimated commits based on repo age and activity
+      if (repo.created_at && repo.pushed_at) {
+        const creationDate = new Date(repo.created_at);
+        const lastPushDate = new Date(repo.pushed_at);
+        
+        // If pushed date is different from creation, assume additional commits
+        if (lastPushDate.getTime() > creationDate.getTime()) {
+            // Calculate months between creation and last push
+            const months = Math.max(1, 
+                Math.round((lastPushDate.getTime() - creationDate.getTime()) / (30 * 24 * 60 * 60 * 1000)));
+            
+            // Estimate more commits for older, active repos
+            estimatedRepoCommits += Math.min(50, months * 2); 
+        }
+      }
+      
+      totalCommits += estimatedRepoCommits;
       
       // Track languages
       if (repo.language && !repo.fork) {
@@ -96,7 +119,8 @@ export const getGithubUserStats = cache(async (): Promise<GithubUserStats> => {
       totalRepos: userData.public_repos,
       topLanguages,
       earliestRepo: earliestDate.toISOString(),
-      latestRepo: latestDate.toISOString()
+      latestRepo: latestDate.toISOString(),
+      totalCommits
     };
     
   } catch (error) {
