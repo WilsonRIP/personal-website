@@ -18,6 +18,7 @@ const navLinks = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/my-websites", label: "My Websites" },
+  { href: "/showcase", label: "Showcase" },
 ];
 
 export default function Navbar() {

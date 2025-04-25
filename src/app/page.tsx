@@ -54,7 +54,17 @@ export default function Home() {
         animate={mounted ? "visible" : "hidden"}
         variants={heroVariants}
       >
-        <motion.h1 className="text-4xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4">
+        <motion.h1 
+          className={`text-5xl lg:text-7xl font-flowers-kingdom font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4 transition-all duration-300 ease-in-out drop-shadow-md [filter:drop-shadow(0_0_6px_rgba(59,130,246,0.5))]`}
+          whileHover={{
+            scale: 1.05, 
+            // Optional: slightly change gradient on hover
+            // background: "linear-gradient(to right, #3b82f6, #10b981, #6366f1)", 
+            // WebkitBackgroundClip: "text",
+            // WebkitTextFillColor: "transparent",
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 10 }}
+        >
           {WEBSITE_NAME}
         </motion.h1>
 

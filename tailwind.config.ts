@@ -56,30 +56,48 @@ const config: Config = {
         },
         // Keep the old theme colors commented or remove if fully replaced by CSS variables
         // "bg-primary": {
-        //   light: colors.gray[50],
-        //   dark: colors.gray[900],
+        //   light: colors.gray[50],
+        //   dark: colors.gray[900],
         // },
         // "bg-card": {
-        //   light: colors.white,
-        //   dark: colors.gray[800],
+        //   light: colors.white,
+        //   dark: colors.gray[800],
         // },
         // "border-base": {
-        //   light: colors.gray[200],
-        //   dark: colors.gray[700],
+        //   light: colors.gray[200],
+        //   dark: colors.gray[700],
         // },
         // "color-primary": {
-        //   light: colors.gray[800],
-        //   dark: colors.gray[100],
+        //   light: colors.gray[800],
+        //   dark: colors.gray[100],
         // },
         // "color-secondary": {
-        //   light: colors.gray[600],
-        //   dark: colors.gray[400],
+        //   light: colors.gray[600],
+        //   dark: colors.gray[400],
         // },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      // Add fontFamily extension to include custom fonts
+      fontFamily: {
+        sans: [
+          "var(--font-geist-sans)", // Assuming this is defined elsewhere (e.g., by Next/font)
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+        ], // Keep existing sans
+        mono: [
+          "var(--font-geist-mono)", // Assuming this is defined elsewhere (e.g., by Next/font)
+          "ui-monospace",
+          "monospace"
+        ], // Keep existing mono
+        // Add your custom fonts here, matching the name from @font-face rules
+        'flowers-kingdom': ['"flowers-kingdom"', 'cursive'], // Utility class: font-flowers-kingdom
+        'arista-pro': ['"Arista Pro"', 'sans-serif'], // Utility class: font-arista-pro
+        'orange-juice-2': ['"Orange Juice 2.0"', 'sans-serif'] // Utility class: font-orange-juice-2
       },
       // ... other extensions like keyframes if needed
     },
