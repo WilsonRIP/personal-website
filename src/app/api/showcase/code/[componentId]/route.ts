@@ -2,11 +2,16 @@ import { type NextRequest } from "next/server";
 import fs from "fs";
 import path from "path";
 
+// Define the context type containing params
+type Context = {
+  params: { componentId: string };
+};
+
 export async function GET(
   req: NextRequest,
-  { params }: { params: { componentId: string } }
+  context: Context // Use the defined Context type
 ) {
-  const { componentId } = params;
+  const { componentId } = context.params; // Access params via context
   const mapping: Record<string, string> = {
     calculator: "Calculator.tsx",
     "date-picker": "DatePicker.tsx",
