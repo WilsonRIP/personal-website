@@ -2,18 +2,16 @@ import { type NextRequest } from "next/server";
 import fs from "fs";
 import path from "path";
 
-// Define the expected structure of the params object
-interface RouteContext {
-  params: {
-    componentId: string;
-  };
-}
+// Define the context type containing params wrapped in a Promise
+type Context = {
+  params: Promise<{ componentId: string }>;
+};
 
 export async function GET(
   req: NextRequest,
-  { params }: RouteContext // Directly destructure params here
+  context: Context // Use the defined Context type
 ) {
-  const { componentId } = params;
+  const { componentId } = await context.params; // Await params before accessing
 
   const mapping: Record<string, string> = {
     calculator: "Calculator.tsx",
