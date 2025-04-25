@@ -16,9 +16,10 @@ interface ShowcaseItem {
   id: string;
   name: string;
   // Store the component *type* (constructor/function), not an instance
-  component: React.ComponentType<any>; // Use ComponentType
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component: React.ComponentType<any>; // Suppressing rule due to dynamic component nature
   // Optional props specific to a component, if needed in the future
-  props?: Record<string, any>;
+  props?: Record<string, unknown>; // Keep unknown here
 }
 
 // --- Component Configuration ---
@@ -28,7 +29,12 @@ interface ShowcaseItem {
 const showcaseItems: ShowcaseItem[] = [
   { id: "calculator", name: "Calculator", component: Calculator },
   { id: "date-picker", name: "Date Picker", component: CustomDatePicker },
-  { id: "checkbox", name: "Checkbox", component: Checkbox, props: { label: "Dynamic Checkbox" } }, // Example passing props
+  {
+    id: "checkbox",
+    name: "Checkbox",
+    component: Checkbox,
+    props: { label: "Dynamic Checkbox" },
+  }, // Example passing props
   // Add more components here in the future
   // { id: 'another-component', name: 'Another Component', component: AnotherComponent },
 ];
@@ -49,7 +55,7 @@ export default function ShowcasePage() {
 
   // Find the full item object based on the selected ID
   const selectedItem = useMemo(() => {
-     return showcaseItems.find((item) => item.id === selectedItemId);
+    return showcaseItems.find((item) => item.id === selectedItemId);
   }, [selectedItemId]); // Recalculate only when selectedItemId changes
 
   // Extract the component type and its props from the selected item
