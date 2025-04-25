@@ -109,6 +109,22 @@ export default function ContactPage() {
             variants={fadeIn}
           >
             <div className="rounded-xl overflow-hidden shadow-lg bg-theme-card backdrop-blur-sm border border-theme p-6 h-full">
+              {/* Notification that form is not working */}
+              <div className="mb-6 p-4 rounded-lg bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-amber-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M8.485 3.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 3.495zM10 6a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 6zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200">Message Sending Currently Unavailable</h3>
+                    <div className="mt-1 text-sm text-amber-700 dark:text-amber-300">
+                      <p>The contact form functionality is currently under maintenance. Please use the email or social media links provided to get in touch.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
                 Contact Info
               </h2>
@@ -302,14 +318,13 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <button
-                    type="submit"
-                    disabled={formStatus === "submitting"}
-                    className="w-full px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-blue-500 to-teal-500 text-white shadow-md hover:shadow-lg"
+                    type="button"
+                    disabled
+                    className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-gray-400 to-gray-500 font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300 opacity-50 cursor-not-allowed text-white shadow-md"
                   >
-                    {formStatus === "submitting"
-                      ? "Sending..."
-                      : "Send Message"}
+                    Message Sending Unavailable
                   </button>
+                  <p className="text-xs text-center mt-2 text-amber-600 dark:text-amber-400">Please use the contact information on the left instead</p>
                 </div>
               </form>
             </div>
