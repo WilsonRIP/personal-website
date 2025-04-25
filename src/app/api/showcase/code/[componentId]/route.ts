@@ -1,8 +1,9 @@
+import { type NextRequest } from "next/server";
 import fs from "fs";
 import path from "path";
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { componentId: string } }
 ) {
   const { componentId } = params;
