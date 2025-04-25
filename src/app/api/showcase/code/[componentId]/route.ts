@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
@@ -31,7 +30,7 @@ export async function GET(
     return new Response(code, {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
-  } catch (err) {
+  } catch {
     return new Response("Unable to read file", { status: 500 });
   }
 }
