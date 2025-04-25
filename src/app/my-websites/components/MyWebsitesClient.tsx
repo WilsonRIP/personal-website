@@ -1,11 +1,11 @@
+// components/MyWebsitesClient.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
-import { Website, websites } from "../data";
-import { useTheme } from "next-themes";
+import { Website, websites } from "../data"; // Assuming data.ts is in the parent directory
 
 // --- Configuration Constants ---
 const ANIMATION_DEFAULTS = {
@@ -25,38 +25,41 @@ const TRANSITION_DEFAULTS = {
 };
 
 const TECH_TAG_LIMIT = 3;
+// Keep gradients relative to container, adjust offset as needed
 const FEATURED_GRADIENT_OFFSET = "-mr-64 -mt-64";
 const CARD_GRADIENT_OFFSET = "-mr-16 -mt-16";
 
 // --- Component ---
 export default function MyWebsitesClient() {
-  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Debug theme state during development
-  useEffect(() => {
-    if (mounted && resolvedTheme) {
-      console.log(`Current theme: ${resolvedTheme}`);
-    }
-  }, [mounted, resolvedTheme]);
+  // Debug theme state during development - consider removing in production
+  // useEffect(() => {
+  //   if (mounted && resolvedTheme) {
+  //     console.log(`Current theme: ${resolvedTheme}`);
+  //   }
+  // }, [mounted, resolvedTheme]);
 
   // Fix hydration issues by only showing animations after mount
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Show a minimal placeholder until mounted
   if (!mounted) {
     return (
       <div
-        className="flex min-h-screen flex-col items-center p-6 md:p-10 lg:p-16 bg-theme-gradient"
+        className="flex min-h-screen flex-col items-center p-6 md:p-10 lg:p-16 bg-bg-primary"
         suppressHydrationWarning
-      ></div>
+      >
+        {/* Optional: Add a loading spinner or skeleton here */}
+      </div>
     );
   }
 
   return (
     <main
-      className="flex min-h-screen flex-col items-center p-6 md:p-10 lg:p-16 bg-theme-gradient"
+      className="flex min-h-screen flex-col items-center p-6 md:p-10 lg:p-16 bg-bg-primary text-color-primary" // Use theme background and default text color
       suppressHydrationWarning
     >
       <div className="w-full max-w-6xl space-y-10">
@@ -66,10 +69,12 @@ export default function MyWebsitesClient() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: ANIMATION_DEFAULTS.duration }}
         >
+          {/* Title gradient - adjust colors if needed */}
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-3">
             My Websites
           </h1>
-          <p className="text-theme-secondary max-w-3xl mx-auto">
+          {/* Description text color */}
+          <p className="text-color-secondary max-w-3xl mx-auto">
             A collection of websites I&apos;ve designed and developed. Each site
             represents my skills in web development and design.
           </p>
@@ -84,7 +89,8 @@ export default function MyWebsitesClient() {
               duration: ANIMATION_DEFAULTS.duration,
               delay: ANIMATION_DEFAULTS.delayShort,
             }}
-            className={`group relative overflow-hidden rounded-xl border border-theme bg-theme-card shadow-lg hover:shadow-xl transition-all ${TRANSITION_DEFAULTS.durationShort} p-6 md:p-8`}
+            // Theme background, border, and shadows
+            className={`group relative overflow-hidden rounded-xl border border-border-base bg-bg-card shadow-lg hover:shadow-xl transition-all ${TRANSITION_DEFAULTS.durationShort} p-6 md:p-8`}
           >
             {websites
               .filter((website) => website.featured)
@@ -93,12 +99,13 @@ export default function MyWebsitesClient() {
                   key={website.id}
                   className="grid grid-cols-1 md:grid-cols-2 gap-8 relative"
                 >
-                  {/* Enhanced background gradient */}
+                  {/* Enhanced background gradient - uses website.color prop */}
                   <div
                     className={`absolute top-0 right-0 w-[500px] h-[500px] ${FEATURED_GRADIENT_OFFSET} rounded-full bg-gradient-to-br ${website.color} opacity-5 group-hover:opacity-10 blur-3xl transition-opacity ${TRANSITION_DEFAULTS.durationMedium}`}
                   ></div>
 
                   <div className="space-y-4 relative z-10">
+                    {/* Featured tag colors - already has dark variants */}
                     <div
                       className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/60 transition-colors ${TRANSITION_DEFAULTS.durationShort}`}
                     >
@@ -116,22 +123,25 @@ export default function MyWebsitesClient() {
                       </svg>
                       Featured Project
                     </div>
+                    {/* Title text color */}
                     <h2
-                      className={`text-2xl font-bold text-theme-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ${TRANSITION_DEFAULTS.durationShort}`}
+                      className={`text-2xl font-bold text-color-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ${TRANSITION_DEFAULTS.durationShort}`}
                     >
                       {website.title}
                     </h2>
+                    {/* Description text color */}
                     <p
-                      className={`text-theme-secondary group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors ${TRANSITION_DEFAULTS.durationShort}`}
+                      className={`text-color-secondary group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors ${TRANSITION_DEFAULTS.durationShort}`}
                     >
                       {website.description}
                     </p>
 
+                    {/* Tech tag colors - already has dark variants */}
                     <div className="flex flex-wrap gap-2">
                       {website.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className={`px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-gray-700/70 text-blue-700 dark:text-gray-200 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors ${TRANSITION_DEFAULTS.durationShort}`}
+                          className={`px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-gray-700/70 text-blue-700 dark:text-gray-200 transition-colors ${TRANSITION_DEFAULTS.durationShort}`}
                         >
                           {tech}
                         </span>
@@ -139,6 +149,7 @@ export default function MyWebsitesClient() {
                     </div>
 
                     <div className="pt-4">
+                      {/* Button colors - already has dark variants */}
                       <a
                         href={website.url}
                         target="_blank"
@@ -166,9 +177,11 @@ export default function MyWebsitesClient() {
                     </div>
                   </div>
 
+                  {/* Image container border and shadow */}
                   <div
-                    className={`relative aspect-video overflow-hidden rounded-xl border border-theme shadow-sm group-hover:shadow-md transition-all ${TRANSITION_DEFAULTS.durationShort}`}
+                    className={`relative aspect-video overflow-hidden rounded-xl border border-border-base shadow-sm group-hover:shadow-md transition-all ${TRANSITION_DEFAULTS.durationShort}`}
                   >
+                    {/* Placeholder animation color - already has dark variants */}
                     <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
                     {/* Add overlay gradient on hover */}
                     <div
@@ -193,7 +206,7 @@ export default function MyWebsitesClient() {
                       }}
                     />
 
-                    {/* Live badge that appears on hover */}
+                    {/* Live badge that appears on hover - already has dark variants */}
                     <div
                       className={`absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity ${TRANSITION_DEFAULTS.durationShort}`}
                     >
@@ -219,13 +232,16 @@ export default function MyWebsitesClient() {
           className="space-y-8"
         >
           <div className="flex items-center space-x-3">
-            <h2 className="text-xl md:text-2xl font-bold text-theme-primary">
+            {/* Section title text color */}
+            <h2 className="text-xl md:text-2xl font-bold text-color-primary">
               My Projects
             </h2>
+            {/* Count badge colors - already has dark variants */}
             <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200">
               {websites.filter((website) => !website.featured).length}
             </span>
-            <div className="h-px flex-grow bg-gradient-to-r from-gray-300 dark:from-gray-700 to-transparent dark:to-gray-900"></div>
+            {/* Separator line color */}
+            <div className="h-px flex-grow bg-gradient-to-r from-border-base to-transparent"></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -253,6 +269,7 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
     setMounted(true);
   }, []);
 
+  // Render null or a minimal placeholder if not mounted to avoid hydration issues
   if (!mounted) {
     return null;
   }
@@ -272,20 +289,22 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
   return (
     <motion.div
       ref={ref}
-      className={`group relative overflow-hidden rounded-lg border border-theme bg-theme-card shadow-sm hover:shadow-md transition-all ${TRANSITION_DEFAULTS.durationShort} p-5`}
+      // Theme background, border, and shadows
+      className={`group relative overflow-hidden rounded-lg border border-border-base bg-bg-card shadow-sm hover:shadow-md transition-all ${TRANSITION_DEFAULTS.durationShort} p-5`}
       variants={cardVariants}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
     >
-      {/* Card background gradient */}
+      {/* Card background gradient - uses website.color prop */}
       <div
         className={`absolute top-0 right-0 w-[300px] h-[300px] ${CARD_GRADIENT_OFFSET} rounded-full bg-gradient-to-br ${website.color} opacity-5 group-hover:opacity-10 blur-3xl transition-opacity ${TRANSITION_DEFAULTS.durationMedium}`}
       ></div>
 
-      {/* Website preview image */}
+      {/* Website preview image container border */}
       <div
-        className={`relative aspect-video w-full overflow-hidden rounded-md border border-theme mb-4`}
+        className={`relative aspect-video w-full overflow-hidden rounded-md border border-border-base mb-4`}
       >
+        {/* Placeholder animation color - already has dark variants */}
         <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
         <Image
           src={website.imageUrl}
@@ -303,22 +322,25 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
             target.onerror = null;
           }}
         />
+        {/* Image hover overlay */}
         <div
           className={`absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity ${TRANSITION_DEFAULTS.durationShort}`}
         ></div>
       </div>
 
       {/* Website info */}
+      {/* Title text color */}
       <h3
-        className={`text-lg font-semibold text-theme-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ${TRANSITION_DEFAULTS.durationShort} mb-1`}
+        className={`text-lg font-semibold text-color-primary group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ${TRANSITION_DEFAULTS.durationShort} mb-1`}
       >
         {website.title}
       </h3>
-      <p className={`text-sm text-theme-secondary mb-3 line-clamp-2`}>
+      {/* Description text color */}
+      <p className={`text-sm text-color-secondary mb-3 line-clamp-2`}>
         {website.description}
       </p>
 
-      {/* Tech tags - Limit displayed tags for better UI */}
+      {/* Tech tags - colors already have dark variants */}
       <div className="flex flex-wrap gap-1.5 mb-4">
         {website.technologies.slice(0, TECH_TAG_LIMIT).map((tech) => (
           <span
@@ -337,7 +359,7 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
         )}
       </div>
 
-      {/* Visit website link */}
+      {/* Visit website link - colors already have dark variants */}
       <a
         href={website.url}
         target="_blank"

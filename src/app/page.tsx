@@ -6,6 +6,15 @@ import { WEBSITE_NAME } from "@/lib/types";
 import { heroVariants, sectionVariants, cardVariants } from "@/lib/animations";
 import Link from "next/link";
 import { Saira_Stencil_One } from "next/font/google";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
 
 const Saira = Saira_Stencil_One({
   weight: "400",
@@ -96,39 +105,30 @@ export default function Home() {
             <motion.div
               key={section.title}
               variants={cardVariants}
-              whileHover={{ y: -5 }} // Reduced from -10
-              className={`relative overflow-hidden rounded-lg p-5 border dark:border-gray-700 border-gray-200 bg-white/90 dark:bg-gray-800/70 backdrop-blur-sm shadow-md`}
+              whileHover={{ y: -5 }}
+              className="h-full"
             >
-              <Link href={section.link} className="block h-full">
-                {/* Card background gradient - less intense */}
-                <div
-                  className={`absolute top-0 right-0 w-20 h-20 -mr-8 -mt-8 rounded-full bg-gradient-to-br ${section.color} opacity-10 blur-xl`}
-                ></div>
-
-                <div className="relative z-10">
-                  <h3 className="text-lg font-bold mb-2 text-theme-primary">
-                    {section.title}
-                  </h3>
-                  <p className="text-sm text-theme-primary">
-                    {section.description}
-                  </p>
-
-                  <div className="mt-3 inline-flex items-center text-sm font-medium text-teal-500">
-                    Explore
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-1"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
+              <Link href={section.link} className="group block h-full" passHref>
+                <Card className="flex flex-col h-full transition-all hover:shadow-lg dark:hover:shadow-primary/20 relative overflow-hidden">
+                  <div
+                    className={`absolute top-0 right-0 w-20 h-20 -mr-8 -mt-8 rounded-full bg-gradient-to-br ${section.color} opacity-10 blur-xl -z-10`}
+                  ></div>
+                  <div className="relative z-10 flex flex-col flex-grow">
+                    <CardHeader>
+                      <CardTitle className="text-lg">{section.title}</CardTitle>
+                      <CardDescription className="text-sm">
+                        {section.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-grow"></CardContent>
+                    <CardFooter>
+                      <div className="mt-auto flex items-center text-sm font-medium text-primary transition-colors group-hover:text-primary/90">
+                        Explore
+                        <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </CardFooter>
                   </div>
-                </div>
+                </Card>
               </Link>
             </motion.div>
           ))}
