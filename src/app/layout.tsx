@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   },
   description: `Official website for ${WEBSITE_NAME}`,
   icons: {
-    icon: "/favicon.ico",
+    icon: "/icon.png",
     apple: "/apple-touch-icon.png",
   },
   // Update with your actual domain when deploying

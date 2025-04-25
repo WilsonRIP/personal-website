@@ -79,7 +79,7 @@ export default function Navbar() {
           className="flex items-center text-xl md:text-2xl font-semibold tracking-wide mr-8"
         >
           <Image
-            src="/icons8-cat-100.png"
+            src="/icon.png"
             alt="Cat"
             width={32}
             height={32}
