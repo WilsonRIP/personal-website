@@ -6,14 +6,6 @@ import { WEBSITE_NAME } from "@/lib/types";
 import { heroVariants, sectionVariants, cardVariants } from "@/lib/animations";
 import Link from "next/link";
 import { Saira_Stencil_One } from "next/font/google";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 
 const Saira = Saira_Stencil_One({
@@ -74,7 +66,7 @@ export default function Home() {
           <Link href="/projects">
             <motion.button
               className={`${Saira.className} px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
-              whileHover={{ scale: 1.03 }} // Reduced from 1.05
+              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
               View Projects
@@ -84,7 +76,7 @@ export default function Home() {
           <Link href="/contact">
             <motion.button
               className={`${Saira.className} px-5 py-2 rounded-lg font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
-              whileHover={{ scale: 1.03 }} // Reduced from 1.05
+              whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
               Contact Me
@@ -109,26 +101,18 @@ export default function Home() {
               className="h-full"
             >
               <Link href={section.link} className="group block h-full" passHref>
-                <Card className="flex flex-col h-full transition-all hover:shadow-lg dark:hover:shadow-primary/20 relative overflow-hidden">
-                  <div
-                    className={`absolute top-0 right-0 w-20 h-20 -mr-8 -mt-8 rounded-full bg-gradient-to-br ${section.color} opacity-10 blur-xl -z-10`}
-                  ></div>
-                  <div className="relative z-10 flex flex-col flex-grow">
-                    <CardHeader>
-                      <CardTitle className="text-lg">{section.title}</CardTitle>
-                      <CardDescription className="text-sm">
-                        {section.description}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow"></CardContent>
-                    <CardFooter>
-                      <div className="mt-auto flex items-center text-sm font-medium text-primary transition-colors group-hover:text-primary/90">
-                        Explore
-                        <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </CardFooter>
+                <div className="flex flex-col h-full p-6 rounded-lg shadow-md hover:shadow-lg transition-all bg-theme-card border border-theme">
+                  <h3 className="text-lg font-semibold text-theme-primary mb-2">
+                    {section.title}
+                  </h3>
+                  <p className="text-sm text-theme-secondary mb-4 flex-grow">
+                    {section.description}
+                  </p>
+                  <div className="mt-auto flex items-center text-sm font-medium text-primary transition-colors group-hover:text-primary/90">
+                    Explore
+                    <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
                   </div>
-                </Card>
+                </div>
               </Link>
             </motion.div>
           ))}
@@ -137,7 +121,7 @@ export default function Home() {
 
       {/* Footer - simplified */}
       <div className="mt-12 text-center">
-        <p className="text-sm dark:text-gray-400 text-gray-700">
+        <p className="text-sm text-theme-secondary">
           Built with Next.js and Tailwind CSS By WilsonIIRIP/Luke
         </p>
       </div>

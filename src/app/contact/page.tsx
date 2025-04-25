@@ -5,9 +5,6 @@ import { motion } from "framer-motion";
 import { socialLinks } from "@/app/data/socials";
 import Image from "next/image";
 import { EMAIL } from "@/lib/types";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -97,7 +94,7 @@ export default function ContactPage() {
           <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4">
             Get In Touch
           </h1>
-          <p className="text-lg lg:text-xl text-muted-foreground mb-6">
+          <p className="text-lg lg:text-xl text-theme-secondary mb-6">
             Have a question or want to work together? Feel free to contact me.
           </p>
         </motion.div>
@@ -111,13 +108,13 @@ export default function ContactPage() {
             animate="visible"
             variants={fadeIn}
           >
-            <div className="rounded-xl overflow-hidden shadow-lg bg-card/50 dark:bg-card/50 backdrop-blur-sm border p-6 h-full">
+            <div className="rounded-xl overflow-hidden shadow-lg bg-theme-card backdrop-blur-sm border border-theme p-6 h-full">
               <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
                 Contact Info
               </h2>
 
               <div className="space-y-4">
-                <p className="text-muted-foreground">
+                <p className="text-theme-secondary">
                   I&apos;m always interested in hearing about new projects and
                   opportunities. Feel free to reach out through any of these
                   channels:
@@ -137,10 +134,10 @@ export default function ContactPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">
+                      <p className="text-sm font-medium text-theme-secondary">
                         Email
                       </p>
-                      <p className="text-foreground">{EMAIL}</p>
+                      <p className="text-theme-primary">{EMAIL}</p>
                     </div>
                   </div>
 
@@ -160,10 +157,10 @@ export default function ContactPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">
+                      <p className="text-sm font-medium text-theme-secondary">
                         Location
                       </p>
-                      <p className="text-foreground">United States</p>
+                      <p className="text-theme-primary">United States</p>
                     </div>
                   </div>
                 </div>
@@ -171,7 +168,7 @@ export default function ContactPage() {
 
               {/* Social Media Links */}
               <div className="mt-8">
-                <h3 className="text-lg font-semibold mb-4 text-foreground">
+                <h3 className="text-lg font-semibold mb-4 text-theme-primary">
                   Connect with me
                 </h3>
                 <div className="flex flex-wrap gap-4">
@@ -181,7 +178,7 @@ export default function ContactPage() {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full flex items-center justify-center bg-secondary/30 dark:bg-secondary/20 hover:bg-primary/20 dark:hover:bg-primary/30 transition-all duration-300"
+                      className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300"
                       title={social.name}
                     >
                       <Image
@@ -189,7 +186,7 @@ export default function ContactPage() {
                         alt={social.name}
                         width={20}
                         height={20}
-                        className="w-5 h-5 filter dark:invert"
+                        className="w-5 h-5"
                       />
                     </a>
                   ))}
@@ -205,7 +202,7 @@ export default function ContactPage() {
             animate="visible"
             variants={fadeIn}
           >
-            <div className="rounded-xl overflow-hidden shadow-lg bg-card/50 dark:bg-card/50 backdrop-blur-sm border p-6">
+            <div className="rounded-xl overflow-hidden shadow-lg bg-theme-card backdrop-blur-sm border border-theme p-6">
               <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
                 Send a Message
               </h2>
@@ -233,11 +230,11 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium text-foreground mb-2"
+                      className="block text-sm font-medium text-theme-primary mb-2"
                     >
                       Your Name
                     </label>
-                    <Input
+                    <input
                       type="text"
                       id="name"
                       name="name"
@@ -245,17 +242,17 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="John Doe"
-                      className="bg-background/70 backdrop-blur-sm"
+                      className="w-full px-4 py-2 rounded-lg border border-theme bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 backdrop-blur-sm"
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-foreground mb-2"
+                      className="block text-sm font-medium text-theme-primary mb-2"
                     >
                       Your Email
                     </label>
-                    <Input
+                    <input
                       type="email"
                       id="email"
                       name="email"
@@ -263,17 +260,18 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="you@example.com"
+                      className="w-full px-4 py-2 rounded-lg border border-theme bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 backdrop-blur-sm"
                     />
                   </div>
                 </div>
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block text-sm font-medium text-foreground mb-2"
+                    className="block text-sm font-medium text-theme-primary mb-2"
                   >
                     Subject
                   </label>
-                  <Input
+                  <input
                     type="text"
                     id="subject"
                     name="subject"
@@ -281,35 +279,37 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     placeholder="Regarding your project..."
+                    className="w-full px-4 py-2 rounded-lg border border-theme bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 backdrop-blur-sm"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-sm font-medium text-foreground mb-2"
+                    className="block text-sm font-medium text-theme-primary mb-2"
                   >
                     Message
                   </label>
-                  <Textarea
+                  <textarea
                     id="message"
                     name="message"
+                    rows={5}
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={5}
                     placeholder="Your message here..."
-                  />
+                    className="w-full px-4 py-2 rounded-lg border border-theme bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 backdrop-blur-sm"
+                  ></textarea>
                 </div>
                 <div>
-                  <Button
+                  <button
                     type="submit"
                     disabled={formStatus === "submitting"}
-                    className="w-full md:w-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50 disabled:opacity-70"
+                    className="w-full px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-blue-500 to-teal-500 text-white shadow-md hover:shadow-lg"
                   >
                     {formStatus === "submitting"
                       ? "Sending..."
                       : "Send Message"}
-                  </Button>
+                  </button>
                 </div>
               </form>
             </div>

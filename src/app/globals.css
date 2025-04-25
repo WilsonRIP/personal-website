@@ -234,7 +234,6 @@
 }
 
 body {
-  background: var(--background, #ffffff); /* Fallback for light background */
   color: var(--foreground, #171717); /* Fallback for light foreground */
   font-family: var(--font-primary); /* Apply primary font */
   transition: background-color var(--transition-normal) ease,
@@ -294,6 +293,35 @@ body {
     @apply border-border;
   }
   body {
+    /* Re-add bg-background here, it should be overridden by layout.tsx */
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Component Styles REMOVED - User requested reversion */
+
+/* Apply gradient to Card components - REMOVED */
+/* .card { ... } */
+/* .card .text-muted-foreground { ... } */
+
+/* Restore custom theme classes if they exist (Check comments above) */
+/* Uncommenting potential original classes - verify if these are correct */
+/* .bg-theme-card {
+  background-color: var(--card-bg);
+} */
+/* .text-theme-primary {
+  color: var(--text-primary);
+} */
+/* .text-theme-secondary {
+  color: var(--text-secondary);
+} */
+/* .bg-theme-gradient {
+  background-image: linear-gradient(
+    to bottom,
+    var(--gradient-start),
+    var(--gradient-end)
+  );
+} */
+/* .border-theme {
+  border-color: var(--card-border);
+} */
