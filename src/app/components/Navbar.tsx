@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { Poetsen_One } from "next/font/google";
 import { useState, useEffect } from "react";
 import ThemeToggle from "./ThemeToggle";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 
 // Load Poetsen One (Google Font) at build‑time

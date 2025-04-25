@@ -125,8 +125,8 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--background, #ffffff); /* Fallback for light background */
+  color: var(--foreground, #171717);    /* Fallback for light foreground */
   font-family: var(--font-primary); /* Apply primary font */
   transition: background-color var(--transition-normal) ease,
     color var(--transition-normal) ease;

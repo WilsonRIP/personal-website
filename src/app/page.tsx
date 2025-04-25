@@ -57,7 +57,7 @@ export default function Home() {
           {WEBSITE_NAME}
         </motion.h1>
 
-        <motion.p className="text-lg lg:text-xl text-theme-secondary mb-6">
+        <motion.p className="text-lg lg:text-xl text-theme-primary mb-6">
           Web & Software Developer • Creator • Problem Solver • Vibe Coder
         </motion.p>
 
@@ -109,7 +109,7 @@ export default function Home() {
                   <h3 className="text-lg font-bold mb-2 text-theme-primary">
                     {section.title}
                   </h3>
-                  <p className="text-sm text-theme-secondary">
+                  <p className="text-sm text-theme-primary">
                     {section.description}
                   </p>
 
@@ -137,7 +137,7 @@ export default function Home() {
 
       {/* Footer - simplified */}
       <div className="mt-12 text-center">
-        <p className="text-sm dark:text-gray-400 text-gray-600">
+        <p className="text-sm dark:text-gray-400 text-gray-700">
           Built with Next.js and Tailwind CSS By WilsonIIRIP/Luke
         </p>
       </div>
