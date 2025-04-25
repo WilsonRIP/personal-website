@@ -1,329 +1,404 @@
+// src/app/projects/components/ProjectsStats.tsx
+
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { GithubRepo } from "@/lib/github";
-import { GithubUserStats } from "@/lib/githubStats";
+import { GithubRepo } from "@/lib/github"; // Assuming GithubRepo is defined correctly
+// Assuming ActivityEvent type is defined (either imported or inline)
+import { ActivityEvent, ActivityEventType } from "@/lib/types"; // Adjust import path
 import { useInView } from "react-intersection-observer";
+import Link from "next/link";
+// Make sure you have installed this: npm install @primer/octicons-react
+import {
+    StarIcon, RepoForkedIcon, CodeIcon, CalendarIcon, RepoIcon, ArrowUpIcon, GitBranchIcon
+} from '@primer/octicons-react';
 
-interface ProjectsStatsProps {
-  repos: GithubRepo[];
-  stats?: GithubUserStats;
+// Define structure for language stats if not defined elsewhere
+interface LanguageStat {
+    name: string;
+    count: number;
 }
 
-export default function ProjectsStats({ repos, stats }: ProjectsStatsProps) {
-  const [activeTab, setActiveTab] = useState("overview");
-  const { ref, inView } = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
+// Ensure GithubUserStats interface includes topLanguages if you are using it
+// If stats prop is optional and calculated fallback is used, this definition helps type safety
+interface GithubUserStats {
+    totalRepos: number;
+    totalStars: number;
+    totalForks: number;
+    earliestRepo: string; // ISO Date string
+    latestRepo: string; // ISO Date string
+    topLanguages: LanguageStat[];
+}
 
-  // Calculate active years
-  const years = new Set<number>();
-  if (repos.length > 0) {
-    repos.forEach((repo) => {
-      const creationYear = new Date(repo.created_at).getFullYear();
-      years.add(creationYear);
+interface ProjectsStatsProps {
+    repos: GithubRepo[];
+    stats?: GithubUserStats; // stats prop is optional
+}
 
-      // Also add years of latest updates if different
-      const updateYear = new Date(repo.pushed_at).getFullYear();
-      years.add(updateYear);
+// Helper function to format dates
+function formatDate(dateString: string): string { // Explicit return type
+    if (!dateString) return "N/A";
+    try {
+        return new Date(dateString).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        });
+    } catch (e) {
+        return "Invalid Date";
+    }
+}
+
+// Helper function to get a relative time string
+function timeAgo(dateString: string): string { // Explicit return type
+     if (!dateString) return "";
+    try {
+        const date = new Date(dateString);
+        const now = new Date();
+        const seconds = Math.round((now.getTime() - date.getTime()) / 1000);
+        const minutes = Math.round(seconds / 60);
+        const hours = Math.round(minutes / 60);
+        const days = Math.round(hours / 24);
+        const weeks = Math.round(days / 7);
+        const months = Math.round(days / 30);
+        const years = Math.round(days / 365);
+
+        if (seconds < 60) return `${seconds}s ago`;
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        if (days < 7) return `${days}d ago`;
+        if (weeks < 5) return `${weeks}w ago`; // Use 5 to avoid showing "4w ago" when it's almost a month
+        if (months < 12) return `${months}mo ago`;
+        return `${years}y ago`;
+    } catch (e) {
+        return "some time ago"; // Fallback for invalid dates
+    }
+}
+
+
+// --- Main Component ---
+export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps) {
+    const [activeTab, setActiveTab] = useState("overview");
+    const { ref, inView } = useInView({
+        threshold: 0.05,
+        triggerOnce: true,
     });
-  }
 
-  const stats_data = stats || {
-    totalRepos: repos.length,
-    totalStars: repos.reduce((sum, repo) => sum + repo.stargazers_count, 0),
-    totalForks: repos.reduce((sum, repo) => sum + repo.forks_count, 0),
-    earliestRepo:
-      repos.length > 0
-        ? repos.reduce(
-            (earliest, repo) =>
-              new Date(repo.created_at) < new Date(earliest)
-                ? repo.created_at
-                : earliest,
-            repos[0].created_at
-          )
-        : new Date().toISOString(),
-    latestRepo:
-      repos.length > 0
-        ? repos.reduce(
-            (latest, repo) =>
-              new Date(repo.pushed_at) > new Date(latest)
-                ? repo.pushed_at
-                : latest,
-            repos[0].pushed_at
-          )
-        : new Date().toISOString(),
-    topLanguages: [],
-  };
+    // --- Data Processing with useMemo ---
+    const processedData = useMemo(() => {
+        // Define the expected structure for stats_data
+        const defaultStatsData: GithubUserStats = {
+            totalRepos: 0,
+            totalStars: 0,
+            totalForks: 0,
+            earliestRepo: new Date().toISOString(), // Default value
+            latestRepo: new Date().toISOString(), // Default value
+            topLanguages: [],
+        };
 
-  // Calculate top languages if not provided in stats
-  if (!stats && repos.length > 0) {
-    const languages: Record<string, number> = {};
-    repos.forEach((repo) => {
-      if (repo.language) {
-        languages[repo.language] = (languages[repo.language] || 0) + 1;
-      }
-    });
+        if (!repos || repos.length === 0) {
+            // Use default structure when repos are empty
+            return {
+                stats_data: stats || defaultStatsData, // Use provided stats if available even if repos empty
+                years: new Set<number>(),
+                groupedEventsByYear: {},
+                sortedYears: [],
+            };
+        }
 
-    stats_data.topLanguages = Object.entries(languages)
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 5);
-  }
+        // --- Start of calculations when repos exist ---
+        const activityEvents: ActivityEvent[] = [];
+        const years = new Set<number>();
+        const oneDay = 24 * 60 * 60 * 1000;
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
-    },
-  };
+        repos.forEach((repo) => {
+            if (!repo || !repo.created_at || !repo.pushed_at) return; // Skip invalid repo data
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5 },
-    },
-  };
+            const creationDate = new Date(repo.created_at);
+            const pushedDate = new Date(repo.pushed_at);
+            // Check for valid dates before proceeding
+            if (isNaN(creationDate.getTime()) || isNaN(pushedDate.getTime())) return;
 
-  function formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  }
+            const creationYear = creationDate.getFullYear();
+            const pushedYear = pushedDate.getFullYear();
 
-  return (
-    <motion.div
-      ref={ref}
-      variants={containerVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      className="mt-16 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700"
-    >
-      <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
-          GitHub Highlights
-        </h2>
-        <div className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 font-medium bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
-          <svg
-            className="w-4 h-4 mr-1.5 text-green-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M13 10V3L4 14h7v7l9-11h-7z"
-            />
-          </svg>
-          Latest Data
-        </div>
-      </div>
+            years.add(creationYear);
+            years.add(pushedYear);
 
-      {/* Stats Summary - Always visible, simplified */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-6 relative">
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-5 dark:opacity-10 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-blue-500 blur-3xl"></div>
-          <div className="absolute -left-10 -bottom-10 w-40 h-40 rounded-full bg-purple-500 blur-3xl"></div>
-        </div>
+            activityEvents.push({ type: 'creation', date: repo.created_at, repo: repo, id: `${repo.id}-created` });
 
+            if (Math.abs(pushedDate.getTime() - creationDate.getTime()) > oneDay) {
+                activityEvents.push({ type: 'activity', date: repo.pushed_at, repo: repo, id: `${repo.id}-pushed` });
+            } else if (repo.pushed_at !== repo.created_at) {
+                 activityEvents.push({ type: 'activity', date: repo.pushed_at, repo: repo, id: `${repo.id}-pushed` });
+            }
+        });
+
+        activityEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        const groupedEventsByYear: Record<number, ActivityEvent[]> = {};
+        activityEvents.forEach(event => {
+            const year = new Date(event.date).getFullYear();
+            if (!groupedEventsByYear[year]) {
+                groupedEventsByYear[year] = [];
+            }
+            groupedEventsByYear[year].push(event);
+        });
+
+        const sortedYears = Object.keys(groupedEventsByYear).map(Number).sort((a, b) => b - a);
+
+        // Calculate Stats or use provided stats
+        let calculatedStats: GithubUserStats;
+        if (stats) {
+             calculatedStats = { ...defaultStatsData, ...stats }; // Merge provided stats with defaults
+        } else {
+             // Calculate stats only if not provided
+             calculatedStats = {
+                totalRepos: repos.length,
+                totalStars: repos.reduce((sum, repo) => sum + (repo?.stargazers_count || 0), 0),
+                totalForks: repos.reduce((sum, repo) => sum + (repo?.forks_count || 0), 0),
+                // Ensure reduce starts with a valid repo object
+                earliestRepo: repos.reduce( (earliest, repo) =>
+                        (!earliest || !repo || !repo.created_at || !earliest.created_at || new Date(repo.created_at) < new Date(earliest.created_at))
+                        ? repo : earliest, repos[0] // Use first repo as initial value
+                    )?.created_at || defaultStatsData.earliestRepo, // Fallback
+                 latestRepo: repos.reduce( (latest, repo) =>
+                        (!latest || !repo || !repo.pushed_at || !latest.pushed_at || new Date(repo.pushed_at) > new Date(latest.pushed_at))
+                        ? repo : latest, repos[0]
+                    )?.pushed_at || defaultStatsData.latestRepo, // Fallback
+                topLanguages: [], // Initialize and calculate below
+             };
+
+             // Calculate top languages
+            const languages: Record<string, number> = {};
+            repos.forEach((repo) => {
+                if (repo?.language) {
+                    languages[repo.language] = (languages[repo.language] || 0) + 1;
+                }
+            });
+            calculatedStats.topLanguages = Object.entries(languages)
+                .map(([name, count]): LanguageStat => ({ name, count })) // Explicit return type for map
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 5);
+        }
+
+        return {
+            stats_data: calculatedStats,
+            years,
+            groupedEventsByYear,
+            sortedYears,
+        };
+    }, [repos, stats]); // Depend on repos and stats
+
+    // Destructure with default values matching the structure returned by useMemo
+    const {
+        stats_data = { totalRepos: 0, totalStars: 0, totalForks: 0, topLanguages: [], earliestRepo: '', latestRepo: '' }, // Ensure stats_data is never undefined
+        years = new Set<number>(),
+        groupedEventsByYear = {},
+        sortedYears = []
+    } = processedData || {}; // Add fallback for processedData potentially being undefined briefly
+
+
+    // --- Animation Variants ---
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+    
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.5 }
+        }
+    };
+    
+    const timelineItemVariants = {
+        hidden: { opacity: 0, x: -20 },
+        visible: {
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.5 }
+        }
+    };
+
+    // --- Render Logic ---
+    // Improved empty state check
+    if (repos.length === 0 && !stats?.totalRepos) {
+        return (
+             <div className="mt-16 p-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md rounded-xl shadow-lg border border-slate-200/70 dark:border-slate-700/50 text-center text-slate-500 dark:text-slate-400">
+                No GitHub data available to display highlights.
+            </div>
+        )
+    }
+
+    // Helper functions for styling
+    const getEventIcon = (type: ActivityEventType, className: string = "w-3 h-3 text-white/90") => {
+        switch(type) {
+            case 'creation':
+                return <RepoIcon className={className} />;
+            case 'activity':
+                return <GitBranchIcon className={className} />;
+            default:
+                return <CodeIcon className={className} />;
+        }
+    };
+    const getEventColorGradient = (type: ActivityEventType) => {
+        switch(type) {
+            case 'creation': return 'from-green-400 to-green-600';
+            case 'activity': return 'from-blue-400 to-indigo-600';
+            default: return 'from-gray-400 to-gray-600';
+        }
+    };
+    
+    const getEventRingColor = (type: ActivityEventType) => {
+        switch(type) {
+            case 'creation': return 'ring-green-400';
+            case 'activity': return 'ring-blue-400';
+            default: return 'ring-gray-400';
+        }
+    };
+    
+    const getEventTextColor = (type: ActivityEventType) => {
+        switch(type) {
+            case 'creation': return 'text-green-600';
+            case 'activity': return 'text-blue-600';
+            default: return 'text-gray-600';
+        }
+    };
+
+    return (
         <motion.div
-          variants={itemVariants}
-          className="group bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-center hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors relative z-10 transform hover:-translate-y-1 hover:shadow-md duration-200"
+            ref={ref}
+            variants={containerVariants}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            className="mt-16 bg-white/80 dark:bg-slate-800/80 backdrop-blur-md rounded-xl shadow-lg overflow-hidden border border-slate-200/70 dark:border-slate-700/50"
         >
-          <div className="absolute top-0 right-0 w-20 h-20 -mr-8 -mt-8 bg-blue-500/10 rounded-full blur-xl group-hover:bg-blue-500/20 transition-colors duration-300"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            Repositories
-          </p>
-          <p className="text-2xl font-bold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            {stats_data.totalRepos}
-          </p>
-        </motion.div>
-
-        <motion.div
-          variants={itemVariants}
-          className="group bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-center hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-colors relative z-10 transform hover:-translate-y-1 hover:shadow-md duration-200"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 -mr-8 -mt-8 bg-amber-500/10 rounded-full blur-xl group-hover:bg-amber-500/20 transition-colors duration-300"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-            Stars
-          </p>
-          <p className="text-2xl font-bold text-gray-800 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-            {stats_data.totalStars}
-          </p>
-        </motion.div>
-
-        <motion.div
-          variants={itemVariants}
-          className="group bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-center hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors relative z-10 transform hover:-translate-y-1 hover:shadow-md duration-200"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 -mr-8 -mt-8 bg-green-500/10 rounded-full blur-xl group-hover:bg-green-500/20 transition-colors duration-300"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-            Forks
-          </p>
-          <p className="text-2xl font-bold text-gray-800 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-            {stats_data.totalForks}
-          </p>
-        </motion.div>
-
-        <motion.div
-          variants={itemVariants}
-          className="group bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-center hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors relative z-10 transform hover:-translate-y-1 hover:shadow-md duration-200"
-        >
-          <div className="absolute top-0 right-0 w-20 h-20 -mr-8 -mt-8 bg-purple-500/10 rounded-full blur-xl group-hover:bg-purple-500/20 transition-colors duration-300"></div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-1 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-            Active Years
-          </p>
-          <p className="text-2xl font-bold text-gray-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-            {years.size}
-          </p>
-        </motion.div>
-      </div>
-
-      {/* Tab Navigation */}
-      <div className="border-t border-gray-200 dark:border-gray-700">
-        <div className="flex border-b border-gray-200 dark:border-gray-700">
-          <button
-            onClick={() => setActiveTab("overview")}
-            className={`flex-1 py-4 px-6 text-center font-medium text-sm focus:outline-none transition-colors ${
-              activeTab === "overview"
-                ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/10"
-                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/30"
-            }`}
-          >
-            Overview
-          </button>
-          <button
-            onClick={() => setActiveTab("languages")}
-            className={`flex-1 py-4 px-6 text-center font-medium text-sm focus:outline-none transition-colors ${
-              activeTab === "languages"
-                ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 bg-blue-50/50 dark:bg-blue-900/10"
-                : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/30"
-            }`}
-          >
-            Languages
-          </button>
-        </div>
-
-        {/* Tab Content */}
-        <div className="p-6">
-          {activeTab === "overview" && (
-            <motion.div variants={itemVariants} className="space-y-4">
-              <h3 className="font-medium text-gray-800 dark:text-white mb-4 flex items-center">
-                <svg
-                  className="w-4 h-4 mr-2 text-blue-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Activity Timeline
-              </h3>
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="relative mr-4">
-                    <div className="w-4 h-4 bg-gradient-to-br from-green-400 to-green-600 rounded-full shadow-md"></div>
-                    <div className="w-0.5 h-16 bg-gradient-to-b from-green-500/50 to-blue-500/50 absolute left-2 top-4"></div>
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-800 dark:text-white">
-                      First Repository
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {formatDate(stats_data.earliestRepo)}
-                    </p>
-                  </div>
+            {/* Header */}
+             <div className="px-6 py-5 border-b border-slate-200/70 dark:border-slate-700/50 flex justify-between items-center">
+                <h2 className="text-xl font-bold text-slate-800 dark:text-white">GitHub Activity</h2>
+                <div className="text-sm text-slate-500 dark:text-slate-400">
+                    {formatDate(stats_data.earliestRepo)} - {formatDate(stats_data.latestRepo)}
                 </div>
+             </div>
+             {/* Stats Summary Cards */}
+             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 relative border-b border-slate-200/70 dark:border-slate-700/50">
+                {/* ... */}
+                 {[
+                    { label: 'Repositories', value: stats_data.totalRepos, color: 'blue' },
+                    { label: 'Stars', value: stats_data.totalStars, color: 'amber' },
+                    { label: 'Forks', value: stats_data.totalForks, color: 'green' },
+                    { label: 'Active Years', value: years.size, color: 'purple' },
+                 ].map((stat) => ( <motion.div key={stat.label} className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm"> 
+                    <div className="text-center">
+                        <div className="font-semibold text-lg">{stat.value}</div>
+                        <div className="text-sm text-slate-500">{stat.label}</div>
+                    </div>
+                 </motion.div> ))}
+             </div>
 
-                <div className="flex items-start">
-                  <div className="mr-4">
-                    <div className="w-4 h-4 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full shadow-md"></div>
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-800 dark:text-white">
-                      Latest Activity
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {formatDate(stats_data.latestRepo)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activeTab === "languages" && (
-            <motion.div variants={itemVariants} className="space-y-6">
-              <h3 className="font-medium text-gray-800 dark:text-white mb-4 flex items-center">
-                <svg
-                  className="w-4 h-4 mr-2 text-blue-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+            {/* Tab Navigation */}
+             <div className="flex border-b border-slate-200/70 dark:border-slate-700/50">
+                <button 
+                    className={`px-4 py-2 font-medium ${activeTab === "overview" ? "text-blue-600 border-b-2 border-blue-600" : "text-slate-500"}`}
+                    onClick={() => setActiveTab("overview")}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-                Top Programming Languages
-              </h3>
-              <div className="space-y-5">
-                {stats_data.topLanguages.map((lang, index) => (
-                  <motion.div
-                    key={lang.name}
-                    className="group"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.3 }}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center">
-                        <span className="w-3 h-3 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 mr-2 shadow-sm"></span>
-                        <span className="text-gray-700 dark:text-gray-300 font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                          {lang.name}
-                        </span>
-                      </div>
-                      <span className="inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200">
-                        {lang.count} {lang.count === 1 ? "repo" : "repos"}
-                      </span>
-                    </div>
-                    <div className="bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 overflow-hidden shadow-inner">
-                      <motion.div
-                        className="bg-gradient-to-r from-blue-400 to-blue-600 h-2.5 rounded-full"
-                        initial={{ width: 0 }}
-                        animate={{
-                          width: `${
-                            (lang.count / stats_data.topLanguages[0].count) *
-                            100
-                          }%`,
-                        }}
-                        transition={{ duration: 0.8, delay: index * 0.1 + 0.3 }}
-                      ></motion.div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </div>
-      </div>
-    </motion.div>
-  );
+                    Activity Timeline
+                </button>
+                <button 
+                    className={`px-4 py-2 font-medium ${activeTab === "languages" ? "text-blue-600 border-b-2 border-blue-600" : "text-slate-500"}`}
+                    onClick={() => setActiveTab("languages")}
+                >
+                    Languages
+                </button>
+             </div>
+
+            {/* Tab Content */}
+            <div className="p-6 md:p-8 relative bg-slate-50/30 dark:bg-slate-800/30">
+                {/* ACTIVITY TIMELINE */}
+                {activeTab === "overview" && (
+                    <motion.div key="timeline" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} >
+                        {sortedYears.length > 0 ? sortedYears.map((year) => (
+                            <motion.div key={year} className="mb-8" >
+                                <div className="flex items-center mb-4">
+                                    <div className="h-6 w-6 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-2">
+                                        <CalendarIcon className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                                    </div>
+                                    <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200">{year} Activity</h3>
+                                </div>
+                                <div className="space-y-6 ml-6 md:ml-10">
+                                    {groupedEventsByYear[year]?.map((event) => (
+                                        <motion.div key={event.id} className="flex items-start relative pb-8 mb-2" >
+                                            <div className="absolute top-0 bottom-0 left-2.5 w-px bg-slate-200 dark:bg-slate-700"></div>
+                                            <div className="h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3 relative z-10">
+                                                {getEventIcon(event.type)}
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="flex flex-col space-y-1">
+                                                    <div className="font-medium text-slate-800 dark:text-slate-200">
+                                                        {event.type === 'creation' ? 'Created' : 'Updated'} 
+                                                        <span className="font-semibold ml-1">{event.repo?.name || 'repository'}</span>
+                                                    </div>
+                                                    {event.repo?.description && (
+                                                        <div className="text-sm text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700/40 px-3 py-2 rounded-md mt-1">
+                                                            {event.repo.description}
+                                                        </div>
+                                                    )}
+                                                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{timeAgo(event.date)}</div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )) : ( 
+                            <p className="text-slate-500 dark:text-slate-400 italic text-center py-8">No activity data available for this time period.</p> 
+                        )}
+                    </motion.div>
+                )}
+
+                {/* LANGUAGES TAB */}
+                {activeTab === "languages" && (
+                     <motion.div key="languages" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} >
+                        <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-6">Top Languages by Repository Count</h3>
+                        {/* Check stats_data.topLanguages before mapping */}
+                        {(stats_data.topLanguages && stats_data.topLanguages.length > 0) ? (
+                            <div className="space-y-5">
+                                {/* Add type annotation here */}
+                                {stats_data.topLanguages.map((lang: LanguageStat) => (
+                                    <motion.div key={lang.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                                        <div className="flex items-center justify-between mb-1.5 text-sm">
+                                            <span className="font-medium text-slate-700 dark:text-slate-300">{lang.name}</span>
+                                            <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
+                                                {lang.count} {lang.count === 1 ? "repo" : "repos"}
+                                            </span>
+                                        </div>
+                                        <div className="bg-slate-200 dark:bg-slate-600 rounded-full h-2 overflow-hidden shadow-inner">
+                                            <motion.div
+                                                className="bg-gradient-to-r from-blue-400 to-purple-500 h-2 rounded-full"
+                                                initial={{ width: 0 }}
+                                                // Add safe navigation for count access
+                                                animate={{ width: `${(lang.count / (stats_data.topLanguages[0]?.count || 1)) * 100}%` }}
+                                                transition={{ duration: 0.8, ease: "easeOut" }}
+                                            ></motion.div>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        ) : (
+                             <p className="text-slate-500 dark:text-slate-400 italic">No language data available.</p>
+                        )}
+                    </motion.div>
+                )}
+            </div>
+        </motion.div>
+    );
 }
