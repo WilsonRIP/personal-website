@@ -29,4 +29,15 @@ export const websites: Website[] = [
     color: "from-blue-500 to-indigo-600",
     featured: true,
   },
+  // Add the new Word Counter website
+  {
+    id: "Word Counter",
+    title: "Word Counter",
+    description: "A simple website to count words, characters, and more.",
+    imageUrl: "/websites/word-counter.png", // Add image to public/websites/
+    url: "https://word-counter-website-gules.vercel.app/",
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS"],
+    color: "from-green-500 to-teal-600",
+    featured: false,
+  },
 ];
