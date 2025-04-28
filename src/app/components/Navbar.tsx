@@ -1,16 +1,21 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Poetsen_One } from "next/font/google";
+import { Crimson_Text } from "next/font/google";
 import { useState, useEffect } from "react";
 import ThemeToggle from "./ThemeToggle";
 import Image from "next/image";
 
-// Load Poetsen One (Google Font) at build‑time
-const poetsen = Poetsen_One({
+const crimsonText = Crimson_Text({
   weight: "400",
   subsets: ["latin"],
 });
+
+// Removed unused Poetsen One font definition
+// const poetsen = Poetsen_One({
+//   weight: "400",
+//   subsets: ["latin"],
+// });
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -61,7 +66,7 @@ export default function Navbar() {
   return (
     <header
       className={`${
-        poetsen.className
+        crimsonText.className
       } sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ${
         isScrolled ? "py-2" : "py-3"
       } 
@@ -86,7 +91,9 @@ export default function Navbar() {
             className="w-7 h-7 rounded-full"
             priority
           />
-          <span className="ml-2 hidden sm:inline text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+          <span
+            className={`font-arista-bold ml-2 hidden sm:inline text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500`}
+          >
             Wilson
           </span>
         </Link>
@@ -101,7 +108,7 @@ export default function Navbar() {
                   <li key={href}>
                     <Link
                       href={href}
-                      className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 rounded-md ${
+                      className={`font-arista-bold relative px-3 py-2 text-base font-medium transition-colors duration-200 rounded-md ${
                         isActive
                           ? "text-teal-500 dark:text-teal-400 bg-teal-400/5 dark:bg-teal-400/10"
                           : "text-gray-600 dark:text-gray-300 hover:text-teal-500 dark:hover:text-teal-400 hover:bg-teal-400/5 dark:hover:bg-teal-400/10"
@@ -166,7 +173,7 @@ export default function Navbar() {
                 <li key={href} className="w-full text-center">
                   <Link
                     href={href}
-                    className={`block py-3 mx-4 text-lg font-medium transition-colors rounded-md ${
+                    className={`font-arista-bold block py-3 mx-4 text-xl font-medium transition-colors rounded-md ${
                       isActive
                         ? "text-teal-500 dark:text-teal-400 bg-teal-400/5 dark:bg-teal-400/10"
                         : "text-gray-800 dark:text-white hover:text-teal-500 dark:hover:text-teal-400 hover:bg-teal-400/5 dark:hover:bg-teal-400/10"

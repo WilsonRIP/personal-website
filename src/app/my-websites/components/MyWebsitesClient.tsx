@@ -70,7 +70,7 @@ export default function MyWebsitesClient() {
           transition={{ duration: ANIMATION_DEFAULTS.duration }}
         >
           {/* Title gradient - adjust colors if needed */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-3">
+          <h1 className="font-arista-bold text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-3">
             My Websites
           </h1>
           {/* Description text color */}

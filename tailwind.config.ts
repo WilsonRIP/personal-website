@@ -92,12 +92,13 @@ const config: Config = {
         mono: [
           "var(--font-geist-mono)", // Assuming this is defined elsewhere (e.g., by Next/font)
           "ui-monospace",
-          "monospace"
+          "monospace",
         ], // Keep existing mono
         // Add your custom fonts here, matching the name from @font-face rules
-        'flowers-kingdom': ['"flowers-kingdom"', 'cursive'], // Utility class: font-flowers-kingdom
-        'arista-pro': ['"Arista Pro"', 'sans-serif'], // Utility class: font-arista-pro
-        'orange-juice-2': ['"Orange Juice 2.0"', 'sans-serif'] // Utility class: font-orange-juice-2
+        "flowers-kingdom": ['"flowers-kingdom"', "cursive"], // Utility class: font-flowers-kingdom
+        "arista-pro": ['"Arista Pro"', "sans-serif"], // Utility class: font-arista-pro
+        "orange-juice-2": ['"Orange Juice 2.0"', "sans-serif"], // Utility class: font-orange-juice-2
+        "arista-bold": ["var(--font-arista-pro-bold)", "sans-serif"], // <-- Add custom utility
       },
       // ... other extensions like keyframes if needed
     },

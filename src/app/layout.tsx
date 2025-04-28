@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Alfa_Slab_One } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Navbar from "@/app/components/Navbar";
@@ -27,6 +28,12 @@ const alfaSlabOne = Alfa_Slab_One({
   subsets: ["latin"],
   variable: "--font-alfa-slab-one",
   display: "swap",
+});
+
+const aristaProBold = localFont({
+  src: "../../public/fonts/Arista-Pro-Bold-trial.ttf",
+  display: "swap",
+  variable: "--font-arista-pro-bold",
 });
 
 // Enhanced viewport configuration
@@ -86,7 +93,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${alfaSlabOne.variable} antialiased bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10`}
+        className={`${geistSans.variable} ${geistMono.variable} ${alfaSlabOne.variable} ${aristaProBold.variable} antialiased bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10`}
         suppressHydrationWarning
       >
         <ThemeProvider
