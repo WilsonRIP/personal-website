@@ -7,8 +7,13 @@ import ShowcaseSidebar from "./components/ShowcaseSidebar";
 import Checkbox from "./components/Checkbox";
 import CodeViewer from "./components/CodeViewer";
 import MathQuiz from "./components/MathQuiz";
+// Remove unused MathQuestion type import
+// import { MathQuestion } from "./components/types/quiz";
+// Uncomment the import for the data
+// import { sampleMathQuestions } from "./components/types/quiz"; // Remove this incorrect import
+import { sampleMathQuestions } from "../data/quiz"; // Correct import path
 // Only import the data, not the type if it's unused here
-import { sampleMathQuestions } from "./components/types/quiz";
+// import { sampleMathQuestions } from "./components/types/quiz";
 // Assuming you have this component or similar for fallback
 // import Placeholder from './components/Placeholder';
 
@@ -39,8 +44,8 @@ const showcaseItems: ShowcaseItem[] = [
     id: "checkbox",
     name: "Checkbox",
     component: Checkbox,
-    props: { label: "Dynamic Checkbox" },
-  }, // Example passing props
+    props: { label: "Dynamic Checkbox", defaultChecked: true },
+  },
   {
     id: "math-quiz",
     name: "Math Quiz",
