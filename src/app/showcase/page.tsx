@@ -6,6 +6,9 @@ import CustomDatePicker from "./components/DatePicker";
 import ShowcaseSidebar from "./components/ShowcaseSidebar";
 import Checkbox from "./components/Checkbox";
 import CodeViewer from "./components/CodeViewer";
+import MathQuiz from "./components/MathQuiz";
+// Only import the data, not the type if it's unused here
+import { sampleMathQuestions } from "./components/types/quiz";
 // Assuming you have this component or similar for fallback
 // import Placeholder from './components/Placeholder';
 
@@ -18,9 +21,12 @@ interface ShowcaseItem {
   // Store the component *type* (constructor/function), not an instance
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: React.ComponentType<any>; // Suppressing rule due to dynamic component nature
-  // Optional props specific to a component, if needed in the future
-  props?: Record<string, unknown>; // Keep unknown here
+  // Optional props specific to a component
+  props?: Record<string, unknown>;
 }
+
+// --- Sample Quiz Data ---
+// const sampleMathQuestions: MathQuestion[] = [...]; // Removed this section
 
 // --- Component Configuration ---
 
@@ -35,6 +41,12 @@ const showcaseItems: ShowcaseItem[] = [
     component: Checkbox,
     props: { label: "Dynamic Checkbox" },
   }, // Example passing props
+  {
+    id: "math-quiz",
+    name: "Math Quiz",
+    component: MathQuiz,
+    props: { questions: sampleMathQuestions },
+  },
   // Add more components here in the future
   // { id: 'another-component', name: 'Another Component', component: AnotherComponent },
 ];

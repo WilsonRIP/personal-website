@@ -17,6 +17,7 @@ export async function GET(
     calculator: "Calculator.tsx",
     "date-picker": "DatePicker.tsx",
     checkbox: "Checkbox.tsx",
+    "math-quiz": "MathQuiz.tsx",
     // Add other components here...
   };
 
