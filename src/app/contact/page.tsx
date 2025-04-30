@@ -5,6 +5,10 @@ import { motion } from "framer-motion";
 import { socialLinks } from "@/app/data/socials";
 import Image from "next/image";
 import { EMAIL } from "@/lib/types";
+import FancyHeading from "@/app/components/FancyHeading";
+import FancyCard from "@/app/components/FancyCard";
+import FancyButton from "@/app/components/FancyButton";
+import PageContainer from "@/app/components/PageContainer";
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -22,7 +26,8 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
-  const [formStatus, setFormStatus] = useState<
+  // Define the form status but don't set it since form submission is disabled
+  const [formStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
 
@@ -33,6 +38,9 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Form submission handler - currently disabled as noted in the UI
+  // Keeping this commented out to avoid unused function warning
+  /* 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus("submitting");
@@ -73,17 +81,13 @@ export default function ContactPage() {
       // Handle network errors
       console.error("An error occurred during form submission:", error);
       setFormStatus("error");
-    } finally {
-      // Optional: Add any cleanup logic here, though setting status handles UI
-      // If not success/error, maybe reset to idle?
-      // Current logic resets to idle only after success timer.
-      // If an error occurs, it stays in 'error' state until next attempt.
     }
   };
+  */
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-8 lg:p-24 bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10">
-      <div className="w-full max-w-5xl space-y-12">
+    <main className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
+      <PageContainer className="space-y-12">
         {/* Header */}
         <motion.div
           className="text-center mb-8"
@@ -91,10 +95,10 @@ export default function ContactPage() {
           animate="visible"
           variants={fadeIn}
         >
-          <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4">
+          <FancyHeading as="h1" variant="bold" className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-4">
             Get In Touch
-          </h1>
-          <p className="text-lg lg:text-xl text-theme-secondary mb-6">
+          </FancyHeading>
+          <p className="text-lg lg:text-xl text-foreground/80 mb-6">
             Have a question or want to work together? Feel free to contact me.
           </p>
         </motion.div>
@@ -108,7 +112,7 @@ export default function ContactPage() {
             animate="visible"
             variants={fadeIn}
           >
-            <div className="rounded-xl overflow-hidden shadow-lg bg-theme-card backdrop-blur-sm border border-theme p-6 h-full">
+            <FancyCard withAnimation="fade" className="h-full">
               {/* Notification that form is not working */}
               <div className="mb-6 p-4 rounded-lg bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700">
                 <div className="flex items-start">
@@ -125,23 +129,23 @@ export default function ContactPage() {
                   </div>
                 </div>
               </div>
-              <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
+              <FancyHeading as="h2" variant="stylish" className="mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
                 Contact Info
-              </h2>
+              </FancyHeading>
 
               <div className="space-y-4">
-                <p className="text-theme-secondary">
+                <p className="text-foreground/80">
                   I&apos;m always interested in hearing about new projects and
                   opportunities. Feel free to reach out through any of these
                   channels:
                 </p>
 
                 <div className="mt-6 space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-500/10 dark:bg-blue-500/20">
+                  <div className="flex items-center space-x-3 hover-lift">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary/10 dark:bg-primary/20">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-blue-500"
+                        className="h-5 w-5 text-primary"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -150,18 +154,18 @@ export default function ContactPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-theme-secondary">
+                      <p className="text-sm font-medium text-foreground/80">
                         Email
                       </p>
-                      <p className="text-theme-primary">{EMAIL}</p>
+                      <p className="text-foreground">{EMAIL}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-teal-500/10 dark:bg-teal-500/20">
+                  <div className="flex items-center space-x-3 hover-lift">
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-accent/10 dark:bg-accent/20">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-teal-500"
+                        className="h-5 w-5 text-accent"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                       >
@@ -173,10 +177,10 @@ export default function ContactPage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-theme-secondary">
+                      <p className="text-sm font-medium text-foreground/80">
                         Location
                       </p>
-                      <p className="text-theme-primary">United States</p>
+                      <p className="text-foreground">United States</p>
                     </div>
                   </div>
                 </div>
@@ -184,7 +188,7 @@ export default function ContactPage() {
 
               {/* Social Media Links */}
               <div className="mt-8">
-                <h3 className="text-lg font-semibold mb-4 text-theme-primary">
+                <h3 className="text-lg font-semibold mb-4 text-primary">
                   Connect with me
                 </h3>
                 <div className="flex flex-wrap gap-4">
@@ -194,7 +198,7 @@ export default function ContactPage() {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300"
+                      className="w-10 h-10 rounded-lg flex items-center justify-center bg-secondary hover:bg-secondary/80 hover-lift transition-all duration-300"
                       title={social.name}
                     >
                       <Image
@@ -208,7 +212,7 @@ export default function ContactPage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </FancyCard>
           </motion.div>
 
           {/* Contact Form */}
@@ -218,10 +222,10 @@ export default function ContactPage() {
             animate="visible"
             variants={fadeIn}
           >
-            <div className="rounded-xl overflow-hidden shadow-lg bg-theme-card backdrop-blur-sm border border-theme p-6">
-              <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500">
+            <FancyCard withAnimation="slide" className="backdrop-blur-sm">
+              <FancyHeading as="h2" variant="stylish" className="mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
                 Send a Message
-              </h2>
+              </FancyHeading>
 
               {formStatus === "success" ? (
                 <motion.div
@@ -241,7 +245,7 @@ export default function ContactPage() {
                 </div>
               ) : null}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label
@@ -317,20 +321,21 @@ export default function ContactPage() {
                   ></textarea>
                 </div>
                 <div>
-                  <button
-                    type="button"
-                    disabled
-                    className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-gray-400 to-gray-500 font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300 opacity-50 cursor-not-allowed text-white shadow-md"
+                  <FancyButton 
+                    variant="primary" 
+                    size="lg" 
+                    disabled={true} 
+                    className="w-full opacity-50 cursor-not-allowed" 
                   >
                     Message Sending Unavailable
-                  </button>
+                  </FancyButton>
                   <p className="text-xs text-center mt-2 text-amber-600 dark:text-amber-400">Please use the contact information on the left instead</p>
                 </div>
               </form>
-            </div>
+            </FancyCard>
           </motion.div>
         </div>
-      </div>
+      </PageContainer>
     </main>
   );
 }

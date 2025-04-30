@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import MyWebsitesClient from "./components/MyWebsitesClient";
+import MyWebsitesClient from "./components/MyWebsitesClient.fixed";
+import PageContainer from "@/app/components/PageContainer";
 
 export default function ClientPage() {
   const [mounted, setMounted] = useState(false);
@@ -14,11 +15,17 @@ export default function ClientPage() {
   if (!mounted) {
     return (
       <div
-        className="min-h-screen bg-theme-gradient"
+        className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10"
         suppressHydrationWarning
       ></div>
     );
   }
 
-  return <MyWebsitesClient />;
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
+      <PageContainer>
+        <MyWebsitesClient />
+      </PageContainer>
+    </main>
+  );
 }

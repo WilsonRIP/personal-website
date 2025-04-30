@@ -70,7 +70,7 @@ const buttons: Button[] = [
 
 const getButtonClasses = (type: ButtonType): string => {
   const base =
-    "font-bold rounded-lg transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50 active:opacity-80";
+    "font-bold rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50 active:opacity-80";
   switch (type) {
     case "number":
     case "decimal":

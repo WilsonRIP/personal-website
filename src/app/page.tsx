@@ -15,6 +15,15 @@ const Saira = Saira_Stencil_One({
   display: "swap",
 });
 
+// Placeholder components shown during hydration
+const LoadingContainer = ({ className }: { className: string }) => (
+  <div className={`${className} animate-pulse`}>
+    <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-lg w-3/4 mb-4 mx-auto"></div>
+    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-1/2 mb-2 mx-auto"></div>
+    <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded-lg w-40 mx-auto mt-6"></div>
+  </div>
+);
+
 // Featured sections for homepage
 const featuredSections = [
   {
@@ -45,13 +54,33 @@ export default function Home() {
     setMounted(true);
   }, []);
 
+  // Show loading skeleton during initial render to prevent layout shift
+  if (!mounted) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-between p-8 lg:p-16 bg-theme-gradient">
+        <LoadingContainer className="text-center max-w-3xl mb-12 lg:mb-16" />
+        <div className="w-full max-w-5xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-full p-6 rounded-lg shadow-md bg-theme-card border border-theme animate-pulse">
+                <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-lg w-1/3 mb-4"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-full mb-3"></div>
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-2/3"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-8 lg:p-16 bg-theme-gradient">
       {/* Hero Section with Animation */}
       <motion.div
         className="text-center max-w-3xl mb-12 lg:mb-16"
         initial="hidden"
-        animate={mounted ? "visible" : "hidden"}
+        animate="visible"
         variants={heroVariants}
       >
         <motion.h1 

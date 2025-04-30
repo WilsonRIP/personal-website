@@ -2,21 +2,30 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-// Correctly import ThemeProviderProps if needed, or remove if inferred
-// Usually, it's exported directly or inferred from the component usage.
-// Let's try removing it first, as it might be inferred.
 
-// Define props type based on NextThemesProvider
+/**
+ * ThemeProvider props extending the NextThemesProvider props
+ * This allows us to pass through all props to the underlying provider
+ * while maintaining type safety
+ */
 type ThemeProviderProps = React.ComponentProps<typeof NextThemesProvider>;
 
-export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  // Pass common props like attribute="class" and defaultTheme="system"
-  // These defaults are often set here but can be overridden via props
+/**
+ * Application theme provider that wraps NextThemesProvider with sensible defaults
+ * and exposes theme context to the application
+ */
+export function ThemeProvider({ 
+  children, 
+  attribute = "class",
+  defaultTheme = "system",
+  enableSystem = true,
+  ...props 
+}: ThemeProviderProps) {
   return (
     <NextThemesProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
+      attribute={attribute}
+      defaultTheme={defaultTheme}
+      enableSystem={enableSystem}
       {...props}
     >
       {children}

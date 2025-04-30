@@ -22,7 +22,7 @@ const navLinks = [
   { href: "/projects", label: "Projects" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
-  { href: "/my-websites", label: "My Websites" },
+  { href: "/my-websites", label: "My Websites", shortLabel: "Websites" },
   { href: "/showcase", label: "Showcase" },
 ];
 
@@ -30,6 +30,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isCompactView, setIsCompactView] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Close mobile menu when route changes
@@ -41,6 +42,7 @@ export default function Navbar() {
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 768);
+      setIsCompactView(window.innerWidth < 1024);
     };
 
     // Initial check
@@ -70,14 +72,14 @@ export default function Navbar() {
       } sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ${
         isScrolled ? "py-2" : "py-3"
       } 
-      bg-white/70 dark:bg-gray-900/70 text-gray-800 dark:text-white 
+      bg-white/80 dark:bg-gray-900/80 text-gray-800 dark:text-white 
       ${
         isScrolled
           ? "shadow-md dark:shadow-gray-700"
           : "shadow-sm dark:shadow-gray-800"
       }`}
     >
-      <div className="container mx-auto flex items-center px-4">
+      <div className="container mx-auto flex items-center px-4 md:px-6">
         {/* Logo */}
         <Link
           href="/"
@@ -101,20 +103,22 @@ export default function Navbar() {
         {/* Desktop Navigation - Moved to the left */}
         {!isMobile && (
           <div className="flex items-center justify-between w-full">
-            <ul className="flex gap-6">
-              {navLinks.map(({ href, label }) => {
+            <ul className="flex flex-wrap gap-x-4 gap-y-2 md:gap-x-5 lg:gap-x-6">
+              {navLinks.map(({ href, label, shortLabel }) => {
                 const isActive = pathname === href;
+                // Use short label for compact view if available
+                const displayLabel = (isCompactView && shortLabel) ? shortLabel : label;
                 return (
                   <li key={href}>
                     <Link
                       href={href}
-                      className={`font-arista-bold relative px-3 py-2 text-base font-medium transition-colors duration-200 rounded-md ${
+                      className={`font-arista-bold relative px-2 py-1.5 text-sm md:text-base md:px-3 md:py-2 font-medium transition-colors duration-200 rounded-full whitespace-nowrap ${
                         isActive
                           ? "text-teal-500 dark:text-teal-400 bg-teal-400/5 dark:bg-teal-400/10"
                           : "text-gray-600 dark:text-gray-300 hover:text-teal-500 dark:hover:text-teal-400 hover:bg-teal-400/5 dark:hover:bg-teal-400/10"
                       }`}
                     >
-                      {label}
+                      {displayLabel}
                       {isActive && (
                         <span className="absolute left-0 -bottom-0.5 h-0.5 w-full rounded bg-teal-500 dark:bg-teal-400" />
                       )}
@@ -167,19 +171,20 @@ export default function Navbar() {
           className={`md:hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md dark:shadow-gray-700`}
         >
           <ul className="flex flex-col items-center py-4 space-y-4">
-            {navLinks.map(({ href, label }) => {
+            {navLinks.map(({ href, label, shortLabel }) => {
               const isActive = pathname === href;
+              const displayLabel = isMobile && shortLabel ? shortLabel : label;
               return (
                 <li key={href} className="w-full text-center">
                   <Link
                     href={href}
-                    className={`font-arista-bold block py-3 mx-4 text-xl font-medium transition-colors rounded-md ${
+                    className={`font-arista-bold block py-2 mx-4 text-lg font-medium transition-colors rounded-full ${
                       isActive
                         ? "text-teal-500 dark:text-teal-400 bg-teal-400/5 dark:bg-teal-400/10"
                         : "text-gray-800 dark:text-white hover:text-teal-500 dark:hover:text-teal-400 hover:bg-teal-400/5 dark:hover:bg-teal-400/10"
                     }`}
                   >
-                    {label}
+                    {displayLabel}
                   </Link>
                 </li>
               );

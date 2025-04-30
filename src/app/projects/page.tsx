@@ -42,7 +42,7 @@ export default async function ProjectsPage() {
               href={socialLinks[3].url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-5 py-2.5 rounded-lg bg-gray-900 dark:bg-gray-700 text-white font-medium transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 dark:hover:bg-gray-600"
+              className="inline-flex items-center px-5 py-2.5 rounded-full bg-gray-900 dark:bg-gray-700 text-white font-medium transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 dark:hover:bg-gray-600"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

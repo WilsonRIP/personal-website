@@ -259,7 +259,7 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
               href={repo.homepage}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm transition-all flex items-center hover:shadow-md"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-full text-sm transition-all flex items-center hover:shadow-md"
             >
               <svg
                 className="w-4 h-4 mr-1"

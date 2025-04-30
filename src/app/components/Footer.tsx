@@ -1,22 +1,17 @@
 "use client";
 
 import { Mulish } from "next/font/google";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { socialLinks, SocialLink } from "../data/socials";
-import { WEBSITE_NAME } from "@/lib/types";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, LazyMotion, domAnimation } from "framer-motion";
+import { useTheme } from "next-themes";
 
 const mulish = Mulish({
   weight: ["400", "600", "700"],
   subsets: ["latin"],
 });
-
-interface FooterProps {
-  backgroundImage?: string;
-  backgroundOverlay?: string;
-}
 
 // Useful links for the footer
 const footerLinks = [
@@ -39,76 +34,55 @@ const footerLinks = [
   },
 ];
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
-
-export default function Footer({
-  backgroundImage = "/blank-sand.jpg",
-  backgroundOverlay = "bg-white/90",
-}: FooterProps) {
-  const [imageLoaded, setImageLoaded] = useState(!backgroundImage);
+// Memoized Footer component for better performance
+const Footer = memo(function Footer() {
+  const { resolvedTheme } = useTheme();
   const [currentYear] = useState(new Date().getFullYear());
-
-  // Preload via the DOM Image constructor
+  const [mounted, setMounted] = useState(false);
+  
+  // Only render component after mounting on client to avoid hydration mismatch
   useEffect(() => {
-    if (!backgroundImage) return;
-    const img = new globalThis.Image();
-    img.src = backgroundImage;
-    img.onload = () => setImageLoaded(true);
-  }, [backgroundImage]);
+    setMounted(true);
+  }, []);
+  
+  const isDark = resolvedTheme === 'dark';
+  
+  // Prevent hydration mismatch by rendering a placeholder until client-side
+  if (!mounted) {
+    return (
+      <footer className={`${mulish.className} py-16`}>
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="animate-pulse">
+            <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-40 mb-8"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full max-w-md mb-4"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 max-w-md"></div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
   return (
-    <footer
-      className={`${mulish.className} relative text-gray-800 dark:text-white py-12 mt-16`}
-    >
-      {/* Background */}
-      {backgroundImage && (
-        <div
-          className={`absolute inset-0 w-full h-full z-0 transition-opacity duration-500 bg-cover bg-center bg-no-repeat ${
-            imageLoaded ? "opacity-100" : "opacity-0"
-          }`}
-          style={{
-            backgroundImage: `url("${backgroundImage}")`,
-          }}
-        />
-      )}
-      {backgroundImage && (
-        <div
-          className={`absolute inset-0 w-full h-full z-1 ${backgroundOverlay} dark:bg-gray-900/90`}
-        />
-      )}
-      {!backgroundImage && (
-        <div className="absolute inset-0 bg-gray-100 dark:bg-gray-900 z-0" />
-      )}
-
-      {/* Content */}
-      <motion.div
-        className="container mx-auto relative z-10 px-6 lg:px-8"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={{
-          hidden: {},
-          visible: { transition: { staggerChildren: 0.1 } },
-        }}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-gray-300 dark:border-gray-700">
-          {/* About Section */}
-          <motion.div variants={fadeIn} className="col-span-1 lg:col-span-1">
-            <h3 className="text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
-              {WEBSITE_NAME}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mb-6">
-              A passionate developer focused on creating intuitive and engaging
-              digital experiences.
+    <LazyMotion features={domAnimation}>
+      <footer className={`${mulish.className} ${isDark ? 'bg-gradient-to-br from-slate-900 via-teal-900/20 to-blue-900/10 text-white' : 'bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 text-gray-800'} py-16 transition-colors duration-300`}>
+        <div className="container mx-auto px-6 md:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Left Column - Website Info */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="space-y-6"
+            >
+            <h2 className="text-2xl font-arista-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+              Wilson&apos;s Website
+            </h2>
+            <p className={`text-sm max-w-md transition-colors duration-300 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>
+              A passionate developer focused on creating intuitive and engaging digital experiences.
             </p>
-            <div className="flex space-x-4">
+
+            {/* Social Media */}
+            <div className="flex flex-wrap gap-4 pt-2">
               {socialLinks.map((social: SocialLink) => (
                 <a
                   key={social.name}
@@ -119,97 +93,63 @@ export default function Footer({
                   rel="noopener noreferrer"
                 >
                   <motion.div
-                    className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center group-hover:bg-blue-500 dark:group-hover:bg-blue-600 transition-all duration-300 overflow-hidden relative"
-                    whileHover={{
-                      scale: 1.1,
-                      boxShadow: "0 0 10px rgba(59, 130, 246, 0.5)",
-                    }}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-blue-600 transition-all duration-300 ${isDark ? 'bg-slate-800' : 'bg-gray-200'}`}
+                    whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <Image
                       src={social.icon}
                       alt={social.name}
-                      width={24}
-                      height={24}
+                      width={20}
+                      height={20}
                       className="object-contain"
                     />
                   </motion.div>
-
-                  <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-800 dark:bg-gray-900 text-white dark:text-gray-200 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-                    {social.name}
-                  </span>
                 </a>
               ))}
             </div>
           </motion.div>
 
-          {/* Footer Links */}
-          {footerLinks.map((section) => (
-            <motion.div
-              key={section.title}
-              variants={fadeIn}
-              className="col-span-1"
-            >
-              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-                {section.title}
+          {/* Right Column - Navigation */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="md:flex md:justify-end"
+          >
+            <div className="space-y-6">
+              <h3 className={`text-xl font-medium transition-colors duration-300 ${isDark ? 'text-white' : 'text-gray-800'}`}>
+                Navigation
               </h3>
-              <ul className="space-y-2">
-                {section.links.map((link) => (
+              <ul className="space-y-3">
+                {footerLinks[0].links.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.url}
-                      className="text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-300 transition-colors duration-300 inline-block py-1"
+                      className={`transition-colors duration-200 ${isDark ? 'text-slate-400 hover:text-teal-400' : 'text-gray-600 hover:text-teal-500'}`}
                     >
                       {link.name}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </motion.div>
-          ))}
-
-          {/* Newsletter/Coming Soon */}
-          <motion.div variants={fadeIn} className="col-span-1 lg:col-span-1">
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-              Stay Updated
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-              Newsletter functionality is coming soon! Check back later for
-              updates on projects and articles.
-            </p>
+            </div>
           </motion.div>
         </div>
 
-        {/* Bottom Section */}
+        {/* Bottom Copyright */}
         <motion.div
-          variants={fadeIn}
-          className="flex flex-col md:flex-row justify-between items-center pt-6 mt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className={`mt-12 pt-6 border-t text-center md:text-left text-sm transition-colors duration-300 ${isDark ? 'border-slate-800 text-slate-500' : 'border-gray-200 text-gray-500'}`}
         >
-          <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 md:mb-0">
-            &copy; {currentYear} {WEBSITE_NAME}. All rights reserved.
-          </p>
-          <div className="flex space-x-6">
-            <Link
-              href="/privacy"
-              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/terms-of-service"
-              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="/cookie-policy"
-              className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm"
-            >
-              Cookie Policy
-            </Link>
-          </div>
+          &copy; {currentYear} Wilson&apos;s Website. All rights reserved.
         </motion.div>
-      </motion.div>
+      </div>
     </footer>
+    </LazyMotion>
   );
-}
+});
+
+export default Footer;

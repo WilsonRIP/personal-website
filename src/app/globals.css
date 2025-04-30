@@ -25,8 +25,24 @@
   font-display: swap;
 }
 
-/* Custom variant - Use with caution, Tailwind's dark: variant is standard */
-@custom-variant dark (&:is(.dark *));
+/* Custom utility classes for fonts */
+.title-fancy {
+  font-family: "flowers-kingdom", cursive;
+  letter-spacing: 0.02em;
+}
+
+.title-bold {
+  font-family: "Arista Pro", sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.title-stylish {
+  font-family: "Orange Juice 2.0", sans-serif;
+  letter-spacing: 0.03em;
+}
+
+/* Using Tailwind's standard dark: variant for dark mode styling */
+/* Tailwind handles dark mode via the 'dark' class on the html element */
 
 /* Standard shadcn/ui variables (using oklch) */
 :root {
@@ -74,31 +90,42 @@
   --shadow-xl: 0 20px 25px -5px var(--shadow-color),
     0 10px 10px -5px var(--shadow-color);
 
-  /* shadcn/ui default light theme variables */
+  /* Enhanced light theme variables */
   --radius: 0.625rem;
-  --background: oklch(1 0 0); /* White */
-  --foreground: oklch(0.145 0 0); /* Near Black */
-  --card: oklch(1 0 0); /* White */
-  --card-foreground: oklch(0.145 0 0); /* Near Black */
-  --popover: oklch(1 0 0); /* White */
-  --popover-foreground: oklch(0.145 0 0); /* Near Black */
-  --primary: oklch(0.205 0 0); /* Dark Gray - Adjust if needed */
-  --primary-foreground: oklch(0.985 0 0); /* Near White */
-  --secondary: oklch(0.97 0 0); /* Light Gray */
-  --secondary-foreground: oklch(0.205 0 0); /* Dark Gray */
-  --muted: oklch(0.97 0 0); /* Light Gray */
-  --muted-foreground: oklch(0.556 0 0); /* Medium Gray */
-  --accent: oklch(0.97 0 0); /* Light Gray */
-  --accent-foreground: oklch(0.205 0 0); /* Dark Gray */
-  --destructive: oklch(0.577 0.245 27.325); /* Red */
-  --border: oklch(0.922 0 0); /* Gray */
-  --input: oklch(0.922 0 0); /* Gray */
-  --ring: oklch(0.708 0 0); /* Gray */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --background: oklch(0.98 0.01 230); /* Slightly off-white with hint of blue */
+  --foreground: oklch(0.2 0.02 260); /* Rich dark blue-gray */
+  --card: oklch(1 0 0); /* Pure white */
+  --card-foreground: oklch(0.2 0.02 260); /* Rich dark blue-gray */
+  --popover: oklch(1 0 0); /* Pure white */
+  --popover-foreground: oklch(0.2 0.02 260); /* Rich dark blue-gray */
+  --primary: oklch(0.6 0.18 230); /* Vibrant blue */
+  --primary-foreground: oklch(0.98 0.01 230); /* Off-white */
+  --secondary: oklch(0.95 0.05 250); /* Light lavender */
+  --secondary-foreground: oklch(0.3 0.12 260); /* Dark purple */
+  --muted: oklch(0.96 0.03 240); /* Subtle blue-gray */
+  --muted-foreground: oklch(0.5 0.05 250); /* Medium purple-gray */
+  --accent: oklch(0.9 0.1 180); /* Soft teal */
+  --accent-foreground: oklch(0.2 0.15 200); /* Dark teal */
+  --destructive: oklch(0.65 0.27 25); /* Warm red */
+  --destructive-foreground: oklch(0.98 0.01 25); /* Light red-pink */
+  --border: oklch(0.85 0.05 240); /* Light purple-blue */
+  --input: oklch(0.9 0.05 240); /* Light purple-blue */
+  --ring: oklch(0.6 0.18 230); /* Vibrant blue */
+  
+  /* Chart colors - more harmonious palette */
+  --chart-1: oklch(0.6 0.2 230); /* Blue */
+  --chart-2: oklch(0.6 0.2 180); /* Teal */
+  --chart-3: oklch(0.6 0.2 130); /* Green */
+  --chart-4: oklch(0.6 0.2 80); /* Yellow-green */
+  --chart-5: oklch(0.6 0.2 30); /* Orange */
+  
+  /* Animation variables */
+  --animation-fast: 200ms;
+  --animation-medium: 350ms;
+  --animation-slow: 500ms;
+  --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -113,30 +140,36 @@
   /* Define a default shadow color for dark mode */
   --shadow-color: rgba(0, 0, 0, 0.4); /* Example dark shadow */
 
-  /* shadcn/ui default dark theme variables */
-  --background: oklch(0.145 0 0); /* Near Black */
-  --foreground: oklch(0.985 0 0); /* Near White */
-  --card: oklch(0.205 0 0); /* Dark Gray */
-  --card-foreground: oklch(0.985 0 0); /* Near White */
-  --popover: oklch(0.205 0 0); /* Dark Gray */
-  --popover-foreground: oklch(0.985 0 0); /* Near White */
-  --primary: oklch(0.922 0 0); /* Light Gray - Adjust if needed */
-  --primary-foreground: oklch(0.205 0 0); /* Dark Gray */
-  --secondary: oklch(0.269 0 0); /* Darker Gray */
-  --secondary-foreground: oklch(0.985 0 0); /* Near White */
-  --muted: oklch(0.269 0 0); /* Darker Gray */
-  --muted-foreground: oklch(0.708 0 0); /* Medium Gray */
-  --accent: oklch(0.269 0 0); /* Darker Gray */
-  --accent-foreground: oklch(0.985 0 0); /* Near White */
-  --destructive: oklch(0.704 0.191 22.216); /* Red */
-  --border: oklch(1 0 0 / 10%); /* Transparent White */
-  --input: oklch(1 0 0 / 15%); /* Transparent White */
-  --ring: oklch(0.556 0 0); /* Medium Gray */
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  /* Enhanced dark theme variables */
+  --background: oklch(0.15 0.02 260); /* Dark blue-black */
+  --foreground: oklch(0.9 0.05 250); /* Light lavender */
+  --card: oklch(0.2 0.03 250); /* Dark purple-blue */
+  --card-foreground: oklch(0.9 0.05 250); /* Light lavender */
+  --popover: oklch(0.2 0.03 250); /* Dark purple-blue */
+  --popover-foreground: oklch(0.9 0.05 250); /* Light lavender */
+  --primary: oklch(0.7 0.2 230); /* Vibrant blue - brighter in dark mode */
+  --primary-foreground: oklch(0.15 0.02 260); /* Dark blue-black */
+  --secondary: oklch(0.3 0.1 240); /* Deep blue-purple */
+  --secondary-foreground: oklch(0.9 0.05 250); /* Light lavender */
+  --muted: oklch(0.25 0.05 250); /* Dark muted purple */
+  --muted-foreground: oklch(0.7 0.1 240); /* Medium lavender */
+  --accent: oklch(0.3 0.15 180); /* Deep teal */
+  --accent-foreground: oklch(0.9 0.1 190); /* Light teal */
+  --destructive: oklch(0.7 0.25 25); /* Bright red */
+  --destructive-foreground: oklch(0.15 0.02 25); /* Dark red */
+  --border: oklch(0.3 0.05 240); /* Dark blue-purple border */
+  --input: oklch(0.25 0.05 250); /* Dark muted purple */
+  --ring: oklch(0.7 0.2 230); /* Vibrant blue */
+  
+  /* Chart colors - more vibrant in dark mode */
+  --chart-1: oklch(0.7 0.25 230); /* Bright blue */
+  --chart-2: oklch(0.7 0.25 180); /* Bright teal */
+  --chart-3: oklch(0.7 0.25 130); /* Bright green */
+  --chart-4: oklch(0.7 0.25 80); /* Bright yellow-green */
+  --chart-5: oklch(0.7 0.25 30); /* Bright orange */
+  
+  /* Same animation variables from light mode apply */
+  --shadow-color: rgba(0, 0, 100, 0.3); /* Blue-tinted shadow for depth */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -148,11 +181,11 @@
 }
 
 /*
-  This @theme inline block appears specific to a framework
-  or build process that maps CSS variables to a theme object.
+  These CSS variables map to theme properties.
   Ensure the variables here match the ones defined in :root and .dark.
+  Using standard CSS instead of custom directives.
 */
-@theme inline {
+:root {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans); /* Assuming --font-geist-sans is defined elsewhere or provided by the framework */
@@ -198,6 +231,51 @@
   /* --radius-xl: calc(var(--radius) + 4px); */
 }
 
+/* Animation utility classes */
+.fade-in {
+  animation: fadeIn var(--animation-medium) var(--ease-in-out);
+}
+
+.slide-up {
+  animation: slideUp var(--animation-medium) var(--ease-out);
+}
+
+.scale-in {
+  animation: scaleIn var(--animation-medium) var(--ease-bounce);
+}
+
+.hover-lift {
+  transition: transform var(--animation-fast) var(--ease-out);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+}
+
+.button-pop {
+  transition: all var(--animation-fast) var(--ease-bounce);
+}
+
+.button-pop:active {
+  transform: scale(0.95);
+}
+
+/* Animations keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
 body {
   color: var(--foreground); /* Use foreground variable */
   font-family: var(--font-primary); /* Apply primary font */
@@ -226,11 +304,12 @@ body {
 /* Base styles */
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
   body {
     /* Applying background and text color from theme variables */
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }
 
