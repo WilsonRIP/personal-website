@@ -101,7 +101,7 @@ export default function Home() {
           Web & Software Developer • Creator • Problem Solver • Vibe Coder
         </motion.p>
 
-        <motion.div className="flex flex-wrap gap-4 justify-center">
+        <motion.div className="flex flex-wrap gap-6 justify-center">
           <Link href="/projects">
             <motion.button
               className={`${Saira.className} px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
