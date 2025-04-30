@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Crimson_Text } from "next/font/google";
 import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
 import Image from "next/image";
 
@@ -28,10 +29,20 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { resolvedTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isCompactView, setIsCompactView] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  
+  // Theme detection
+  const isDark = resolvedTheme === "dark";
+  
+  // Only render component after mounting on client to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -65,6 +76,15 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Prevent hydration mismatch by rendering a placeholder until client-side
+  if (!mounted) {
+    return (
+      <header className={`${crimsonText.className} sticky top-0 z-50 backdrop-blur-lg py-3 bg-gradient-to-br from-background/90 via-blue-900/10 to-teal-900/20 dark:from-slate-900/90 dark:via-teal-900/20 dark:to-blue-900/10 shadow-sm`}>
+        <div className="container mx-auto flex items-center px-4 md:px-6 h-14"></div>
+      </header>
+    );
+  }
+
   return (
     <header
       className={`${
@@ -72,11 +92,11 @@ export default function Navbar() {
       } sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ${
         isScrolled ? "py-2" : "py-3"
       } 
-      bg-white/80 dark:bg-gray-900/80 text-gray-800 dark:text-white 
+      ${isDark ? 'bg-gradient-to-br from-slate-900/90 via-teal-900/20 to-blue-900/10 backdrop-blur-md text-white' : 'bg-gradient-to-br from-background/90 via-blue-900/10 to-teal-900/20 backdrop-blur-md text-gray-800'} 
       ${
         isScrolled
-          ? "shadow-md dark:shadow-gray-700"
-          : "shadow-sm dark:shadow-gray-800"
+          ? `shadow-md ${isDark ? 'shadow-gray-700' : ''}`
+          : `shadow-sm ${isDark ? 'shadow-gray-800' : ''}`
       }`}
     >
       <div className="container mx-auto flex items-center px-4 md:px-6">
@@ -114,8 +134,8 @@ export default function Navbar() {
                       href={href}
                       className={`font-arista-bold relative px-2 py-1.5 text-sm md:text-base md:px-3 md:py-2 font-medium transition-colors duration-200 rounded-full whitespace-nowrap ${
                         isActive
-                          ? "text-teal-500 dark:text-teal-400 bg-teal-400/5 dark:bg-teal-400/10"
-                          : "text-gray-600 dark:text-gray-300 hover:text-teal-500 dark:hover:text-teal-400 hover:bg-teal-400/5 dark:hover:bg-teal-400/10"
+                          ? `text-teal-500 ${isDark ? 'text-teal-400' : ''} bg-teal-400/5 ${isDark ? 'bg-teal-400/10' : ''}`
+                          : `${isDark ? 'text-gray-300' : 'text-gray-300'} hover:text-teal-500 ${isDark ? 'hover:text-teal-400' : ''} hover:bg-teal-400/5 ${isDark ? 'hover:bg-teal-400/10' : ''}`
                       }`}
                     >
                       {displayLabel}
@@ -180,8 +200,8 @@ export default function Navbar() {
                     href={href}
                     className={`font-arista-bold block py-2 mx-4 text-lg font-medium transition-colors rounded-full ${
                       isActive
-                        ? "text-teal-500 dark:text-teal-400 bg-teal-400/5 dark:bg-teal-400/10"
-                        : "text-gray-800 dark:text-white hover:text-teal-500 dark:hover:text-teal-400 hover:bg-teal-400/5 dark:hover:bg-teal-400/10"
+                        ? `text-teal-500 ${isDark ? 'text-teal-400' : ''} bg-teal-400/5 ${isDark ? 'bg-teal-400/10' : ''}`
+                        : `${isDark ? 'text-white' : 'text-gray-800'} hover:text-teal-500 ${isDark ? 'hover:text-teal-400' : ''} hover:bg-teal-400/5 ${isDark ? 'hover:bg-teal-400/10' : ''}`
                     }`}
                   >
                     {displayLabel}

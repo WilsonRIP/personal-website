@@ -329,7 +329,7 @@ export default function ContactPage() {
                   >
                     Message Sending Unavailable
                   </FancyButton>
-                  <p className="text-xs text-center mt-2 text-amber-600 dark:text-amber-400">Please use the contact information on the left instead</p>
+                  <p className="text-xs text-center mt-2 text-amber-600 dark:text-amber-600">Please use the contact information on the left instead</p>
                 </div>
               </form>
             </FancyCard>
