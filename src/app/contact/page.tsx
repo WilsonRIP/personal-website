@@ -26,27 +26,93 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
-  // Define the form status but don't set it since form submission is disabled
-  const [formStatus] = useState<
+
+  const [formStatus, setFormStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
+
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    subject?: string;
+    message?: string;
+  }>({});
+
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      },
+      (err) => {
+        console.error("Could not copy text: ", err);
+      }
+    );
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Clear errors for this field when user types
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
   };
 
-  // Form submission handler - currently disabled as noted in the UI
-  // Keeping this commented out to avoid unused function warning
-  /* 
+  const validateForm = () => {
+    const newErrors: {
+      name?: string;
+      email?: string;
+      subject?: string;
+      message?: string;
+    } = {};
+
+    // Validate name
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    // Validate subject
+    if (!formData.subject.trim()) {
+      newErrors.subject = "Subject is required";
+    }
+
+    // Validate message
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate form
+    if (!validateForm()) {
+      return;
+    }
+
     setFormStatus("submitting");
 
-    // Replace this URL with your actual API endpoint or third-party service URL
-    const endpoint = "/api/contact"; // Example using a Next.js API route
+    // API endpoint for contact form
+    const endpoint = "/api/contact";
 
     try {
       const response = await fetch(endpoint, {
@@ -68,7 +134,7 @@ export default function ContactPage() {
           subject: "",
           message: "",
         });
-        // Reset status after a few seconds
+        // Reset status after 5 seconds
         setTimeout(() => {
           setFormStatus("idle");
         }, 5000);
@@ -83,7 +149,6 @@ export default function ContactPage() {
       setFormStatus("error");
     }
   };
-  */
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
@@ -95,7 +160,11 @@ export default function ContactPage() {
           animate="visible"
           variants={fadeIn}
         >
-          <FancyHeading as="h1" variant="bold" className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-4">
+          <FancyHeading
+            as="h1"
+            variant="bold"
+            className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-4"
+          >
             Get In Touch
           </FancyHeading>
           <p className="text-lg lg:text-xl text-foreground/80 mb-6">
@@ -113,23 +182,11 @@ export default function ContactPage() {
             variants={fadeIn}
           >
             <FancyCard withAnimation="fade" className="h-full">
-              {/* Notification that form is not working */}
-              <div className="mb-6 p-4 rounded-lg bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-amber-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M8.485 3.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 3.495zM10 6a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 6zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-amber-800 dark:text-amber-200">Message Sending Currently Unavailable</h3>
-                    <div className="mt-1 text-sm text-amber-700 dark:text-amber-300">
-                      <p>The contact form functionality is currently under maintenance. Please use the email or social media links provided to get in touch.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <FancyHeading as="h2" variant="stylish" className="mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+              <FancyHeading
+                as="h2"
+                variant="stylish"
+                className="mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"
+              >
                 Contact Info
               </FancyHeading>
 
@@ -157,7 +214,54 @@ export default function ContactPage() {
                       <p className="text-sm font-medium text-foreground/80">
                         Email
                       </p>
-                      <p className="text-foreground">{EMAIL}</p>
+                      <div className="flex items-center space-x-2">
+                        <p className="text-foreground">{EMAIL}</p>
+                        <button
+                          type="button"
+                          onClick={() => copyToClipboard(EMAIL)}
+                          className="relative p-1 rounded-md hover:bg-secondary/50 transition-colors duration-200"
+                          aria-label="Copy email address"
+                        >
+                          {copied ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-green-500"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4 text-primary"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                              />
+                            </svg>
+                          )}
+                          <span
+                            className={`absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 text-xs rounded bg-black text-white ${
+                              copied ? "opacity-100" : "opacity-0"
+                            } transition-opacity duration-200`}
+                          >
+                            {copied ? "Copied!" : "Copy"}
+                          </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
 
@@ -223,7 +327,11 @@ export default function ContactPage() {
             variants={fadeIn}
           >
             <FancyCard withAnimation="slide" className="backdrop-blur-sm">
-              <FancyHeading as="h2" variant="stylish" className="mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+              <FancyHeading
+                as="h2"
+                variant="stylish"
+                className="mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"
+              >
                 Send a Message
               </FancyHeading>
 
@@ -240,12 +348,13 @@ export default function ContactPage() {
               ) : formStatus === "error" ? (
                 <div className="bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-700 p-4 rounded-lg mb-6">
                   <p className="text-red-800 dark:text-red-200 font-medium">
-                    Something went wrong. Please try again later.
+                    Something went wrong. Please try again later or contact me
+                    directly via email.
                   </p>
                 </div>
               ) : null}
 
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label
@@ -262,8 +371,19 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="John Doe"
-                      className="w-full px-4 py-2 rounded-lg border border-theme bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 backdrop-blur-sm"
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.name
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-theme focus:ring-primary"
+                      } bg-theme-card text-theme-primary focus:outline-none focus:ring-2 transition-colors duration-200 backdrop-blur-sm`}
+                      aria-invalid={errors.name ? "true" : "false"}
+                      aria-describedby={errors.name ? "name-error" : undefined}
                     />
+                    {errors.name && (
+                      <p id="name-error" className="mt-1 text-sm text-red-500">
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label
@@ -280,8 +400,21 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="you@example.com"
-                      className="w-full px-4 py-2 rounded-lg border border-theme bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 backdrop-blur-sm"
+                      className={`w-full px-4 py-2 rounded-lg border ${
+                        errors.email
+                          ? "border-red-500 focus:ring-red-500"
+                          : "border-theme focus:ring-primary"
+                      } bg-theme-card text-theme-primary focus:outline-none focus:ring-2 transition-colors duration-200 backdrop-blur-sm`}
+                      aria-invalid={errors.email ? "true" : "false"}
+                      aria-describedby={
+                        errors.email ? "email-error" : undefined
+                      }
                     />
+                    {errors.email && (
+                      <p id="email-error" className="mt-1 text-sm text-red-500">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -299,8 +432,21 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     placeholder="Regarding your project..."
-                    className="w-full px-4 py-2 rounded-lg border border-theme bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 backdrop-blur-sm"
+                    className={`w-full px-4 py-2 rounded-lg border ${
+                      errors.subject
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-theme focus:ring-primary"
+                    } bg-theme-card text-theme-primary focus:outline-none focus:ring-2 transition-colors duration-200 backdrop-blur-sm`}
+                    aria-invalid={errors.subject ? "true" : "false"}
+                    aria-describedby={
+                      errors.subject ? "subject-error" : undefined
+                    }
                   />
+                  {errors.subject && (
+                    <p id="subject-error" className="mt-1 text-sm text-red-500">
+                      {errors.subject}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -317,19 +463,58 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     placeholder="Your message here..."
-                    className="w-full px-4 py-2 rounded-lg border border-theme bg-theme-card text-theme-primary focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 backdrop-blur-sm"
+                    className={`w-full px-4 py-2 rounded-lg border ${
+                      errors.message
+                        ? "border-red-500 focus:ring-red-500"
+                        : "border-theme focus:ring-primary"
+                    } bg-theme-card text-theme-primary focus:outline-none focus:ring-2 transition-colors duration-200 backdrop-blur-sm`}
+                    aria-invalid={errors.message ? "true" : "false"}
+                    aria-describedby={
+                      errors.message ? "message-error" : undefined
+                    }
                   ></textarea>
+                  {errors.message && (
+                    <p id="message-error" className="mt-1 text-sm text-red-500">
+                      {errors.message}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <FancyButton 
-                    variant="primary" 
-                    size="lg" 
-                    disabled={true} 
-                    className="w-full opacity-50 cursor-not-allowed" 
+                  <FancyButton
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    disabled={formStatus === "submitting"}
+                    className="w-full relative"
                   >
-                    Message Sending Unavailable
+                    {formStatus === "submitting" ? (
+                      <span className="flex items-center justify-center">
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Sending Message...
+                      </span>
+                    ) : (
+                      "Send Message"
+                    )}
                   </FancyButton>
-                  <p className="text-xs text-center mt-2 text-amber-600 dark:text-amber-600">Please use the contact information on the left instead</p>
                 </div>
               </form>
             </FancyCard>

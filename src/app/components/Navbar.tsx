@@ -6,6 +6,23 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const crimsonText = Crimson_Text({
   weight: "400",
@@ -30,24 +47,18 @@ const navLinks = [
 export default function Navbar() {
   const pathname = usePathname();
   const { resolvedTheme } = useTheme();
-  const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isCompactView, setIsCompactView] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
-  
+
   // Theme detection
   const isDark = resolvedTheme === "dark";
-  
+
   // Only render component after mounting on client to avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
 
   // Check screen size
   useEffect(() => {
@@ -79,139 +90,171 @@ export default function Navbar() {
   // Prevent hydration mismatch by rendering a placeholder until client-side
   if (!mounted) {
     return (
-      <header className={`${crimsonText.className} sticky top-0 z-50 backdrop-blur-lg py-3 bg-gradient-to-br from-background/90 via-blue-900/10 to-teal-900/20 dark:from-slate-900/90 dark:via-teal-900/20 dark:to-blue-900/10 shadow-sm`}>
-        <div className="container mx-auto flex items-center px-4 md:px-6 h-14"></div>
+      <header
+        className={cn(
+          crimsonText.className,
+          "sticky top-0 z-50 h-16 md:h-[68px] backdrop-blur-lg"
+        )}
+      >
+        <div className="container mx-auto flex items-center px-4 md:px-6 h-full"></div>
       </header>
     );
   }
 
   return (
     <header
-      className={`${
-        crimsonText.className
-      } sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ${
-        isScrolled ? "py-2" : "py-3"
-      } 
-      ${isDark ? 'bg-gradient-to-br from-slate-900/95 via-teal-900/30 to-blue-900/20 backdrop-blur-md text-white' : 'bg-gradient-to-br from-background/95 via-blue-900/20 to-teal-900/30 backdrop-blur-md text-gray-800'} 
-      ${
-        isScrolled
-          ? `shadow-md ${isDark ? 'shadow-gray-700' : ''}`
-          : `shadow-sm ${isDark ? 'shadow-gray-800' : ''}`
-      }`}
+      className={cn(
+        crimsonText.className,
+        "sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ease-in-out",
+        isScrolled ? "py-2 shadow-md" : "py-3 shadow-sm",
+        isDark
+          ? "bg-gradient-to-br from-slate-900/95 via-teal-900/30 to-blue-900/20 text-white shadow-gray-700/30"
+          : "bg-gradient-to-br from-background/95 via-blue-900/20 to-teal-900/30 text-gray-800 shadow-black/10"
+      )}
     >
-      <div className="container mx-auto flex items-center px-4 md:px-6">
+      <div className="container mx-auto flex items-center h-10 md:h-12 px-4 md:px-6">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center text-xl md:text-2xl font-semibold tracking-wide mr-8"
+          className="flex items-center text-xl md:text-2xl font-semibold tracking-wide mr-auto md:mr-8 group"
         >
           <Image
             src="/icon.png"
             alt="Cat"
             width={32}
             height={32}
-            className="w-7 h-7 rounded-full"
+            className="w-7 h-7 rounded-full transition-transform duration-300 group-hover:scale-110"
             priority
           />
           <span
-            className={`font-arista-bold ml-2 hidden sm:inline text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500`}
+            className={cn(
+              "font-arista-bold ml-2 hidden sm:inline text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500"
+            )}
           >
             Wilson
           </span>
         </Link>
 
-        {/* Desktop Navigation - Moved to the left */}
+        {/* Desktop Navigation - Use NavigationMenu */}
         {!isMobile && (
-          <div className="flex items-center justify-between w-full">
-            <ul className="flex flex-wrap gap-x-4 gap-y-2 md:gap-x-5 lg:gap-x-6">
+          <NavigationMenu className="hidden md:flex flex-grow justify-center">
+            <NavigationMenuList className="flex flex-wrap gap-x-1 lg:gap-x-2">
               {navLinks.map(({ href, label, shortLabel }) => {
                 const isActive = pathname === href;
-                // Use short label for compact view if available
-                const displayLabel = (isCompactView && shortLabel) ? shortLabel : label;
+                const displayLabel =
+                  isCompactView && shortLabel ? shortLabel : label;
                 return (
-                  <li key={href}>
+                  <NavigationMenuItem key={href}>
                     <Link
                       href={href}
-                      className={`font-arista-bold relative px-2 py-1.5 text-sm md:text-base md:px-3 md:py-2 font-medium transition-colors duration-200 rounded-full whitespace-nowrap ${
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        "font-arista-bold text-sm lg:text-base font-medium whitespace-nowrap relative group transition-colors duration-200 ease-in-out",
                         isActive
-                          ? `text-teal-500 ${isDark ? 'text-teal-400' : ''} bg-teal-400/20 ${isDark ? 'bg-teal-400/20' : ''}`
-                          : `${isDark ? 'text-gray-100' : 'text-gray-800'} font-medium hover:text-teal-500 ${isDark ? 'hover:text-teal-400' : ''} hover:bg-teal-400/20 ${isDark ? 'hover:bg-teal-400/20' : ''}`
-                      }`}
+                          ? "text-teal-500 dark:text-teal-400 bg-teal-400/10 dark:bg-teal-400/15"
+                          : "text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-300 hover:bg-teal-400/10 dark:hover:bg-teal-400/15"
+                      )}
+                      data-state={isActive ? "active" : "inactive"}
                     >
                       {displayLabel}
-                      {isActive && (
-                        <span className="absolute left-0 -bottom-0.5 h-0.5 w-full rounded bg-teal-500 dark:bg-teal-400" />
-                      )}
+                      <span
+                        className={cn(
+                          "absolute left-0 -bottom-[1px] h-0.5 w-full rounded bg-teal-500 dark:bg-teal-400",
+                          "transform origin-left scale-x-0 transition-transform duration-300 ease-out",
+                          "group-hover:scale-x-100",
+                          isActive && "scale-x-100"
+                        )}
+                      />
                     </Link>
-                  </li>
+                  </NavigationMenuItem>
                 );
               })}
-            </ul>
+            </NavigationMenuList>
+          </NavigationMenu>
+        )}
 
-            {/* Theme Toggle */}
-            <ThemeToggle className="ml-auto" />
+        {/* Theme Toggle */}
+        {!isMobile && (
+          <div className="ml-auto pl-4">
+            <ThemeToggle aria-label="Toggle theme" />
           </div>
         )}
 
         {/* Mobile Content (Theme Toggle + Menu Button) */}
         {isMobile && (
-          <div className="flex items-center gap-4 ml-auto">
-            {/* Theme Toggle */}
-            <ThemeToggle />
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden flex flex-col justify-center items-center space-y-1.5 z-50"
-              aria-label="Toggle Menu"
-            >
-              <span
-                className={`w-6 h-0.5 ${isDark ? 'bg-white' : 'bg-gray-800'} block transition-all duration-300 ${
-                  isOpen ? "transform rotate-45 translate-y-1.5" : ""
-                }`}
-              />
-              <span
-                className={`w-6 h-0.5 ${isDark ? 'bg-white' : 'bg-gray-800'} block transition-all duration-300 ${
-                  isOpen ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`w-6 h-0.5 ${isDark ? 'bg-white' : 'bg-gray-800'} block transition-all duration-300 ${
-                  isOpen ? "transform -rotate-45 -translate-y-1.5" : ""
-                }`}
-              />
-            </button>
+          <div className="flex items-center gap-2 ml-4">
+            <ThemeToggle aria-label="Toggle theme" />
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="z-50 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  aria-label="Toggle Menu"
+                >
+                  <Menu className="h-6 w-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="left"
+                className={cn(
+                  "w-3/4 sm:w-1/2 backdrop-blur-md shadow-lg border-r",
+                  isDark
+                    ? "bg-slate-900/95 border-slate-700"
+                    : "bg-background/95 border-slate-200"
+                )}
+              >
+                <SheetHeader className="mb-4 border-b pb-4 dark:border-slate-700">
+                  <SheetTitle className="text-center">
+                    <Link
+                      href="/"
+                      className="flex items-center justify-center gap-2 group"
+                    >
+                      <Image
+                        src="/icon.png"
+                        alt="Cat"
+                        width={24}
+                        height={24}
+                        className="rounded-full transition-transform duration-300 group-hover:scale-110"
+                      />
+                      <span className="font-arista-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+                        Wilson
+                      </span>
+                    </Link>
+                  </SheetTitle>
+                </SheetHeader>
+                <nav>
+                  <ul className="flex flex-col items-center py-2 space-y-1">
+                    {navLinks.map(({ href, label }, index) => {
+                      const isActive = pathname === href;
+                      return (
+                        <li key={href} className="w-full text-center">
+                          {index > 0 && (
+                            <hr className="my-1 border-slate-200 dark:border-slate-700 mx-4" />
+                          )}
+                          <SheetClose asChild>
+                            <Link
+                              href={href}
+                              className={cn(
+                                "font-arista-bold block py-3 mx-4 text-base font-medium rounded-md transition-all duration-200 ease-in-out",
+                                isActive
+                                  ? "text-teal-600 dark:text-teal-400 bg-teal-400/20 dark:bg-teal-400/20 scale-105 shadow-inner"
+                                  : "text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-300 hover:bg-teal-400/10 dark:hover:bg-teal-400/15 hover:translate-x-1"
+                              )}
+                            >
+                              {label}
+                            </Link>
+                          </SheetClose>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         )}
       </div>
-
-      {/* Mobile Menu Overlay */}
-      {isMobile && isOpen && (
-        <div
-          className={`md:hidden absolute top-full left-0 right-0 ${isDark ? 'bg-gradient-to-br from-slate-900/95 via-teal-900/20 to-blue-900/10' : 'bg-gradient-to-br from-background/95 via-blue-900/30 to-teal-900/30'} backdrop-blur-md shadow-md ${isDark ? 'shadow-gray-700' : ''}`}
-        >
-          <ul className="flex flex-col items-center py-4 space-y-4">
-            {navLinks.map(({ href, label, shortLabel }) => {
-              const isActive = pathname === href;
-              const displayLabel = isMobile && shortLabel ? shortLabel : label;
-              return (
-                <li key={href} className="w-full text-center">
-                  <Link
-                    href={href}
-                    className={`font-arista-bold block py-2 mx-4 text-lg font-medium transition-colors rounded-full ${
-                      isActive
-                        ? `text-teal-500 ${isDark ? 'text-teal-400' : ''} bg-teal-400/30 ${isDark ? 'bg-teal-400/20' : ''}`
-                        : `${isDark ? 'text-gray-100' : 'text-gray-800'} font-medium hover:text-teal-500 ${isDark ? 'hover:text-teal-400' : ''} hover:bg-teal-400/20 ${isDark ? 'hover:bg-teal-400/20' : ''}`
-                    }`}
-                  >
-                    {displayLabel}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
     </header>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@/components/ui/button";
 
 interface ShowcaseItem {
   id: string;
@@ -27,16 +28,18 @@ const ShowcaseSidebar: React.FC<ShowcaseSidebarProps> = ({
             const isActive = item.id === activeItemId;
             return (
               <li key={item.id}>
-                <button
+                <Button
+                  variant={isActive ? "secondary" : "ghost"}
+                  size="sm"
                   onClick={() => onSelectItem(item.id)}
-                  className={`block w-full text-left px-3 py-2 mb-1 rounded-full transition-all duration-150 ease-in-out font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-75 ${
+                  className={`block w-full justify-start text-left px-3 py-2 mb-1 rounded-full transition-all duration-150 ease-in-out font-medium focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-75 ${
                     isActive
                       ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
                       : "text-gray-700 hover:text-gray-900 hover:bg-gray-200/70 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-700/50"
                   }`}
                 >
                   {item.name}
-                </button>
+                </Button>
               </li>
             );
           })}

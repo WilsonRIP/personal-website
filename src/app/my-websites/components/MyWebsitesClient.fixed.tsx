@@ -5,9 +5,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 import { Website, websites } from "../data";
-import FancyHeading from "@/app/components/FancyHeading";
 import FancyCard from "@/app/components/FancyCard";
 import FancyButton from "@/app/components/FancyButton";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 // --- Configuration Constants ---
 const ANIMATION_DEFAULTS = {
@@ -30,6 +32,8 @@ const TECH_TAG_LIMIT = 3;
 // Keep gradients relative to container, adjust offset as needed
 const FEATURED_GRADIENT_OFFSET = "-mr-64 -mt-64";
 const CARD_GRADIENT_OFFSET = "-mr-16 -mt-16";
+const FEATURED_GRADIENT_OPACITY = "opacity-10 group-hover:opacity-15";
+const CARD_GRADIENT_OPACITY = "opacity-10 group-hover:opacity-15";
 
 // --- Component ---
 export default function MyWebsitesClient() {
@@ -53,15 +57,10 @@ export default function MyWebsitesClient() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: ANIMATION_DEFAULTS.duration }}
       >
-        <FancyHeading 
-          as="h1" 
-          variant="bold" 
-          className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-3"
-          withAnimation
-        >
+        <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-3">
           My Websites
-        </FancyHeading>
-        <p className="text-foreground/80 max-w-3xl mx-auto">
+        </h1>
+        <p className="text-slate-800 dark:text-slate-200 max-w-3xl mx-auto">
           A collection of websites I&apos;ve designed and developed. Each site
           represents my skills in web development and design.
         </p>
@@ -77,7 +76,11 @@ export default function MyWebsitesClient() {
             delay: ANIMATION_DEFAULTS.delayShort,
           }}
         >
-          <FancyCard withAnimation="fade" withHoverEffect className="p-6 md:p-8">
+          <FancyCard
+            withAnimation="fade"
+            withHoverEffect
+            className="p-6 md:p-8 bg-background/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 shadow-lg"
+          >
             {websites
               .filter((website) => website.featured)
               .map((website) => (
@@ -87,14 +90,17 @@ export default function MyWebsitesClient() {
                 >
                   {/* Enhanced background gradient - uses website.color prop */}
                   <div
-                    className={`absolute top-0 right-0 w-[500px] h-[500px] ${FEATURED_GRADIENT_OFFSET} rounded-full bg-gradient-to-br ${website.color} opacity-5 group-hover:opacity-10 blur-3xl transition-opacity ${TRANSITION_DEFAULTS.durationMedium}`}
+                    className={cn(
+                      `absolute top-0 right-0 w-[500px] h-[500px] ${FEATURED_GRADIENT_OFFSET} rounded-full bg-gradient-to-br ${website.color}`,
+                      FEATURED_GRADIENT_OPACITY,
+                      "blur-3xl transition-opacity",
+                      TRANSITION_DEFAULTS.durationMedium
+                    )}
                   />
 
                   <div className="space-y-4 relative z-10">
                     {/* Featured tag colors */}
-                    <div
-                      className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-foreground transition-colors duration-300 border border-primary/10 dark:border-primary/20 shadow-sm hover:shadow-md hover:border-primary/20 dark:hover:border-primary/30 bg-blue-50 dark:bg-blue-600/70"
-                    >
+                    <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 transition-colors duration-300 border border-blue-200 dark:border-blue-700 shadow-sm">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-3.5 w-3.5 mr-1"
@@ -109,16 +115,14 @@ export default function MyWebsitesClient() {
                       </svg>
                       Featured Project
                     </div>
-                    
+
                     {/* Title */}
-                    <h2
-                      className="text-2xl font-bold text-foreground group-hover:text-primary dark:group-hover:text-primary-foreground transition-colors duration-300"
-                    >
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-primary-foreground transition-colors duration-300">
                       {website.title}
                     </h2>
-                    
+
                     {/* Description */}
-                    <p className="text-foreground/80 group-hover:text-foreground dark:group-hover:text-foreground/90 transition-colors duration-300">
+                    <p className="text-slate-600 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors duration-300">
                       {website.description}
                     </p>
 
@@ -127,7 +131,7 @@ export default function MyWebsitesClient() {
                       {website.technologies.map((tech) => (
                         <span
                           key={tech}
-                          className="px-2.5 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-primary/15 to-primary/25 dark:from-primary/25 dark:to-primary/35 text-primary dark:text-primary-foreground border border-primary/10 dark:border-primary/20 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 dark:hover:border-primary/30"
+                          className="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-300"
                         >
                           {tech}
                         </span>
@@ -135,29 +139,33 @@ export default function MyWebsitesClient() {
                     </div>
 
                     <div className="pt-4">
-                      <FancyButton
-                        href={website.url}
+                      <Button
+                        asChild
                         variant="ghost"
-                        withIcon
-                        withAnimation
-                        className="bg-gradient-to-r from-purple-500/90 to-indigo-500/90 hover:from-purple-600 hover:to-indigo-600 text-white border border-purple-400/30 shadow-sm hover:shadow-md hover:border-purple-400/50 dark:border-purple-500/40 dark:hover:border-purple-500/60"
+                        className="bg-gradient-to-r from-purple-500/90 to-indigo-500/90 hover:from-purple-600 hover:to-indigo-600 text-white border border-purple-400/30 shadow-sm hover:shadow-md hover:border-purple-400/50 dark:border-purple-500/40 dark:hover:border-purple-500/60 transition-all duration-300 group"
                       >
-                        <span className="group-hover:translate-x-0.5 transition-transform duration-300">
-                          Visit Website
-                        </span>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 ml-2 group-hover:translate-x-0.5 transition-transform duration-300"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
+                        <Link
+                          href={website.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
-                          <path
-                            fillRule="evenodd"
-                            d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </FancyButton>
+                          <span className="group-hover:translate-x-0.5 transition-transform duration-300">
+                            Visit Website
+                          </span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 ml-2 group-hover:translate-x-0.5 transition-transform duration-300"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </Link>
+                      </Button>
                     </div>
                   </div>
 
@@ -165,7 +173,7 @@ export default function MyWebsitesClient() {
                   <div className="relative aspect-video overflow-hidden rounded-xl border border-border shadow-sm group-hover:shadow-md transition-all duration-300">
                     {/* Placeholder animation */}
                     <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse" />
-                    
+
                     {/* Add overlay gradient on hover */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
@@ -181,7 +189,8 @@ export default function MyWebsitesClient() {
                       onError={(e) => {
                         // Fallback to a placeholder if image fails to load
                         const target = e.target as HTMLImageElement;
-                        target.src = "https://via.placeholder.com/640x360?text=Website+Preview";
+                        target.src =
+                          "https://via.placeholder.com/640x360?text=Website+Preview";
                         target.onerror = null; // Prevent infinite error loop
                       }}
                     />
@@ -211,11 +220,11 @@ export default function MyWebsitesClient() {
         className="space-y-8"
       >
         <div className="flex items-center space-x-3">
-          <FancyHeading as="h2" variant="stylish" className="text-sm md:text-xl text-foreground">
+          <h2 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-slate-100">
             My Projects
-          </FancyHeading>
+          </h2>
           {/* Count badge */}
-          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-foreground">
+          <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
             {websites.filter((website) => !website.featured).length}
           </span>
           {/* Separator line */}
@@ -270,10 +279,19 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
     >
-      <FancyCard withHoverEffect withAnimation="scale" className="p-5 overflow-visible">
+      <FancyCard
+        withHoverEffect
+        withAnimation="scale"
+        className="p-5 overflow-visible bg-background/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 shadow-md"
+      >
         {/* Card background gradient */}
         <div
-          className={`absolute top-0 right-0 w-[300px] h-[300px] ${CARD_GRADIENT_OFFSET} rounded-full bg-gradient-to-br ${website.color} opacity-5 group-hover:opacity-10 blur-3xl transition-opacity ${TRANSITION_DEFAULTS.durationMedium}`}
+          className={cn(
+            `absolute top-0 right-0 w-[300px] h-[300px] ${CARD_GRADIENT_OFFSET} rounded-full bg-gradient-to-br ${website.color}`,
+            CARD_GRADIENT_OPACITY,
+            "blur-3xl transition-opacity",
+            TRANSITION_DEFAULTS.durationMedium
+          )}
         />
 
         {/* Website preview image */}
@@ -291,7 +309,8 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
             suppressHydrationWarning
             onError={(e) => {
               const target = e.target as HTMLImageElement;
-              target.src = "https://via.placeholder.com/640x360?text=Website+Preview";
+              target.src =
+                "https://via.placeholder.com/640x360?text=Website+Preview";
               target.onerror = null;
             }}
           />
@@ -300,10 +319,10 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
         </div>
 
         {/* Website info */}
-        <h3 className="text-lg font-semibold text-foreground group-hover:text-primary dark:group-hover:text-primary-foreground transition-colors duration-300 mb-1">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 group-hover:text-primary dark:group-hover:text-primary-foreground transition-colors duration-300 mb-1">
           {website.title}
         </h3>
-        <p className="text-sm text-foreground/70 mb-3 line-clamp-2">
+        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
           {website.description}
         </p>
 
@@ -312,13 +331,13 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
           {website.technologies.slice(0, TECH_TAG_LIMIT).map((tech) => (
             <span
               key={tech}
-              className="px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-primary/15 to-primary/25 dark:from-primary/25 dark:to-primary/35 text-primary dark:text-primary-foreground border border-primary/10 dark:border-primary/20 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 dark:hover:border-primary/30"
+              className="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 shadow-sm transition-colors duration-300"
             >
               {tech}
             </span>
           ))}
           {website.technologies.length > TECH_TAG_LIMIT && (
-            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-secondary/40 to-secondary/60 dark:from-secondary/25 dark:to-secondary/40 text-secondary-foreground border border-secondary/20 dark:border-secondary/30 shadow-sm transition-all duration-300">
+            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-slate-200 text-slate-600 dark:bg-slate-600 dark:text-slate-300 border border-slate-300 dark:border-slate-500 shadow-sm transition-colors duration-300">
               +{website.technologies.length - TECH_TAG_LIMIT} more
             </span>
           )}
@@ -331,7 +350,7 @@ function WebsiteCard({ website, index }: { website: Website; index: number }) {
           size="sm"
           withAnimation
           withIcon
-          className="bg-gradient-to-r from-purple-500/90 to-indigo-500/90 hover:from-purple-600 hover:to-indigo-600 text-white px-2 py-1 border border-purple-400/30 shadow-sm hover:shadow-md hover:border-purple-400/50 dark:border-purple-500/40 dark:hover:border-purple-500/60"
+          className="bg-gradient-to-r from-purple-500/90 to-indigo-500/90 hover:from-purple-600 hover:to-indigo-600 text-white px-2 py-1 border border-purple-400/30 shadow-sm hover:shadow-md hover:border-purple-400/50 dark:border-purple-500/40 dark:hover:border-purple-500/60 transition-all duration-300 group"
         >
           <span className="group-hover:translate-x-0.5 transition-transform duration-300">
             Visit Website

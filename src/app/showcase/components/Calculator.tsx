@@ -1,6 +1,7 @@
 "use client"; // This is a Client Component
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import { Button as ShadcnButton } from "@/components/ui/button"; // Import shadcn Button as ShadcnButton
 
 // --- Types and Constants ---
 
@@ -67,26 +68,6 @@ const buttons: Button[] = [
 ];
 
 // --- Helper Functions ---
-
-const getButtonClasses = (type: ButtonType): string => {
-  const base =
-    "font-bold rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50 active:opacity-80";
-  switch (type) {
-    case "number":
-    case "decimal":
-      return `${base} bg-gray-300 hover:bg-gray-400 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100 dark:focus:ring-gray-500 focus:ring-gray-400`;
-    case "operator":
-      return `${base} bg-blue-500 hover:bg-blue-600 text-white dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-500 focus:ring-blue-400`;
-    case "equals":
-      return `${base} bg-green-500 hover:bg-green-600 text-white dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-500 focus:ring-green-400`;
-    case "clear":
-      return `${base} bg-red-500 hover:bg-red-600 text-white dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-500 focus:ring-red-400`;
-    case "delete":
-      return `${base} bg-gray-400 hover:bg-gray-500 text-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-gray-200 dark:focus:ring-gray-500 focus:ring-gray-400`;
-    default:
-      return base;
-  }
-};
 
 // Format operand for display (e.g., add commas) - Optional enhancement
 const formatOperand = (operand: string | null): string => {
@@ -461,46 +442,68 @@ const Calculator: React.FC = () => {
   // const fullExpression = `${formatOperand(state.previousOperand) ?? ''} ${state.operation ?? ''} ${state.overwrite ? '' : formatOperand(state.currentOperand) ?? ''}`;
 
   return (
-    <div className="w-full max-w-full sm:max-w-md md:max-w-lg mx-auto rounded-xl bg-white p-4 sm:p-6 shadow-2xl dark:bg-gray-800 transition-all duration-300">
-      {/* Display Area */}
-      <div
-        className="mb-2 h-16 sm:h-20 md:h-24 flex flex-col items-end justify-end overflow-hidden rounded-lg bg-gray-200 p-3 sm:p-4 text-right font-mono shadow-inner dark:bg-gray-700"
-        aria-live="polite" // Announce changes to screen readers
-      >
-        {/* Optional: Small display for previous operand and operator */}
-        <div className="text-xs sm:text-sm opacity-60 truncate">
-          {state.previousOperand && state.operation
-            ? `${formatOperand(state.previousOperand)} ${state.operation}`
-            : ""}
+    <div className="p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-xs mx-auto">
+      {/* Display */}
+      <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 mb-4 text-right overflow-hidden">
+        <div className="text-gray-500 dark:text-gray-400 text-sm h-6 truncate">
+          {formatOperand(state.previousOperand)} {state.operation}
         </div>
-        {/* Main Display */}
-        <div className="text-3xl sm:text-4xl md:text-5xl break-all">
+        <div
+          className="text-gray-900 dark:text-white text-3xl sm:text-4xl font-bold min-h-[40px] break-words"
+          style={{ wordBreak: "break-all" }} // Ensure long numbers wrap
+        >
           {displayValue}
         </div>
       </div>
 
-      {/* Feedback Area */}
-      <div
-        className="mb-4 h-6 text-center text-sm text-red-500 dark:text-red-400"
-        aria-live="assertive" // Announce errors immediately
-      >
-        {feedbackMessage}
-      </div>
+      {/* Feedback Message */}
+      {feedbackMessage && (
+        <div className="text-center text-sm text-yellow-600 dark:text-yellow-400 mb-2 h-5">
+          {feedbackMessage}
+        </div>
+      )}
 
-      {/* Button Grid */}
-      <div className="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+      {/* Buttons Grid */}
+      <div className="grid grid-cols-4 gap-3">
         {buttons.map((button) => {
-          const buttonClasses = getButtonClasses(button.type);
+          // Determine variant based on type
+          let variant:
+            | "default"
+            | "destructive"
+            | "outline"
+            | "secondary"
+            | "ghost"
+            | "link" = "secondary";
+          if (button.type === "operator") variant = "default"; // Use default for operators (will theme blue)
+          if (button.type === "equals") variant = "default"; // Use default for equals (will theme green later)
+          if (button.type === "clear") variant = "destructive";
+          if (button.type === "delete") variant = "secondary";
+          if (button.type === "number" || button.type === "decimal")
+            variant = "secondary";
+
+          // Combine specific styles with base button styles
+          let customClasses = "";
+          if (button.type === "operator")
+            customClasses =
+              "bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white";
+          if (button.type === "equals")
+            customClasses =
+              "bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white";
+          // Destructive variant handles clear styling
+          // Secondary variant handles number/decimal/delete styling well by default
+
           return (
-            <button
-              key={button.value} // Use value as key assuming they are unique
+            <ShadcnButton
+              key={button.value}
+              variant={variant}
               onClick={() => handleButtonClick(button.value, button.type)}
-              className={`${buttonClasses} ${
-                button.className ?? ""
-              } text-sm sm:text-base md:text-xl py-2 sm:py-3 md:py-4`}
+              className={`font-bold rounded-full text-lg p-0 h-14 focus:ring-2 focus:ring-opacity-50 active:opacity-80 ${
+                button.className || ""
+              } ${customClasses}`}
+              aria-label={`Calculator button ${button.value}`}
             >
               {button.value}
-            </button>
+            </ShadcnButton>
           );
         })}
       </div>

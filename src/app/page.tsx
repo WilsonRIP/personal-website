@@ -7,6 +7,14 @@ import { heroVariants, sectionVariants, cardVariants } from "@/lib/animations";
 import Link from "next/link";
 import { Saira_Stencil_One } from "next/font/google";
 import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const Saira = Saira_Stencil_One({
   weight: "400",
@@ -62,7 +70,10 @@ export default function Home() {
         <div className="w-full max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-full p-6 rounded-lg shadow-md bg-theme-card border border-theme animate-pulse">
+              <div
+                key={i}
+                className="h-full p-6 rounded-lg shadow-md bg-theme-card border border-theme animate-pulse"
+              >
                 <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-lg w-1/3 mb-4"></div>
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-full mb-3"></div>
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-2/3"></div>
@@ -83,12 +94,12 @@ export default function Home() {
         animate="visible"
         variants={heroVariants}
       >
-        <motion.h1 
+        <motion.h1
           className={`text-5xl lg:text-7xl font-flowers-kingdom font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4 transition-all duration-300 ease-in-out drop-shadow-md [filter:drop-shadow(0_0_6px_rgba(59,130,246,0.5))]`}
           whileHover={{
-            scale: 1.05, 
+            scale: 1.05,
             // Optional: slightly change gradient on hover
-            // background: "linear-gradient(to right, #3b82f6, #10b981, #6366f1)", 
+            // background: "linear-gradient(to right, #3b82f6, #10b981, #6366f1)",
             // WebkitBackgroundClip: "text",
             // WebkitTextFillColor: "transparent",
           }}
@@ -102,25 +113,26 @@ export default function Home() {
         </motion.p>
 
         <motion.div className="flex flex-wrap gap-6 justify-center">
-          <Link href="/projects">
-            <motion.button
-              className={`${Saira.className} px-7 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-lg transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+            <Button
+              asChild
+              size="lg"
+              className={`${Saira.className} px-7 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-lg transition-all hover:shadow-lg focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
             >
-              View Projects
-            </motion.button>
-          </Link>
+              <Link href="/projects">View Projects</Link>
+            </Button>
+          </motion.div>
 
-          <Link href="/contact">
-            <motion.button
-              className={`${Saira.className} px-7 py-3 rounded-lg font-medium text-lg transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className={`${Saira.className} px-7 py-3 font-medium text-lg transition-all hover:shadow-lg focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
             >
-              Contact Me
-            </motion.button>
-          </Link>
+              <Link href="/contact">Contact Me</Link>
+            </Button>
+          </motion.div>
         </motion.div>
       </motion.div>
 
@@ -139,20 +151,28 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="h-full"
             >
-              <Link href={section.link} className="group block h-full" passHref>
-                <div className="flex flex-col h-full p-6 rounded-lg shadow-md hover:shadow-lg transition-all bg-theme-card border border-theme">
-                  <h3 className="text-lg font-semibold text-theme-primary mb-2">
+              <Card className="flex flex-col h-full rounded-lg shadow-md hover:shadow-lg transition-all bg-theme-card border border-theme">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold text-theme-primary">
                     {section.title}
-                  </h3>
-                  <p className="text-sm text-theme-secondary mb-4 flex-grow">
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <p className="text-sm text-theme-secondary">
                     {section.description}
                   </p>
-                  <div className="mt-auto flex items-center text-sm font-medium text-primary transition-colors group-hover:text-primary/90">
+                </CardContent>
+                <CardFooter>
+                  <Link
+                    href={section.link}
+                    className="group flex items-center text-sm font-medium text-primary transition-colors group-hover:text-primary/90 mt-auto"
+                    passHref
+                  >
                     Explore
                     <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
+                  </Link>
+                </CardFooter>
+              </Card>
             </motion.div>
           ))}
         </div>

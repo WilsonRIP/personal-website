@@ -5,6 +5,14 @@ import Link from "next/link";
 import { GithubRepo } from "@/lib/github";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface ProjectsListProps {
   initialRepos: GithubRepo[];
@@ -174,64 +182,66 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
       variants={cardVariants}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      className="group relative overflow-hidden rounded-xl border dark:border-gray-700 border-gray-200 bg-white dark:bg-gray-800 shadow-md hover:shadow-xl transition-all duration-300"
     >
-      {/* Card background gradient */}
-      <div
-        className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 rounded-full opacity-10 group-hover:opacity-20 blur-xl transition-opacity duration-300"
-        style={{ backgroundColor: languageColor }}
-      ></div>
+      <Card className="group relative overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-xl dark:border-gray-700 border-gray-200 bg-white dark:bg-gray-800 shadow-md">
+        {/* Card background gradient - Optional: could be integrated differently */}
+        <div
+          className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 rounded-full opacity-10 group-hover:opacity-20 blur-xl transition-opacity duration-300"
+          style={{ backgroundColor: languageColor }}
+        ></div>
 
-      <div className="p-6 relative z-10">
-        {repo.language && (
-          <div className="flex items-center mb-4">
-            <span
-              className="w-3 h-3 rounded-full mr-2"
-              style={{ backgroundColor: languageColor }}
-            ></span>
-            <span className="text-xs font-medium bg-gray-100 dark:bg-gray-700/70 text-gray-800 dark:text-gray-300 px-2 py-0.5 rounded-full">
-              {repo.language}
+        <CardHeader className="relative z-10 pb-3">
+          {repo.language && (
+            <div className="flex items-center mb-2">
+              <span
+                className="w-3 h-3 rounded-full mr-2"
+                style={{ backgroundColor: languageColor }}
+              ></span>
+              <span className="text-xs font-medium bg-gray-100 dark:bg-gray-700/70 text-gray-800 dark:text-gray-300 px-2 py-0.5 rounded-full">
+                {repo.language}
+              </span>
+            </div>
+          )}
+          <CardTitle className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+            {repo.name}
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="relative z-10 flex-grow pb-4">
+          <CardDescription className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors duration-300 mb-4">
+            {repo.description || "No description provided"}
+          </CardDescription>
+
+          <div className="flex items-center">
+            <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center mr-4 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors duration-300">
+              <svg
+                className="w-4 h-4 mr-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+              </svg>
+              {repo.stargazers_count}
+            </span>
+
+            <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
+              <svg
+                className="w-4 h-4 mr-1"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+              {repo.forks_count}
             </span>
           </div>
-        )}
+        </CardContent>
 
-        <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-          {repo.name}
-        </h3>
-
-        <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm line-clamp-2 group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors duration-300">
-          {repo.description || "No description provided"}
-        </p>
-
-        <div className="flex items-center mb-5">
-          <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center mr-4 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors duration-300">
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-            </svg>
-            {repo.stargazers_count}
-          </span>
-
-          <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
-            <svg
-              className="w-4 h-4 mr-1"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            {repo.forks_count}
-          </span>
-        </div>
-
-        <div className="flex justify-between items-center pt-3 border-t border-gray-100 dark:border-gray-700">
+        <CardFooter className="relative z-10 flex flex-wrap gap-3 items-center pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto">
           <Link
             href={repo.html_url}
             target="_blank"
@@ -259,7 +269,7 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
               href={repo.homepage}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-full text-sm transition-all flex items-center hover:shadow-md"
+              className="ml-auto bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-full text-sm transition-all flex items-center hover:shadow-md"
             >
               <svg
                 className="w-4 h-4 mr-1"
@@ -284,8 +294,8 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
             </Link>
           )}
 
-          {/* Updated date */}
-          <div className="absolute top-4 right-4 text-xs text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {/* Updated date - moved from absolute position to bottom of card */}
+          <div className="w-full text-xs text-gray-500 dark:text-gray-400 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Updated{" "}
             {new Date(repo.pushed_at).toLocaleDateString("en-US", {
               year: "2-digit",
@@ -293,8 +303,8 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
               day: "numeric",
             })}
           </div>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </motion.div>
   );
 }

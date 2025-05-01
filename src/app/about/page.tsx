@@ -1,89 +1,39 @@
 // src/app/about/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image"; // Use standard next/image
-import { Tab } from "@headlessui/react";
-import clsx from "clsx";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+// Assume icons exist or can be added later
+// import { Github, Youtube, Twitch, Disc } from 'lucide-react'; // Example import
 
-// Constants defined outside component for performance
-const NAME = "Your Name"; // Replace with actual name or import from config
+/* ––––––––– Config  ––––––––– */
 
-// Define types for structured data
-interface SkillItem {
-  category: string;
-  items: string[];
-}
-
-interface StackItem {
-  name: string;
-  items: string[];
-}
-
-const skills: SkillItem[] = [
-  {
-    category: "Languages",
-    items: ["JavaScript", "TypeScript", "Python", "HTML/CSS", "C#", "C++"],
-  },
-  {
-    category: "Frameworks & Libraries",
-    items: [
-      "React",
-      "Next.js",
-      "Node.js",
-      "Express",
-      "Tailwind CSS",
-      "Framer Motion",
-    ],
-  },
-  {
-    category: "Tools & Platforms",
-    items: [
-      "Git",
-      "Docker",
-      "VS Code",
-      "GitHub Actions",
-      "Vercel",
-      "Supabase (Learning)",
-    ],
-  },
-  {
-    category: "Concepts & Design",
-    items: [
-      "Responsive Design",
-      "UI/UX Principles",
-      "REST APIs",
-      "Agile Methodologies",
-      "Figma (Learning)",
-    ],
-  },
+// Update Name
+const NAME = "Luke (WilsonIIRIP)";
+// Replace skills with the new list
+const userSkills = [
+  "Professional Full Stack Developer",
+  "Creative Coder",
+  "Photographer",
+  "Video Editor",
+  "Photo Editor",
+  "Content Creator (Streaming & YouTube)",
+];
+// prettier-ignore
+const devStack = [
+  { name: "Frontend", items: ["Next.js (React)","Tailwind CSS","Framer Motion","TypeScript"] },
+  { name: "Backend",  items: ["Node.js","Express","Python (Flask/Django – exploring)"] },
+  { name: "Database", items: ["PostgreSQL (with Prisma)","MongoDB","Supabase"] },
+  { name: "DevOps/Tools", items: ["Docker","Git/GitHub","Vercel","GitHub Actions"] },
+  { name: "Testing", items: ["Jest","React Testing Library","Cypress (exploring)"] },
 ];
 
-const devStack: StackItem[] = [
-  {
-    name: "Frontend",
-    items: ["Next.js (React)", "Tailwind CSS", "Framer Motion", "TypeScript"],
-  },
-  {
-    name: "Backend",
-    items: ["Node.js", "Express", "Python (Flask/Django - exploring)"],
-  },
-  {
-    name: "Database",
-    items: ["PostgreSQL (with Prisma)", "MongoDB", "Supabase"],
-  },
-  {
-    name: "DevOps/Tools",
-    items: ["Docker", "Git/GitHub", "Vercel", "GitHub Actions"],
-  },
-  {
-    name: "Testing",
-    items: ["Jest", "React Testing Library", "Cypress (exploring)"],
-  },
-];
+/* ––––––––– Animations  ––––––––– */
 
-// Animation variants
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -92,293 +42,308 @@ const fadeIn = {
     transition: { duration: 0.6, ease: "easeInOut" },
   },
 };
-
 const staggerContainer = {
-  hidden: { opacity: 1 }, // Container doesn't fade, just orchestrates children
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15, // Stagger animation of children
-    },
-  },
+  hidden: { opacity: 1 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
 };
-
-const itemFadeIn = {
+const itemFade = {
   hidden: { opacity: 0, y: 15 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-export default function AboutPage() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+/* ––––––––– Page  ––––––––– */
 
-  // Content for tabs - structure maintained for clarity
-  const categories = {
-    "My Journey": (
-      // Use prose for typography styling, ensure colors are handled by theme
-      <motion.div
-        key="journey" // Add key for AnimatePresence
-        initial="hidden"
-        animate="visible"
-        exit="hidden" // Define exit animation if needed within AnimatePresence
-        variants={fadeIn}
-        className="prose prose-neutral dark:prose-invert max-w-none text-slate-600 dark:text-slate-400"
-      >
-        <p>
-          My journey into the world of code began with a fascination for how
-          websites worked and a desire to build my own digital creations.
-          Initially, I immersed myself in the fundamentals: HTML, CSS, and the
-          basics of JavaScript, crafting simple static pages.
-        </p>
-        <p>
-          As my curiosity grew, I delved deeper into frontend development, drawn
-          to the dynamic possibilities offered by React and its ecosystem.
-          Building interactive user interfaces became a passion. This led me
-          naturally to Next.js, appreciating its power for building performant,
-          full-stack applications.
-        </p>
-        <p>
-          Driven by a desire to understand the complete picture, I explored
-          backend technologies like Node.js and Express, learning how to design
-          APIs and manage data persistence with databases like PostgreSQL and
-          MongoDB. More recently, I&apos;ve been exploring Supabase as a
-          backend-as-a-service solution.
-        </p>
-        <p>
-          I&apos;m a firm believer in continuous learning, always eager to
-          explore new technologies (like tRPC or advanced testing strategies)
-          and refine my skills. My goal is to contribute to meaningful projects,
-          collaborate with talented teams, and build applications that are both
-          functional and delightful to use.
-        </p>
-      </motion.div>
-    ),
-    "Skills & Expertise": (
-      <motion.div
-        key="skills"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer} // Stagger children animation
-        className="grid grid-cols-1 sm:grid-cols-2 gap-6"
-      >
-        {skills.map((skillGroup) => (
-          <motion.div
-            key={skillGroup.category}
-            variants={itemFadeIn} // Each item fades in
-            // Updated Card styling for better contrast with the new gradient
-            className="p-4 bg-background/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg shadow-md border border-slate-200/50 dark:border-slate-700/50"
-          >
-            <h3 className="text-lg font-semibold mb-3 text-slate-800 dark:text-slate-200">
-              {skillGroup.category}
-            </h3>
-            <ul className="space-y-1.5">
-              {skillGroup.items.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-center text-sm text-slate-600 dark:text-slate-400"
-                >
-                  <svg
-                    className="w-3 h-3 mr-2 text-emerald-500 dark:text-emerald-400 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
-      </motion.div>
-    ),
-    "Current Stack": (
-      <motion.div
-        key="stack"
-        initial="hidden"
-        animate="visible"
-        variants={staggerContainer} // Stagger children animation
-      >
-        <p className="text-slate-600 dark:text-slate-400 mb-6">
-          This is the set of technologies I&apos;m most actively using and
-          enjoying for my current projects. I&apos;m always evaluating and
-          learning, so this stack evolves over time.
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {devStack.map((stackGroup) => (
-            <motion.div
-              key={stackGroup.name}
-              variants={itemFadeIn} // Each item fades in
-              // Updated Card styling
-              className="p-4 bg-background/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg shadow-md border border-slate-200/50 dark:border-slate-700/50"
-            >
-              <h3 className="text-lg font-semibold mb-3 text-slate-800 dark:text-slate-200">
-                {stackGroup.name}
-              </h3>
-              <ul className="space-y-1.5">
-                {stackGroup.items.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-center text-sm text-slate-600 dark:text-slate-400"
-                  >
-                    <svg
-                      className="w-3 h-3 mr-2 text-cyan-500 dark:text-cyan-400 flex-shrink-0"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
-    ),
-  };
+export default function AboutPage() {
+  // Extract initials for AvatarFallback
+  const initials = NAME.split(" ")
+    .map((n) => n[0])
+    .slice(0, 2) // Take max 2 initials
+    .join("");
 
   return (
-    // Applied the gradient from RootLayout here
-    // Added min-h-[calc(100vh-theme(spacing.navbarHeight)-theme(spacing.footerHeight))] if navbar/footer heights are fixed
-    // Otherwise min-h-screen might be sufficient depending on layout structure
-    <main className="flex min-h-screen flex-col items-center p-6 sm:p-12 md:p-16 lg:p-24 bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10">
+    <main
+      className="flex min-h-screen flex-col items-center p-6 sm:p-12 md:p-16 lg:p-24
+                     bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20
+                     dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10"
+    >
       <div className="w-full max-w-5xl space-y-16">
-        {" "}
-        {/* Increased spacing */}
-        {/* Header */}
-        <motion.div
-          className="text-center"
+        {/* 1️⃣ Heading */}
+        <motion.header
           initial="hidden"
           animate="visible"
           variants={fadeIn}
+          className="text-center"
         >
-          {/* Adjusted text colors for potentially darker gradient background */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-3">
             About {NAME}
           </h1>
+          {/* Update tagline */}
           <p className="text-lg text-slate-700 dark:text-slate-300">
-            {" "}
-            {/* Slightly lighter secondary text */}
-            Developer, Creator, and Lifelong Learner
+            Professional Developer & Creative Mind
           </p>
-        </motion.div>
-        {/* Introduction/Bio Section */}
+        </motion.header>
+
+        {/* 2️⃣ Intro / Avatar */}
         <motion.section
           initial="hidden"
           animate="visible"
           variants={fadeIn}
-          // Updated Card styling: added backdrop-blur for effect over gradient
-          className="bg-background/80 dark:bg-slate-800/80 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg border border-slate-200/50 dark:border-slate-700/50"
+          className="bg-background/90 dark:bg-slate-800/90 backdrop-blur-sm p-8 rounded-xl shadow-lg
+                     border border-slate-200/50 dark:border-slate-700/50"
         >
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-800 dark:text-slate-200 mb-6">
             Who I Am
           </h2>
-          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
-            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-lg flex-shrink-0 border-4 border-white dark:border-slate-700">
-              <Image
-                src="/cat.png" // Replace with your actual image path
-                alt={`${NAME}&apos;s Profile Picture`}
-                width={160} // Specify width
-                height={160} // Specify height
-                className="object-cover w-full h-full"
-                style={{ objectPosition: "center top" }} // Keep style if needed for specific positioning
-                priority // Load image eagerly if it's above the fold
+
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <Avatar className="w-40 h-40 border-4 border-white dark:border-slate-700 shadow-lg shrink-0">
+              <AvatarImage
+                asChild
+                src="/cat.png" // TODO: Update profile picture if needed
+                alt={`${NAME} profile picture`}
                 onError={(e) => {
-                  // Define fallback SVG content using double quotes externally
-                  const fallbackSvg =
-                    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'><rect width='160' height='160' fill='#cbd5e1'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16px' fill='#475569'>Profile</text></svg>";
-                  // Create data URI with proper encoding
-                  e.currentTarget.src = `data:image/svg+xml,${encodeURIComponent(
-                    fallbackSvg
-                  )}`;
+                  const svg =
+                    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'><rect width='160' height='160' fill='#cbd5e1'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' fill='#475569'>Profile</text></svg>";
+                  (
+                    e.currentTarget as HTMLImageElement
+                  ).src = `data:image/svg+xml,${encodeURIComponent(svg)}`;
                 }}
               />
-            </div>
-            {/* Use prose for better text formatting */}
-            <div className="text-slate-600 dark:text-slate-400 prose prose-neutral dark:prose-invert max-w-none text-center md:text-left">
+              {/* Add explicit styles to AvatarFallback */}
+              <AvatarFallback className="bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-200">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+
+            {/* Add explicit text color to prose */}
+            <div className="prose prose-neutral dark:prose-invert max-w-none text-center md:text-left text-slate-700 dark:text-slate-300">
               <p>
-                Hi there! I&apos;m {NAME}, a passionate developer based in the
-                United States. I thrive on turning complex problems into
-                elegant, user-friendly digital experiences. My background in
-                software development allows me to approach challenges with both
-                technical depth and a focus on the end-user.
+                Hi there! I&apos;m {NAME}, a Professional Developer based in the
+                United States. I specialize in building robust and engaging
+                digital experiences, combining technical skill with creative
+                coding.
               </p>
               <p>
-                Beyond the keyboard, I enjoy photography, immersing myself in
-                video games, and constantly exploring the ever-evolving tech
-                landscape. I&apos;m committed to continuous learning and strive
-                to stay current with the latest tools and best practices in web
-                development.
+                Outside of development, I&apos;m passionate about photography,
+                video/photo editing, and content creation through streaming and
+                YouTube. I thrive on learning and exploring new technologies.
               </p>
             </div>
           </div>
         </motion.section>
-        {/* Tabs Section */}
+
+        {/* 3️⃣ Tabs powered by shadcn/ui */}
         <motion.section initial="hidden" animate="visible" variants={fadeIn}>
-          <div className="w-full px-2 py-6 sm:px-0">
-            <Tab.Group
-              selectedIndex={selectedIndex}
-              onChange={setSelectedIndex}
+          {/* Default to 'skills' tab now? */}
+          <Tabs defaultValue="skills" className="w-full space-y-6">
+            <TabsList
+              className="flex justify-between bg-slate-200/60 dark:bg-slate-800/60 backdrop-blur-sm
+                         p-1.5 rounded-xl border border-slate-300/50 dark:border-slate-700/50 shadow-sm"
             >
-              <Tab.List className="flex space-x-1 rounded-xl bg-slate-200/60 dark:bg-slate-800/60 backdrop-blur-sm p-1.5 mb-8 border border-slate-300/50 dark:border-slate-700/50 shadow-sm">
-                {Object.keys(categories).map((category) => (
-                  <Tab
-                    key={category}
-                    className={({ selected }) =>
-                      clsx(
-                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5 transition-all duration-200 ease-in-out",
-                        "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-100 dark:focus:ring-offset-slate-900 focus:ring-blue-500 dark:focus:ring-teal-400", // Focus styles
-                        selected
-                          ? "bg-white dark:bg-slate-700 shadow text-blue-700 dark:text-teal-300" // Selected styles
-                          : "text-slate-600 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-slate-700/60" // Unselected styles
-                      )
-                    }
+              <TabsTrigger
+                value="journey"
+                className="flex-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 transition-all
+                           hover:text-slate-900 dark:hover:text-white
+                           data-[state=active]:bg-white dark:data-[state=active]:bg-slate-950
+                           data-[state=active]:text-slate-900 dark:data-[state=active]:text-white
+                           data-[state=active]:shadow-sm"
+              >
+                My Journey
+              </TabsTrigger>
+              <TabsTrigger
+                value="skills"
+                className="flex-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 transition-all
+                           hover:text-slate-900 dark:hover:text-white
+                           data-[state=active]:bg-white dark:data-[state=active]:bg-slate-950
+                           data-[state=active]:text-slate-900 dark:data-[state=active]:text-white
+                           data-[state=active]:shadow-sm"
+              >
+                Skills & Expertise
+              </TabsTrigger>
+              <TabsTrigger
+                value="stack"
+                className="flex-1 px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 transition-all
+                           hover:text-slate-900 dark:hover:text-white
+                           data-[state=active]:bg-white dark:data-[state=active]:bg-slate-950
+                           data-[state=active]:text-slate-900 dark:data-[state=active]:text-white
+                           data-[state=active]:shadow-sm"
+              >
+                Current Stack
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Panel 1 – Journey */}
+            <TabsContent value="journey">
+              <AnimatePresence mode="wait">
+                <Card className="bg-background/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 p-6 shadow-inner">
+                  <motion.div
+                    key="journey"
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeIn}
+                    className="prose prose-neutral dark:prose-invert max-w-none text-slate-700 dark:text-slate-300"
                   >
-                    {category}
-                  </Tab>
-                ))}
-              </Tab.List>
-              <Tab.Panels className="mt-2 bg-background/80 dark:bg-slate-800/80 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg border border-slate-200/50 dark:border-slate-700/50">
-                <AnimatePresence mode="wait">
-                  {" "}
-                  {/* Ensure only one panel animates at a time */}
-                  {Object.values(categories)[selectedIndex]}
-                </AnimatePresence>
-              </Tab.Panels>
-            </Tab.Group>
-          </div>
+                    <p>
+                      My journey into code began with a fascination for how
+                      websites worked. After mastering HTML, CSS, and vanilla
+                      JS, I embraced React and the Next.js framework, then
+                      ventured server-side with Node and Express. Today I&apos;m
+                      experimenting with Supabase and advanced testing
+                      strategies while aiming to build delightful, performant
+                      apps.
+                    </p>
+                  </motion.div>
+                </Card>
+              </AnimatePresence>
+            </TabsContent>
+
+            {/* Panel 2 – Skills - Updated */}
+            <TabsContent value="skills">
+              <motion.div
+                key="skills-content" // Changed key to avoid potential conflicts if structure changes drastically
+                initial="hidden"
+                animate="visible"
+                variants={staggerContainer}
+                className="grid grid-cols-1" // Single column for the new skill list
+              >
+                <motion.div variants={itemFade}>
+                  <Card className="h-full bg-background/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 shadow-inner">
+                    <CardHeader className="pb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+                      Core Skills & Passions
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <ul className="space-y-1.5">
+                        {userSkills.map((item) => (
+                          <li
+                            key={item}
+                            className="flex items-center text-sm text-slate-700 dark:text-slate-300"
+                          >
+                            <svg
+                              className="w-3 h-3 mr-2 text-emerald-500 dark:text-emerald-400 shrink-0"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </motion.div>
+            </TabsContent>
+
+            {/* Panel 3 – Stack */}
+            <TabsContent value="stack">
+              <motion.div
+                key="stack"
+                initial="hidden"
+                animate="visible"
+                variants={staggerContainer}
+                className="bg-background/90 dark:bg-slate-800/90 border border-slate-200/50 dark:border-slate-700/50 rounded-xl p-6 shadow-inner space-y-6"
+              >
+                <p className="text-slate-700 dark:text-slate-300">
+                  Below is the tool-chain I&apos;m currently enjoying (always
+                  evolving):
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {devStack.map(({ name, items }) => (
+                    <motion.div key={name} variants={itemFade}>
+                      <Card className="h-full bg-background dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                        <CardHeader className="pb-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
+                          {name}
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <ul className="space-y-1.5">
+                            {items.map((item) => (
+                              <li
+                                key={item}
+                                className="flex items-center text-sm text-slate-700 dark:text-slate-300"
+                              >
+                                <svg
+                                  className="w-3 h-3 mr-2 text-cyan-500 dark:text-cyan-400 shrink-0"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </TabsContent>
+          </Tabs>
         </motion.section>
-        {/* Call to Action (Optional) */}
+
+        {/* 4️⃣ CTA - Updated with Links */}
         <motion.section
           initial="hidden"
           animate="visible"
           variants={fadeIn}
           className="text-center"
         >
-          {/* Adjusted text colors */}
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-400 dark:text-slate-500 mb-4">
             Let&apos;s Connect!
           </h2>
           <p className="text-slate-400 dark:text-slate-600 mb-6 max-w-lg mx-auto">
-            Interested in discussing a project, exploring collaboration
-            opportunities, or just want to chat about tech? Feel free to reach
-            out.
+            Interested in discussing a project or collaboration? Feel free to
+            reach out via the contact page or find me on these platforms:
           </p>
-          <a
-            href="/contact" // Assuming you have a contact page route
-            className="inline-block px-8 py-3 rounded-lg bg-sky-600 text-white font-medium transition-all duration-200 ease-in-out hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-400 dark:focus-visible:ring-offset-sky-600 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-          >
-            Contact Me
-          </a>
+          {/* Add Social Links */}
+          <div className="flex justify-center items-center gap-4 mb-8">
+            {/* Replace with actual icon components later */}
+            <a
+              href="https://www.youtube.com/@wilsonrip"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+            >
+              YouTube
+            </a>
+            <a
+              href="https://github.com/WilsonRIP"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.twitch.tv/wilsoniirip"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+            >
+              Twitch
+            </a>
+            <a
+              href="https://discord.gg/wKHnwHYgzF"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+            >
+              Discord
+            </a>
+          </div>
+          <Button asChild size="lg">
+            <a href="/contact">Contact Me</a>
+          </Button>
         </motion.section>
       </div>
     </main>
