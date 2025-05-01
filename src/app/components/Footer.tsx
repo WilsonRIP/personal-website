@@ -64,7 +64,7 @@ const Footer = memo(function Footer() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <footer className={`${mulish.className} ${isDark ? 'bg-gradient-to-br from-slate-900 via-teal-900/20 to-blue-900/10 text-white' : 'bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 text-gray-800'} py-16 transition-colors duration-300`}>
+      <footer className={`${mulish.className} ${isDark ? 'bg-gradient-to-br from-slate-900 via-teal-900/20 to-blue-900/10 text-white' : 'bg-gradient-to-br from-background via-blue-900/30 to-teal-900/30 text-gray-800'} py-16 transition-colors duration-300`}>
         <div className="container mx-auto px-6 md:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Left Column - Website Info */}

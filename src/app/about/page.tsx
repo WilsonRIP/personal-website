@@ -365,10 +365,10 @@ export default function AboutPage() {
           className="text-center"
         >
           {/* Adjusted text colors */}
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-800 dark:text-slate-200 mb-4">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-400 dark:text-slate-500 mb-4">
             Let&apos;s Connect!
           </h2>
-          <p className="text-slate-700 dark:text-slate-300 mb-6 max-w-lg mx-auto">
+          <p className="text-slate-400 dark:text-slate-600 mb-6 max-w-lg mx-auto">
             Interested in discussing a project, exploring collaboration
             opportunities, or just want to chat about tech? Feel free to reach
             out.

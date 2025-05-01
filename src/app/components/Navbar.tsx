@@ -92,7 +92,7 @@ export default function Navbar() {
       } sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ${
         isScrolled ? "py-2" : "py-3"
       } 
-      ${isDark ? 'bg-gradient-to-br from-slate-900/90 via-teal-900/20 to-blue-900/10 backdrop-blur-md text-white' : 'bg-gradient-to-br from-background/90 via-blue-900/10 to-teal-900/20 backdrop-blur-md text-gray-800'} 
+      ${isDark ? 'bg-gradient-to-br from-slate-900/95 via-teal-900/30 to-blue-900/20 backdrop-blur-md text-white' : 'bg-gradient-to-br from-background/95 via-blue-900/20 to-teal-900/30 backdrop-blur-md text-gray-800'} 
       ${
         isScrolled
           ? `shadow-md ${isDark ? 'shadow-gray-700' : ''}`
@@ -134,8 +134,8 @@ export default function Navbar() {
                       href={href}
                       className={`font-arista-bold relative px-2 py-1.5 text-sm md:text-base md:px-3 md:py-2 font-medium transition-colors duration-200 rounded-full whitespace-nowrap ${
                         isActive
-                          ? `text-teal-500 ${isDark ? 'text-teal-400' : ''} bg-teal-400/5 ${isDark ? 'bg-teal-400/10' : ''}`
-                          : `${isDark ? 'text-gray-300' : 'text-gray-300'} hover:text-teal-500 ${isDark ? 'hover:text-teal-400' : ''} hover:bg-teal-400/5 ${isDark ? 'hover:bg-teal-400/10' : ''}`
+                          ? `text-teal-500 ${isDark ? 'text-teal-400' : ''} bg-teal-400/20 ${isDark ? 'bg-teal-400/20' : ''}`
+                          : `${isDark ? 'text-gray-100' : 'text-gray-800'} font-medium hover:text-teal-500 ${isDark ? 'hover:text-teal-400' : ''} hover:bg-teal-400/20 ${isDark ? 'hover:bg-teal-400/20' : ''}`
                       }`}
                     >
                       {displayLabel}
@@ -166,17 +166,17 @@ export default function Navbar() {
               aria-label="Toggle Menu"
             >
               <span
-                className={`w-6 h-0.5 bg-gray-800 dark:bg-white block transition-all duration-300 ${
+                className={`w-6 h-0.5 ${isDark ? 'bg-white' : 'bg-gray-800'} block transition-all duration-300 ${
                   isOpen ? "transform rotate-45 translate-y-1.5" : ""
                 }`}
               />
               <span
-                className={`w-6 h-0.5 bg-gray-800 dark:bg-white block transition-all duration-300 ${
+                className={`w-6 h-0.5 ${isDark ? 'bg-white' : 'bg-gray-800'} block transition-all duration-300 ${
                   isOpen ? "opacity-0" : "opacity-100"
                 }`}
               />
               <span
-                className={`w-6 h-0.5 bg-gray-800 dark:bg-white block transition-all duration-300 ${
+                className={`w-6 h-0.5 ${isDark ? 'bg-white' : 'bg-gray-800'} block transition-all duration-300 ${
                   isOpen ? "transform -rotate-45 -translate-y-1.5" : ""
                 }`}
               />
@@ -188,7 +188,7 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       {isMobile && isOpen && (
         <div
-          className={`md:hidden absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md dark:shadow-gray-700`}
+          className={`md:hidden absolute top-full left-0 right-0 ${isDark ? 'bg-gradient-to-br from-slate-900/95 via-teal-900/20 to-blue-900/10' : 'bg-gradient-to-br from-background/95 via-blue-900/30 to-teal-900/30'} backdrop-blur-md shadow-md ${isDark ? 'shadow-gray-700' : ''}`}
         >
           <ul className="flex flex-col items-center py-4 space-y-4">
             {navLinks.map(({ href, label, shortLabel }) => {
@@ -200,8 +200,8 @@ export default function Navbar() {
                     href={href}
                     className={`font-arista-bold block py-2 mx-4 text-lg font-medium transition-colors rounded-full ${
                       isActive
-                        ? `text-teal-500 ${isDark ? 'text-teal-400' : ''} bg-teal-400/5 ${isDark ? 'bg-teal-400/10' : ''}`
-                        : `${isDark ? 'text-white' : 'text-gray-800'} hover:text-teal-500 ${isDark ? 'hover:text-teal-400' : ''} hover:bg-teal-400/5 ${isDark ? 'hover:bg-teal-400/10' : ''}`
+                        ? `text-teal-500 ${isDark ? 'text-teal-400' : ''} bg-teal-400/30 ${isDark ? 'bg-teal-400/20' : ''}`
+                        : `${isDark ? 'text-gray-100' : 'text-gray-800'} font-medium hover:text-teal-500 ${isDark ? 'hover:text-teal-400' : ''} hover:bg-teal-400/20 ${isDark ? 'hover:bg-teal-400/20' : ''}`
                     }`}
                   >
                     {displayLabel}
