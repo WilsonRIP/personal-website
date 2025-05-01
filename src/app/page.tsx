@@ -104,8 +104,8 @@ export default function Home() {
         <motion.div className="flex flex-wrap gap-6 justify-center">
           <Link href="/projects">
             <motion.button
-              className={`${Saira.className} px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
-              whileHover={{ scale: 1.03 }}
+              className={`${Saira.className} px-7 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-lg transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
               View Projects
@@ -114,8 +114,8 @@ export default function Home() {
 
           <Link href="/contact">
             <motion.button
-              className={`${Saira.className} px-5 py-2 rounded-lg font-medium transition-all hover:shadow-md focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
-              whileHover={{ scale: 1.03 }}
+              className={`${Saira.className} px-7 py-3 rounded-lg font-medium text-lg transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
               Contact Me
