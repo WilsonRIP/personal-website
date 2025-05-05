@@ -185,7 +185,7 @@ export default function ContactPage() {
               <FancyHeading
                 as="h2"
                 variant="stylish"
-                className="mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent"
+                className="mb-6 text-foreground bg-clip-text bg-gradient-to-r from-primary to-accent"
               >
                 Contact Info
               </FancyHeading>
