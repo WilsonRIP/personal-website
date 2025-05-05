@@ -146,7 +146,7 @@ export default function AboutPage() {
                            hover:text-slate-900 dark:hover:text-white
                            data-[state=active]:bg-white dark:data-[state=active]:bg-slate-950
                            data-[state=active]:text-slate-900 dark:data-[state=active]:text-white
-                           data-[state=active]:shadow-sm"
+                           data-[state=active]:shadow-sm data-[state=active]:rounded-xl"
               >
                 My Journey
               </TabsTrigger>
@@ -156,7 +156,7 @@ export default function AboutPage() {
                            hover:text-slate-900 dark:hover:text-white
                            data-[state=active]:bg-white dark:data-[state=active]:bg-slate-950
                            data-[state=active]:text-slate-900 dark:data-[state=active]:text-white
-                           data-[state=active]:shadow-sm"
+                           data-[state=active]:shadow-sm data-[state=active]:rounded-xl"
               >
                 Skills & Expertise
               </TabsTrigger>
@@ -166,7 +166,7 @@ export default function AboutPage() {
                            hover:text-slate-900 dark:hover:text-white
                            data-[state=active]:bg-white dark:data-[state=active]:bg-slate-950
                            data-[state=active]:text-slate-900 dark:data-[state=active]:text-white
-                           data-[state=active]:shadow-sm"
+                           data-[state=active]:shadow-sm data-[state=active]:rounded-xl"
               >
                 Current Stack
               </TabsTrigger>
@@ -298,10 +298,10 @@ export default function AboutPage() {
           variants={fadeIn}
           className="text-center"
         >
-          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-400 dark:text-slate-500 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-semibold text-slate-400 dark:text-slate-500 mb-4">
             Let&apos;s Connect!
           </h2>
-          <p className="text-slate-400 dark:text-slate-600 mb-6 max-w-lg mx-auto">
+          <p className="text-lg lg:text-xl text-slate-600 dark:text-slate-500 mb-6 max-w-lg mx-auto">
             Interested in discussing a project or collaboration? Feel free to
             reach out via the contact page or find me on these platforms:
           </p>
@@ -312,7 +312,7 @@ export default function AboutPage() {
               href="https://www.youtube.com/@wilsonrip"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200 transition-colors"
             >
               YouTube
             </a>
@@ -320,7 +320,7 @@ export default function AboutPage() {
               href="https://github.com/WilsonRIP"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200 transition-colors"
             >
               GitHub
             </a>
@@ -328,7 +328,7 @@ export default function AboutPage() {
               href="https://www.twitch.tv/wilsoniirip"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200 transition-colors"
             >
               Twitch
             </a>
@@ -336,7 +336,7 @@ export default function AboutPage() {
               href="https://discord.gg/wKHnwHYgzF"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200 transition-colors"
             >
               Discord
             </a>

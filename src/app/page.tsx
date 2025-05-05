@@ -117,7 +117,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className={`${Saira.className} px-7 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-lg transition-all hover:shadow-lg focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
+              className={`${Saira.className} px-7 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
             >
               <Link href="/projects">View Projects</Link>
             </Button>
@@ -128,7 +128,7 @@ export default function Home() {
               asChild
               variant="outline"
               size="lg"
-              className={`${Saira.className} px-7 py-3 font-medium text-lg transition-all hover:shadow-lg focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
+              className={`${Saira.className} px-7 py-3 font-medium text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
             >
               <Link href="/contact">Contact Me</Link>
             </Button>
@@ -151,7 +151,7 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="h-full"
             >
-              <Card className="flex flex-col h-full rounded-lg shadow-md hover:shadow-lg transition-all bg-theme-card border border-theme">
+              <Card className="flex flex-col h-full rounded-xl shadow-md hover:shadow-lg transition-all bg-theme-card border border-theme">
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold text-theme-primary">
                     {section.title}

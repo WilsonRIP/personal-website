@@ -295,7 +295,7 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
           )}
 
           {/* Updated date - moved from absolute position to bottom of card */}
-          <div className="w-full text-xs text-gray-500 dark:text-gray-400 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-full text-xs text-gray-500 dark:text-gray-400 mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Updated{" "}
             {new Date(repo.pushed_at).toLocaleDateString("en-US", {
               year: "2-digit",
