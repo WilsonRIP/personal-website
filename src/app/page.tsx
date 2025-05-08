@@ -89,7 +89,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-8 lg:p-16 bg-theme-gradient">
       {/* Hero Section with Animation */}
       <motion.div
-        className="text-center max-w-3xl mb-12 lg:mb-16"
+        className="text-center max-w-3xl mb-4 lg:mb-8"
         initial="hidden"
         animate="visible"
         variants={heroVariants}
@@ -117,7 +117,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className={`${Saira.className} px-7 py-3 bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
+              className={`${Saira.className} px-7 py-3S bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
             >
               <Link href="/projects">View Projects</Link>
             </Button>
