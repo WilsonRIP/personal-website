@@ -117,7 +117,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className={`${Saira.className} px-7 py-3S bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
+              className={`${Saira.className} px-7 rounded-xl py-3S bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
             >
               <Link href="/projects">View Projects</Link>
             </Button>
@@ -128,7 +128,7 @@ export default function Home() {
               asChild
               variant="outline"
               size="lg"
-              className={`${Saira.className} px-7 py-3 font-medium text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
+              className={`${Saira.className} px-7 py-3 font-medium rounded-xl text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
             >
               <Link href="/contact">Contact Me</Link>
             </Button>
