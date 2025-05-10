@@ -74,7 +74,7 @@ export default function AboutPage() {
           variants={fadeIn}
           className="text-center"
         >
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-3">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-3 title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
             About {NAME}
           </h1>
           {/* Update tagline */}

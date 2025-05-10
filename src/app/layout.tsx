@@ -99,7 +99,6 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${alfaSlabOne.variable} ${aristaProBold.variable} antialiased bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10`}
-        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"

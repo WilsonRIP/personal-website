@@ -28,7 +28,7 @@ export default async function ProjectsPage() {
             </span>
           </div>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
             My Projects
           </h1>
 

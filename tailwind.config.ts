@@ -99,6 +99,11 @@ const config: Config = {
         "arista-pro": ['"Arista Pro"', "sans-serif"], // Utility class: font-arista-pro
         "orange-juice-2": ['"Orange Juice 2.0"', "sans-serif"], // Utility class: font-orange-juice-2
         "arista-bold": ["var(--font-arista-pro-bold)", "sans-serif"], // <-- Add custom utility
+        "righteous": ["var(--font-righteous)", "sans-serif"], // Utility class: font-righteous
+        "felient-vintegen": ["var(--font-felient-vintegen)", "sans-serif"], // Utility class: font-felient-vintegen
+        "komikax": ["var(--font-komikax)", "sans-serif"], // Utility class: font-komikax
+        "hey-comic": ["var(--font-hey-comic)", "sans-serif"], // Utility class: font-hey-comic
+        "kg-happy": ["var(--font-kg-happy)", "sans-serif"], // Utility class: font-kg-happy
       },
       // ... other extensions like keyframes if needed
     },

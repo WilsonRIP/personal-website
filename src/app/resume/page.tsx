@@ -97,7 +97,7 @@ export default function ResumePage() {
           variants={fadeIn}
           className="text-center border-b border-theme pb-6 mb-8"
         >
-          <h1 className="text-3xl lg:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-500 mb-2">
+          <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2 title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
             {resumeData.name}
           </h1>
           <p className="text-lg text-theme-secondary">

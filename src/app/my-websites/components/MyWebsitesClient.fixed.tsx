@@ -57,7 +57,7 @@ export default function MyWebsitesClient() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: ANIMATION_DEFAULTS.duration }}
       >
-        <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-3">
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-3 title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
           My Websites
         </h1>
         <p className="text-slate-800 dark:text-slate-200 max-w-3xl mx-auto">

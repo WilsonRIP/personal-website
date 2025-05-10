@@ -160,13 +160,12 @@ export default function ContactPage() {
           animate="visible"
           variants={fadeIn}
         >
-          <FancyHeading
-            as="h1"
-            variant="bold"
-            className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent mb-4"
+          <h1 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text bg-gradient-to-r from-primary to-accent mb-4 title-komikax" 
+            style={{ fontFamily: "KOMIKAX, sans-serif" }}
           >
             Get In Touch
-          </FancyHeading>
+          </h1>
           <p className="text-lg lg:text-xl text-foreground/80 mb-6">
             Have a question or want to work together? Feel free to contact me.
           </p>
@@ -185,13 +184,21 @@ export default function ContactPage() {
               <FancyHeading
                 as="h2"
                 variant="stylish"
-                className="mb-6 text-foreground bg-clip-text bg-gradient-to-r from-primary to-accent"
+                className="mb-6 text-foreground bg-clip-text bg-gradient-to-r from-primary to-accent font-kg-happy"
               >
                 Contact Info
               </FancyHeading>
 
               <div className="space-y-4">
-                <p className="text-foreground/80">
+                <p 
+                  className="text-lg text-blue-400 font-comic"
+                  style={{ 
+                    fontFamily: "Hey_Comic, sans-serif",
+                    fontSize: "1.25rem",
+                    letterSpacing: "0.03em",
+                    lineHeight: "1.5"
+                  }}
+                >
                   I&apos;m always interested in hearing about new projects and
                   opportunities. Feel free to reach out through any of these
                   channels:
@@ -359,7 +366,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium text-theme-primary mb-2"
+                      className="block text-sm font-medium text-theme-primary mb-2 font-comic"
                     >
                       Your Name
                     </label>
@@ -371,7 +378,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="John Doe"
-                      className={`w-full px-4 py-2 rounded-lg border ${
+                      className={`w-full px-4 py-2 rounded-lg border font-comic ${
                         errors.name
                           ? "border-red-500 focus:ring-red-500"
                           : "border-theme focus:ring-primary"
@@ -388,7 +395,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-theme-primary mb-2"
+                      className="block text-sm font-medium text-theme-primary mb-2 font-comic"
                     >
                       Your Email
                     </label>
@@ -400,7 +407,7 @@ export default function ContactPage() {
                       onChange={handleChange}
                       required
                       placeholder="you@example.com"
-                      className={`w-full px-4 py-2 rounded-lg border ${
+                      className={`w-full px-4 py-2 rounded-lg border font-comic ${
                         errors.email
                           ? "border-red-500 focus:ring-red-500"
                           : "border-theme focus:ring-primary"
@@ -420,7 +427,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block text-sm font-medium text-theme-primary mb-2"
+                    className="block text-sm font-medium text-theme-primary mb-2 font-comic"
                   >
                     Subject
                   </label>
@@ -432,7 +439,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     placeholder="Regarding your project..."
-                    className={`w-full px-4 py-2 rounded-lg border ${
+                    className={`w-full px-4 py-2 rounded-lg border font-comic ${
                       errors.subject
                         ? "border-red-500 focus:ring-red-500"
                         : "border-theme focus:ring-primary"
@@ -451,7 +458,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="message"
-                    className="block text-sm font-medium text-theme-primary mb-2"
+                    className="block text-sm font-medium text-theme-primary mb-2 font-comic"
                   >
                     Message
                   </label>
@@ -463,7 +470,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     placeholder="Your message here..."
-                    className={`w-full px-4 py-2 rounded-lg border ${
+                    className={`w-full px-4 py-2 rounded-lg border font-comic ${
                       errors.message
                         ? "border-red-500 focus:ring-red-500"
                         : "border-theme focus:ring-primary"
@@ -485,7 +492,7 @@ export default function ContactPage() {
                     variant="primary"
                     size="lg"
                     disabled={formStatus === "submitting"}
-                    className="w-full relative"
+                    className="w-full relative font-comic"
                   >
                     {formStatus === "submitting" ? (
                       <span className="flex items-center justify-center">

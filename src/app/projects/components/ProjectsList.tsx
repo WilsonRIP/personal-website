@@ -41,7 +41,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
 
   return (
     <div id="projects-section" className="space-y-8">
-      <div className="flex items-center space-x-3 mb-6">
+      <div className="flex items-center space-x-3 mb-4">
         <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-blue-500">
           Repository Showcase
         </h2>
@@ -51,7 +51,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
         <div className="h-px flex-grow bg-gradient-to-r from-gray-300 dark:from-gray-600 to-transparent"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {currentRepos.map((repo, index) => (
           <ProjectCard key={repo.id} repo={repo} index={index} />
         ))}
@@ -190,32 +190,32 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
           style={{ backgroundColor: languageColor }}
         ></div>
 
-        <CardHeader className="relative z-10 pb-3">
+        <CardHeader className="relative z-10 pb-2 pt-3 px-4">
           {repo.language && (
-            <div className="flex items-center mb-2">
+            <div className="flex items-center mb-1">
               <span
-                className="w-3 h-3 rounded-full mr-2"
+                className="w-2.5 h-2.5 rounded-full mr-1.5"
                 style={{ backgroundColor: languageColor }}
               ></span>
-              <span className="text-xs font-medium bg-gray-100 dark:bg-gray-700/70 text-gray-800 dark:text-gray-300 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-medium bg-gray-100 dark:bg-gray-700/70 text-gray-800 dark:text-gray-300 px-1.5 py-0.5 rounded-full">
                 {repo.language}
               </span>
             </div>
           )}
-          <CardTitle className="text-xl font-bold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+          <CardTitle className="text-base font-bold text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
             {repo.name}
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="relative z-10 flex-grow pb-4">
-          <CardDescription className="text-gray-600 dark:text-gray-300 text-sm line-clamp-2 group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors duration-300 mb-4">
+        <CardContent className="relative z-10 flex-grow pb-3 pt-0 px-4">
+          <CardDescription className="text-gray-600 dark:text-gray-300 text-xs line-clamp-2 group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors duration-300 mb-3">
             {repo.description || "No description provided"}
           </CardDescription>
 
           <div className="flex items-center">
-            <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center mr-4 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors duration-300">
+            <span className="text-xs text-gray-600 dark:text-gray-400 flex items-center mr-3 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors duration-300">
               <svg
-                className="w-4 h-4 mr-1"
+                className="w-3.5 h-3.5 mr-1"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -224,9 +224,9 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
               {repo.stargazers_count}
             </span>
 
-            <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
+            <span className="text-xs text-gray-600 dark:text-gray-400 flex items-center group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
               <svg
-                className="w-4 h-4 mr-1"
+                className="w-3.5 h-3.5 mr-1"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -241,12 +241,12 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
           </div>
         </CardContent>
 
-        <CardFooter className="relative z-10 flex flex-wrap gap-3 items-center pt-3 border-t border-gray-100 dark:border-gray-700 mt-auto">
+        <CardFooter className="relative z-10 flex flex-wrap gap-2 items-center pt-2 px-4 border-t border-gray-100 dark:border-gray-700 mt-auto pb-3">
           <Link
             href={repo.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-all flex items-center group-hover:translate-x-1 duration-300"
+            className="text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-all flex items-center group-hover:translate-x-1 duration-300 text-xs"
           >
             <svg
               className="w-4 h-4 mr-1"

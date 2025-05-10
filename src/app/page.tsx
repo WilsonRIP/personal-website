@@ -65,14 +65,14 @@ export default function Home() {
   // Show loading skeleton during initial render to prevent layout shift
   if (!mounted) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-8 lg:p-16 bg-theme-gradient">
+      <main className="flex min-h-screen flex-col items-center justify-between p-8 lg:p-16 bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10">
         <LoadingContainer className="text-center max-w-3xl mb-12 lg:mb-16" />
         <div className="w-full max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-full p-6 rounded-lg shadow-md bg-theme-card border border-theme animate-pulse"
+                className="h-full p-6 rounded-lg shadow-md bg-card border border-border animate-pulse"
               >
                 <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded-lg w-1/3 mb-4"></div>
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded-lg w-full mb-3"></div>
@@ -86,7 +86,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-8 lg:p-16 bg-theme-gradient">
+    <main className="flex min-h-screen flex-col items-center justify-between p-8 lg:p-16 bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10">
       {/* Hero Section with Animation */}
       <motion.div
         className="text-center max-w-3xl mb-4 lg:mb-8"
@@ -95,29 +95,26 @@ export default function Home() {
         variants={heroVariants}
       >
         <motion.h1
-          className={`text-5xl lg:text-7xl font-flowers-kingdom font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4 transition-all duration-300 ease-in-out drop-shadow-md [filter:drop-shadow(0_0_6px_rgba(59,130,246,0.5))]`}
+          className={`text-5xl lg:text-7xl font-bold text-foreground mb-4 transition-all duration-300 ease-in-out title-komikax`}
+          style={{ fontFamily: "KOMIKAX, sans-serif" }}
           whileHover={{
             scale: 1.05,
-            // Optional: slightly change gradient on hover
-            // background: "linear-gradient(to right, #3b82f6, #10b981, #6366f1)",
-            // WebkitBackgroundClip: "text",
-            // WebkitTextFillColor: "transparent",
           }}
           transition={{ type: "spring", stiffness: 300, damping: 10 }}
         >
           {WEBSITE_NAME}
         </motion.h1>
 
-        <motion.p className="text-lg lg:text-xl text-theme-primary mb-6">
+        <motion.p className="text-lg lg:text-xl text-muted-foreground mb-6">
           Web & Software Developer • Creator • Problem Solver • Vibe Coder
         </motion.p>
 
-        <motion.div className="flex flex-wrap gap-6 justify-center">
+        <motion.div className="flex flex-wrap gap-4 justify-center">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
             <Button
               asChild
               size="lg"
-              className={`${Saira.className} px-7 rounded-xl py-3S bg-gradient-to-r from-blue-500 to-teal-500 text-white font-medium text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50`}
+              className={`${Saira.className} px-7 py-3 rounded font-medium text-xl transition-all hover:shadow-lg bg-teal-500 text-white hover:bg-teal-600 dark:bg-teal-600 dark:text-white dark:hover:bg-teal-700`}
             >
               <Link href="/projects">View Projects</Link>
             </Button>
@@ -128,7 +125,7 @@ export default function Home() {
               asChild
               variant="outline"
               size="lg"
-              className={`${Saira.className} px-7 py-3 font-medium rounded-xl text-xl transition-all hover:shadow-lg focus:ring-2 focus:ring-teal-300 focus:ring-opacity-50 bg-white text-gray-900 dark:bg-gray-800 dark:text-white border border-gray-300 dark:border-gray-700`}
+              className={`${Saira.className} px-7 py-3 font-medium rounded text-xl transition-all hover:shadow-lg bg-transparent text-foreground border-border hover:bg-muted`}
             >
               <Link href="/contact">Contact Me</Link>
             </Button>
@@ -143,7 +140,7 @@ export default function Home() {
         animate={mounted ? "visible" : "hidden"}
         variants={sectionVariants}
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {featuredSections.map((section) => (
             <motion.div
               key={section.title}
@@ -151,24 +148,24 @@ export default function Home() {
               whileHover={{ y: -5 }}
               className="h-full"
             >
-              <Card className="flex flex-col h-full rounded-xl shadow-md hover:shadow-lg transition-all bg-theme-card border border-theme">
+              <Card className="flex flex-col h-full rounded border-border shadow-none bg-card text-card-foreground py-3">
                 <CardHeader>
-                  <CardTitle className="text-lg font-semibold text-theme-primary">
+                  <CardTitle className="text-lg font-semibold text-card-foreground">
                     {section.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="flex-grow">
-                  <p className="text-sm text-theme-secondary">
+                <CardContent className="flex-grow pt-0">
+                  <p className="text-sm text-muted-foreground">
                     {section.description}
                   </p>
                 </CardContent>
                 <CardFooter>
                   <Link
                     href={section.link}
-                    className="group flex items-center text-sm font-medium text-primary transition-colors group-hover:text-primary/90 mt-auto"
+                    className="group flex items-center text-sm font-medium text-primary transition-colors"
                     passHref
                   >
-                    Explore
+                    Learn More
                     <ArrowRight className="h-4 w-4 ml-1 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </CardFooter>
@@ -180,7 +177,7 @@ export default function Home() {
 
       {/* Footer - simplified */}
       <div className="mt-12 text-center">
-        <p className="text-sm text-theme-secondary">
+        <p className="text-sm text-muted-foreground">
           Built with Next.js and Tailwind CSS By WilsonIIRIP/Luke
         </p>
       </div>

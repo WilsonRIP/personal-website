@@ -43,7 +43,7 @@ export default function PrivacyPolicyPage() {
           animate="visible"
           variants={fadeIn}
         >
-          <h1 className="text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4">
+          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
             Privacy Policy
           </h1>
           <p className="text-lg max-w-3xl mx-auto dark:text-gray-300 text-gray-700">
