@@ -161,7 +161,7 @@ export default function ContactPage() {
           variants={fadeIn}
         >
           <h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text bg-gradient-to-r from-primary to-accent mb-4 title-komikax" 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 title-komikax" 
             style={{ fontFamily: "KOMIKAX, sans-serif" }}
           >
             Get In Touch

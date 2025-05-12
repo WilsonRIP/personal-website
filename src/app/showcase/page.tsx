@@ -87,7 +87,7 @@ export default function ShowcasePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Title and Description */}
-      <h1 className="text-4xl font-bold mb-6 text-center title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
+      <h1 className="text-4xl font-bold mb-6 text-center text-white title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
         Showcase
       </h1>
       <p className="text-lg text-center mb-8">

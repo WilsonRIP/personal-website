@@ -94,16 +94,7 @@ export default function Home() {
         animate="visible"
         variants={heroVariants}
       >
-        <motion.h1
-          className={`text-5xl lg:text-7xl font-bold text-foreground mb-4 transition-all duration-300 ease-in-out title-komikax`}
-          style={{ fontFamily: "KOMIKAX, sans-serif" }}
-          whileHover={{
-            scale: 1.05,
-          }}
-          transition={{ type: "spring", stiffness: 300, damping: 10 }}
-        >
-          {WEBSITE_NAME}
-        </motion.h1>
+                <motion.h1          className={`text-5xl lg:text-7xl font-bold text-white mb-4 transition-all duration-300 ease-in-out title-komikax`}          style={{ fontFamily: "KOMIKAX, sans-serif" }}          whileHover={{            scale: 1.05,          }}          transition={{ type: "spring", stiffness: 300, damping: 10 }}        >          {WEBSITE_NAME}        </motion.h1>
 
         <motion.p className="text-lg lg:text-xl text-muted-foreground mb-6">
           Web & Software Developer • Creator • Problem Solver • Vibe Coder

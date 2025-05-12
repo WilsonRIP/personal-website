@@ -98,8 +98,7 @@ export default function AboutPage() {
           <div className="flex flex-col md:flex-row items-center gap-8">
             <Avatar className="w-40 h-40 border-4 border-white dark:border-slate-700 shadow-lg shrink-0">
               <AvatarImage
-                asChild
-                src="/cat.png" // TODO: Update profile picture if needed
+                src="/cat.png"
                 alt={`${NAME} profile picture`}
                 onError={(e) => {
                   const svg =
