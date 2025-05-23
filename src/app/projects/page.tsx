@@ -4,92 +4,169 @@ import { getGithubUserStats } from "@/lib/githubStats";
 import ProjectsList from "./components/ProjectsList";
 import ProjectsStats from "./components/ProjectsStats";
 import { socialLinks } from "../data/socials";
+import { Github, ExternalLink, Sparkles, Code2 } from "lucide-react";
+
 export const metadata = {
   title: "Projects",
   description: "Explore my GitHub repositories and projects",
 };
 
+// Enhanced loading components
+const ProjectsListSkeleton = () => (
+  <div className="space-y-8">
+    <div className="flex items-center space-x-3 mb-6">
+      <div className="h-8 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded-lg w-48 animate-pulse"></div>
+      <div className="h-6 w-8 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="h-64 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 dark:border-slate-700/50 animate-pulse">
+          <div className="p-6 space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+              <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-16"></div>
+            </div>
+            <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+            </div>
+            <div className="flex gap-4 pt-4">
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-12"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-12"></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const ProjectsStatsSkeleton = () => (
+  <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl shadow-lg border border-slate-200/50 dark:border-slate-700/50 overflow-hidden">
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-32"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+      </div>
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="h-24 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 rounded-xl animate-pulse"></div>
+        ))}
+      </div>
+      
+      <div className="space-y-4">
+        <div className="flex gap-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
+        </div>
+        <div className="space-y-3">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="h-16 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 export default async function ProjectsPage() {
-  // Server-side data fetching using React's cache
+  // Server-side data fetching
   const repos = await getGithubRepos();
   const stats = await getGithubUserStats();
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-6 md:p-10 lg:p-16 bg-theme-gradient">
-      <div className="w-full max-w-6xl space-y-12">
-        <header className="text-center relative">
-          {/* Decorative elements */}
-          <div className="absolute -top-16 -left-16 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl dark:bg-blue-500/10 -z-10"></div>
-          <div className="absolute -top-8 -right-8 w-48 h-48 bg-green-500/5 rounded-full blur-3xl dark:bg-green-500/10 -z-10"></div>
+    <main className="flex min-h-screen flex-col items-center p-6 md:p-10 lg:p-16 bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden">
+      {/* Enhanced background elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] [background-size:20px_20px]"></div>
+      
+      {/* Animated background blobs */}
+      <div className="absolute top-0 -left-4 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-indigo-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+      <div className="absolute top-0 -right-4 w-96 h-96 bg-gradient-to-r from-emerald-400/10 to-teal-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+      <div className="absolute -bottom-8 left-20 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
 
-          <div className="inline-block mb-3 bg-gradient-to-r from-blue-500/10 to-green-500/10 dark:from-blue-500/20 dark:to-green-500/20 rounded-full px-4 py-1.5">
-            <span className="text-sm font-medium text-blue-800 dark:text-blue-300">
-              GitHub Portfolio
-            </span>
-          </div>
+      <div className="relative z-10 flex min-h-screen flex-col items-center px-6 md:px-10 lg:px-16 py-12">
+        <div className="w-full max-w-7xl space-y-16">
+          
+          {/* Enhanced Header */}
+          <header className="text-center relative">
+            <div className="space-y-8">
+              {/* Welcome badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-emerald-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 text-sm font-medium backdrop-blur-sm">
+                <Sparkles className="h-4 w-4" />
+                GitHub Portfolio Showcase
+              </div>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
-            My Projects
-          </h1>
-
-          <p className="text-lg lg:text-xl text-theme-secondary mb-6">
-            Browse through my GitHub repositories. These projects showcase my
-            skills, interests, and development journey.
-          </p>
-
-          <div className="mt-8 flex justify-center space-x-4">
-            <a
-              href={socialLinks[3].url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-5 py-2.5 rounded-full bg-gray-900 dark:bg-gray-700 text-white font-medium transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 dark:hover:bg-gray-600"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="currentColor"
-                className="mr-2"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-              </svg>
-              View GitHub Profile
-            </a>
-          </div>
-        </header>
-
-        <Suspense
-          fallback={
-            <div className="flex justify-center items-center h-64 bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl">
-              <div className="flex flex-col items-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-t-2 border-blue-500"></div>
-                <p className="mt-4 text-gray-600 dark:text-gray-300">
-                  Loading projects...
+              {/* Main title */}
+              <div className="space-y-4">
+                <h1 
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 dark:from-white dark:via-blue-200 dark:to-white bg-clip-text text-transparent leading-tight"
+                  style={{ fontFamily: "KOMIKAX, sans-serif" }}
+                >
+                  My Projects
+                </h1>
+                
+                <p className="text-xl lg:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+                  Explore my GitHub repositories and discover the projects that showcase my 
+                  <span className="font-semibold text-blue-600 dark:text-blue-400"> technical skills</span>,
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400"> creative solutions</span>, and
+                  <span className="font-semibold text-purple-600 dark:text-purple-400"> development journey</span>.
                 </p>
               </div>
-            </div>
-          }
-        >
-          <ProjectsList initialRepos={repos} />
-        </Suspense>
 
-        {repos.length > 0 && (
-          <Suspense
-            fallback={
-              <div className="flex justify-center items-center h-48 bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm rounded-xl">
-                <div className="flex flex-col items-center">
-                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-t-2 border-blue-500"></div>
-                  <p className="mt-4 text-gray-600 dark:text-gray-300">
-                    Loading stats...
-                  </p>
+              {/* CTA Section */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a
+                  href={socialLinks[3]?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center px-8 py-4 rounded-xl font-semibold bg-gradient-to-r from-slate-900 to-slate-700 dark:from-slate-700 dark:to-slate-600 text-white shadow-lg shadow-slate-900/25 hover:shadow-xl hover:shadow-slate-900/40 transition-all duration-300 border-0 hover:scale-105"
+                >
+                  <Github className="h-5 w-5 mr-2" />
+                  View GitHub Profile
+                  <ExternalLink className="h-4 w-4 ml-2 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" />
+                </a>
+
+                <div className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 text-sm text-slate-600 dark:text-slate-400">
+                  <Code2 className="h-4 w-4" />
+                  <span className="font-medium">{repos.length} repositories</span>
                 </div>
               </div>
-            }
-          >
-            <ProjectsStats repos={repos} stats={stats} />
-          </Suspense>
-        )}
+            </div>
+          </header>
+
+          {/* Projects List Section */}
+          <section className="space-y-8">
+            <Suspense fallback={<ProjectsListSkeleton />}>
+              <ProjectsList initialRepos={repos} />
+            </Suspense>
+          </section>
+
+          {/* Projects Stats Section */}
+          {repos.length > 0 && (
+            <section className="space-y-8">
+              <Suspense fallback={<ProjectsStatsSkeleton />}>
+                <ProjectsStats repos={repos} stats={stats} />
+              </Suspense>
+            </section>
+          )}
+
+          {/* Enhanced Footer */}
+          <footer className="text-center py-8">
+            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50">
+              <Github className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+              <span className="text-sm text-slate-600 dark:text-slate-400">
+                Data synced from GitHub API
+              </span>
+              <span className="text-slate-400 dark:text-slate-600">•</span>
+              <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                Updated in real-time
+              </span>
+            </div>
+          </footer>
+        </div>
       </div>
     </main>
   );

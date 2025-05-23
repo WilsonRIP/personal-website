@@ -108,10 +108,15 @@ export const getGithubUserStats = cache(async (): Promise<GithubUserStats> => {
     });
     
     // Sort languages by usage count
+    const totalLangCount = Object.values(languages).reduce((sum, count) => sum + count, 0);
     const topLanguages = Object.entries(languages)
-      .map(([name, count]) => ({ name, count }))
+      .map(([name, count]) => ({
+        name,
+        count,
+        percentage: totalLangCount > 0 ? (count / totalLangCount) * 100 : 0
+      }))
       .sort((a, b) => b.count - a.count)
-      .slice(0, 5); // Top 5 languages
+      .slice(0, 5);
       
     return {
       totalStars,
