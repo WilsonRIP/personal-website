@@ -135,7 +135,7 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
         sortedYears: [],
         languageStats: [],
         productivityScore: 0,
-        recentActivity: [],
+        recentActivity: 0,
       };
     }
 

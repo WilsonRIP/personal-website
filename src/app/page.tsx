@@ -89,21 +89,9 @@ export default function Home() {
 
   if (!mounted) {
     return (
-      <main
-        className={
-          resolvedTheme === "dark"
-            ? "min-h-screen bg-gradient-to-br from-slate-950 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
-            : "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30"
-        }
-      >
-        {/* Enhanced background pattern */}
-        <div
-          className={
-            resolvedTheme === "dark"
-              ? "absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] [background-size:20px_20px]"
-              : "absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] [background-size:20px_20px]"
-          }
-        ></div>
+      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30">
+        {/* Use a neutral background pattern that works for both themes */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.05)_1px,transparent_0)] [background-size:20px_20px]"></div>
         <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 lg:px-8">
           <div className="w-full max-w-6xl space-y-16">
             <LoadingContainer className="text-center" />

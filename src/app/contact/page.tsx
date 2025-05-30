@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { socialLinks } from "@/app/data/socials";
 import Image from "next/image";
@@ -104,23 +104,29 @@ export default function ContactPage() {
   const [copyPosition, setCopyPosition] = useState({ x: 0, y: 0 });
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
+  // Use a single effect for mounting
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return (
-      <main className={
-        resolvedTheme === "dark"
-          ? "min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
-          : "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30"
-      }>
-        {/* Loading skeleton or fallback here if needed */}
-      </main>
-    );
-  }
+  // Memoize the loading state
+  const loadingState = useMemo(() => {
+    if (!mounted) {
+      return (
+        <main className={
+          resolvedTheme === "dark"
+            ? "min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
+            : "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30"
+        }>
+          <ContactSkeleton />
+        </main>
+      );
+    }
+    return null;
+  }, [mounted, resolvedTheme]);
 
-  const copyToClipboard = async (text: string, event?: React.MouseEvent) => {
+  // Memoize the copyToClipboard function to prevent recreation on each render
+  const copyToClipboard = useCallback(async (text: string, event?: React.MouseEvent) => {
     try {
       await navigator.clipboard.writeText(text);
       
@@ -148,9 +154,10 @@ export default function ContactPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     }
-  };
+  }, []);
 
-  const handleChange = (
+  // Memoize the handleChange function
+  const handleChange = useCallback((
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
@@ -160,9 +167,10 @@ export default function ContactPage() {
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
-  };
+  }, [errors]);
 
-  const validateForm = (): boolean => {
+  // Memoize the validateForm function
+  const validateForm = useCallback((): boolean => {
     const newErrors: FormErrors = {};
 
     // Enhanced validation
@@ -193,9 +201,10 @@ export default function ContactPage() {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [formData]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Memoize the handleSubmit function
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) {
@@ -225,9 +234,10 @@ export default function ContactPage() {
       setFormStatus("error");
       setTimeout(() => setFormStatus("idle"), 5000);
     }
-  };
+  }, [formData, validateForm]);
 
-  const contactInfo = [
+  // Memoize contact info to prevent recreation on each render
+  const contactInfo = useMemo(() => [
     {
       icon: Mail,
       label: "Email",
@@ -247,7 +257,11 @@ export default function ContactPage() {
       value: "Open to opportunities",
       gradient: "from-purple-500 to-pink-600"
     }
-  ];
+  ], [copyToClipboard]);
+
+  if (!mounted) {
+    return loadingState;
+  }
 
   return (
     <main className={
@@ -258,10 +272,10 @@ export default function ContactPage() {
       {/* Enhanced background elements */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] [background-size:20px_20px]"></div>
       
-      {/* Animated background blobs */}
-      <div className="absolute top-0 -left-4 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-indigo-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-      <div className="absolute top-0 -right-4 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-      <div className="absolute -bottom-8 left-20 w-96 h-96 bg-gradient-to-r from-teal-400/10 to-green-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      {/* Animated background blobs - memoized with CSS animations instead of JS animations */}
+      <div className="absolute top-0 -left-4 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-indigo-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob will-change-transform"></div>
+      <div className="absolute top-0 -right-4 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000 will-change-transform"></div>
+      <div className="absolute -bottom-8 left-20 w-96 h-96 bg-gradient-to-r from-teal-400/10 to-green-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000 will-change-transform"></div>
 
       <div className="relative z-10 container mx-auto px-6 py-12">
         <motion.div
@@ -772,7 +786,7 @@ export default function ContactPage() {
               </div>
               
               {/* Floating particles effect */}
-              {[...Array(6)].map((_, i) => (
+              {Array.from({length: 6}).map((_, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-1 h-1 bg-green-400 rounded-full"

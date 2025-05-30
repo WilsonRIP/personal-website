@@ -6,7 +6,7 @@ export interface GithubUserStats {
   totalStars: number;
   totalForks: number;
   totalRepos: number;
-  topLanguages: Array<{ name: string; count: number }>;
+  topLanguages: Array<{ name: string; count: number; percentage: number }>;
   earliestRepo: string; // Date string
   latestRepo: string;   // Date string
   totalCommits: number; // Number of commits (estimated)
