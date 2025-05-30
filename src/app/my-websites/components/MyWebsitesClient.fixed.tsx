@@ -92,8 +92,7 @@ export default function MyWebsitesClient() {
         filtered.sort((a, b) => a.title.localeCompare(b.title));
         break;
       case "recent":
-        // Assuming newer websites have higher IDs or you could add a date field
-        filtered.sort((a, b) => b.id - a.id);
+        filtered.sort((a, b) => Number(b.id) - Number(a.id));
         break;
     }
 
