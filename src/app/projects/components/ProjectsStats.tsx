@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { GithubRepo } from "@/lib/github";
 import { ActivityEvent, ActivityEventType } from "@/lib/types";
@@ -17,6 +17,7 @@ import {
   Zap,
   Target
 } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 // Types
 interface LanguageStat {
@@ -109,7 +110,6 @@ const getLanguageColor = (language: string): string => {
 };
 
 export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps) {
-  const [activeTab, setActiveTab] = useState<"overview" | "languages" | "insights">("overview");
 
   // Data processing
   const processedData = useMemo(() => {
@@ -458,41 +458,28 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
         </div>
       </motion.div>
 
-      {/* Tab Navigation */}
-      <div className="flex border-b border-border bg-muted/30">
-        {[
-          { id: 'overview', label: 'Activity Timeline', icon: Clock },
-          { id: 'languages', label: 'Languages', icon: Code },
-          { id: 'insights', label: 'Insights', icon: Zap },
-        ].map((tab) => {
-          const IconComponent = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              className={`flex items-center gap-2 px-6 py-4 font-medium text-sm transition-all duration-200 relative ${
-                activeTab === tab.id
-                  ? "text-blue-600 dark:text-blue-400 bg-background"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-              onClick={() => setActiveTab(tab.id as "overview" | "languages" | "insights")}
-            >
-              <IconComponent className="h-4 w-4" />
-              {tab.label}
-              {activeTab === tab.id && (
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500"
-                  layoutId="activeTab"
-                />
-              )}
-            </button>
-          );
-        })}
-      </div>
+      {/* Tabs */}
+      <Tabs defaultValue="overview" className="w-full">
+        <div className="border-b border-border bg-muted/30">
+          <TabsList className="grid w-full grid-cols-3 h-auto bg-transparent border-0 p-0">
+            <TabsTrigger value="overview" className="flex items-center gap-2 px-6 py-4 font-medium text-sm data-[state=active]:bg-background data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400">
+              <Clock className="h-4 w-4" />
+              Activity Timeline
+            </TabsTrigger>
+            <TabsTrigger value="languages" className="flex items-center gap-2 px-6 py-4 font-medium text-sm data-[state=active]:bg-background data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400">
+              <Code className="h-4 w-4" />
+              Languages
+            </TabsTrigger>
+            <TabsTrigger value="insights" className="flex items-center gap-2 px-6 py-4 font-medium text-sm data-[state=active]:bg-background data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400">
+              <Zap className="h-4 w-4" />
+              Insights
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
-      {/* Tab Content */}
-      <div className="p-6 min-h-[400px] bg-muted/10">
-        {/* Activity Timeline */}
-        {activeTab === "overview" && (
+        <div className="p-6 min-h-[400px] bg-muted/10">
+          {/* Activity Timeline */}
+          <TabsContent value="overview" className="mt-0">
           <motion.div
             key="timeline"
             initial={{ opacity: 0, x: 20 }}
@@ -578,10 +565,10 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
               </div>
             )}
           </motion.div>
-        )}
+          </TabsContent>
 
-        {/* Languages Tab */}
-        {activeTab === "languages" && (
+          {/* Languages Tab */}
+          <TabsContent value="languages" className="mt-0">
           <motion.div
             key="languages"
             initial={{ opacity: 0, x: 20 }}
@@ -647,10 +634,10 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
               </div>
             )}
           </motion.div>
-        )}
+          </TabsContent>
 
-        {/* Insights Tab */}
-        {activeTab === "insights" && (
+          {/* Insights Tab */}
+          <TabsContent value="insights" className="mt-0">
           <motion.div
             key="insights"
             initial={{ opacity: 0, x: 20 }}
@@ -722,8 +709,9 @@ export default function ProjectsStats({ repos = [], stats }: ProjectsStatsProps)
               </motion.div>
             </div>
           </motion.div>
-        )}
-      </div>
+          </TabsContent>
+        </div>
+      </Tabs>
     </motion.div>
   );
 }

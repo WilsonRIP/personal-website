@@ -6,6 +6,9 @@ import { socialLinks } from "@/app/data/socials";
 import Image from "next/image";
 import { EMAIL } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Mail,
   MapPin,
@@ -21,7 +24,8 @@ import {
   Heart,
   Zap
 } from "lucide-react";
-import { useTheme } from "next-themes";
+
+
 
 // Types
 interface FormData {
@@ -60,7 +64,6 @@ const ContactSkeleton = () => (
 
 export default function ContactPage() {
   const [mounted, setMounted] = useState(false);
-  const { resolvedTheme } = useTheme();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -71,7 +74,6 @@ export default function ContactPage() {
   const [formStatus, setFormStatus] = useState<FormStatus>("idle");
   const [errors, setErrors] = useState<FormErrors>({});
   const [copied, setCopied] = useState(false);
-  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -224,13 +226,13 @@ export default function ContactPage() {
                 Let&apos;s Connect
               </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground leading-tight">
+              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                 Get In Touch
               </h1>
 
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 Have a question or want to work together? I&apos;d love to hear from you.
-                <span className="block mt-2 text-lg text-muted-foreground/80">
+                <span className="block mt-2 text-lg text-muted-foreground">
                   Let&apos;s create something amazing together! ✨
                 </span>
               </p>
@@ -269,12 +271,12 @@ export default function ContactPage() {
                     <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
                       <MessageCircle className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
-                    <h2 className="text-2xl font-bold text-foreground">
+                    <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                       Contact Info
                     </h2>
                   </div>
 
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="leading-7 [&:not(:first-child)]:mt-6">
                     I&apos;m always excited to discuss new projects and opportunities. 
                     Feel free to reach out through any of these channels!
                   </p>
@@ -339,7 +341,7 @@ export default function ContactPage() {
                     <div className="p-2 rounded-lg bg-violet-50 dark:bg-violet-950/20">
                       <Heart className="h-6 w-6 text-violet-600 dark:text-violet-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-foreground">
+                    <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                       Connect with me
                     </h3>
                   </div>
@@ -392,7 +394,7 @@ export default function ContactPage() {
                   <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
                     <Send className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h2 className="text-2xl font-bold text-foreground">
+                  <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                     Send a Message
                   </h2>
                 </div>
@@ -450,36 +452,20 @@ export default function ContactPage() {
                         <User className="h-4 w-4" />
                         Your Name
                       </label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField("name")}
-                          onBlur={() => setFocusedField(null)}
-                          placeholder="John Doe"
-                          className={cn(
-                            "w-full px-4 py-3 rounded-lg border-2 transition-all duration-200",
-                            "bg-background focus:outline-none focus:ring-2 focus:ring-offset-2",
-                            errors.name
-                              ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                              : focusedField === "name"
-                              ? "border-blue-300 focus:border-blue-500 focus:ring-blue-500"
-                              : "border-border"
-                          )}
-                        />
-                        {focusedField === "name" && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                          >
-                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                          </motion.div>
+                      <Input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+
+                        placeholder="John Doe"
+                        className={cn(
+                          "h-12 text-base",
+                          errors.name && "border-destructive focus-visible:ring-destructive/20"
                         )}
-                      </div>
+                        aria-invalid={!!errors.name}
+                      />
                       {errors.name && (
                         <motion.p
                           initial={{ opacity: 0, y: -5 }}
@@ -497,36 +483,20 @@ export default function ContactPage() {
                         <Mail className="h-4 w-4" />
                         Your Email
                       </label>
-                      <div className="relative">
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          onFocus={() => setFocusedField("email")}
-                          onBlur={() => setFocusedField(null)}
-                          placeholder="you@example.com"
-                          className={cn(
-                            "w-full px-4 py-3 rounded-lg border-2 transition-all duration-200",
-                            "bg-background focus:outline-none focus:ring-2 focus:ring-offset-2",
-                            errors.email
-                              ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                              : focusedField === "email"
-                              ? "border-blue-300 focus:border-blue-500 focus:ring-blue-500"
-                              : "border-border"
-                          )}
-                        />
-                        {focusedField === "email" && (
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                          >
-                            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                          </motion.div>
+                      <Input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+
+                        placeholder="you@example.com"
+                        className={cn(
+                          "h-12 text-base",
+                          errors.email && "border-destructive focus-visible:ring-destructive/20"
                         )}
-                      </div>
+                        aria-invalid={!!errors.email}
+                      />
                       {errors.email && (
                         <motion.p
                           initial={{ opacity: 0, y: -5 }}
@@ -545,36 +515,20 @@ export default function ContactPage() {
                       <Star className="h-4 w-4" />
                       Subject
                     </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        onFocus={() => setFocusedField("subject")}
-                        onBlur={() => setFocusedField(null)}
-                        placeholder="Let&apos;s discuss your amazing project..."
-                        className={cn(
-                          "w-full px-4 py-3 rounded-lg border-2 transition-all duration-200",
-                          "bg-background focus:outline-none focus:ring-2 focus:ring-offset-2",
-                          errors.subject
-                            ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                            : focusedField === "subject"
-                            ? "border-blue-300 focus:border-blue-500 focus:ring-blue-500"
-                            : "border-border"
-                        )}
-                      />
-                      {focusedField === "subject" && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2"
-                        >
-                          <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                        </motion.div>
+                    <Input
+                      type="text"
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleChange}
+
+                      placeholder="Let&apos;s discuss your amazing project..."
+                      className={cn(
+                        "h-12 text-base",
+                        errors.subject && "border-destructive focus-visible:ring-destructive/20"
                       )}
-                    </div>
+                      aria-invalid={!!errors.subject}
+                    />
                     {errors.subject && (
                       <motion.p
                         initial={{ opacity: 0, y: -5 }}
@@ -592,36 +546,20 @@ export default function ContactPage() {
                       <MessageCircle className="h-4 w-4" />
                       Message
                     </label>
-                    <div className="relative">
-                      <textarea
-                        id="message"
-                        name="message"
-                        rows={6}
-                        value={formData.message}
-                        onChange={handleChange}
-                        onFocus={() => setFocusedField("message")}
-                        onBlur={() => setFocusedField(null)}
-                        placeholder="Tell me about your project, ideas, or just say hello! I&apos;d love to hear from you..."
-                        className={cn(
-                          "w-full px-4 py-3 rounded-lg border-2 transition-all duration-200 resize-none",
-                          "bg-background focus:outline-none focus:ring-2 focus:ring-offset-2",
-                          errors.message
-                            ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-                            : focusedField === "message"
-                            ? "border-blue-300 focus:border-blue-500 focus:ring-blue-500"
-                            : "border-border"
-                        )}
-                      />
-                      {focusedField === "message" && (
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="absolute right-3 top-3"
-                        >
-                          <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                        </motion.div>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      rows={6}
+                      value={formData.message}
+                      onChange={handleChange}
+
+                      placeholder="Tell me about your project, ideas, or just say hello! I&apos;d love to hear from you..."
+                      className={cn(
+                        "resize-none",
+                        errors.message && "border-destructive focus-visible:ring-destructive/20"
                       )}
-                    </div>
+                      aria-invalid={!!errors.message}
+                    />
                     {errors.message && (
                       <motion.p
                         initial={{ opacity: 0, y: -5 }}
@@ -634,21 +572,15 @@ export default function ContactPage() {
                   </div>
 
                   {/* Submit Button */}
-                  <motion.button
+                  <Button
                     type="submit"
                     disabled={formStatus === "submitting"}
-                    className={cn(
-                      "w-full flex items-center justify-center gap-3 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300",
-                      "bg-foreground text-background shadow-sm hover:shadow-md",
-                      "border-0 focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2",
-                      "disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                    )}
-                    whileHover={{ scale: formStatus === "submitting" ? 1 : 1.02 }}
-                    whileTap={{ scale: formStatus === "submitting" ? 1 : 0.98 }}
+                    className="w-full h-12 text-lg font-semibold"
+                    size="lg"
                   >
                     {formStatus === "submitting" ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                        <div className="w-5 h-5 border-2 border-current/30 border-t-current rounded-full animate-spin" />
                         Sending your message...
                       </>
                     ) : (
@@ -658,7 +590,7 @@ export default function ContactPage() {
                         <span>✨</span>
                       </>
                     )}
-                  </motion.button>
+                  </Button>
                 </form>
               </div>
             </motion.div>

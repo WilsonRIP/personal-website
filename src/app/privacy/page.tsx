@@ -3,13 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { WEBSITE_NAME } from "@/lib/types";
-import { Mulish } from "next/font/google";
 import Link from "next/link";
-
-const mulish = Mulish({
-  weight: ["400", "600", "700"],
-  subsets: ["latin"],
-});
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -33,7 +27,7 @@ const staggerContainer = {
 export default function PrivacyPolicyPage() {
   return (
     <main
-      className={`${mulish.className} flex min-h-screen flex-col items-center p-8 lg:p-24 bg-theme-gradient`}
+      className={`flex min-h-screen flex-col items-center p-8 lg:p-24 bg-theme-gradient`}
     >
       <div className="w-full max-w-4xl space-y-8">
         {/* Header */}
@@ -43,7 +37,7 @@ export default function PrivacyPolicyPage() {
           animate="visible"
           variants={fadeIn}
         >
-          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
+          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
             Privacy Policy
           </h1>
           <p className="text-lg max-w-3xl mx-auto dark:text-gray-300 text-gray-700">

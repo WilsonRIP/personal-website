@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Crimson_Text } from "next/font/google";
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
@@ -24,16 +23,7 @@ import {
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const crimsonText = Crimson_Text({
-  weight: "400",
-  subsets: ["latin"],
-});
 
-// Removed unused Poetsen One font definition
-// const poetsen = Poetsen_One({
-//   weight: "400",
-//   subsets: ["latin"],
-// });
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -92,7 +82,6 @@ export default function Navbar() {
     return (
       <header
         className={cn(
-          crimsonText.className,
           "sticky top-0 z-50 h-16 md:h-[68px] backdrop-blur-lg"
         )}
       >
@@ -104,7 +93,6 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        crimsonText.className,
         "sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ease-in-out",
         isScrolled ? "py-2 shadow-md" : "py-3 shadow-sm",
         isDark
@@ -128,7 +116,7 @@ export default function Navbar() {
           />
           <span
             className={cn(
-              "font-arista-bold ml-2 hidden sm:inline text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500"
+              "font-bold ml-2 hidden sm:inline text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500"
             )}
           >
             Wilson
@@ -149,7 +137,7 @@ export default function Navbar() {
                       href={href}
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        "font-arista-bold text-sm lg:text-base font-medium whitespace-nowrap relative group transition-colors duration-200 ease-in-out",
+                        "font-bold text-sm lg:text-base font-medium whitespace-nowrap relative group transition-colors duration-200 ease-in-out",
                         isActive
                           ? "text-teal-500 dark:text-teal-400 bg-teal-400/10 dark:bg-teal-400/15"
                           : "text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-300 hover:bg-teal-400/10 dark:hover:bg-teal-400/15"
@@ -217,7 +205,7 @@ export default function Navbar() {
                         height={24}
                         className="rounded-full transition-transform duration-300 group-hover:scale-110"
                       />
-                      <span className="font-arista-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+                      <span className="font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
                         Wilson
                       </span>
                     </Link>
@@ -235,8 +223,8 @@ export default function Navbar() {
                           <SheetClose asChild>
                             <Link
                               href={href}
-                              className={cn(
-                                "font-arista-bold block py-3 mx-4 text-base font-medium rounded-md transition-all duration-200 ease-in-out",
+                                                  className={cn(
+                      "font-bold block py-3 mx-4 text-base font-medium rounded-md transition-all duration-200 ease-in-out",
                                 isActive
                                   ? "text-teal-600 dark:text-teal-400 bg-teal-400/20 dark:bg-teal-400/20 scale-105 shadow-inner"
                                   : "text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-300 hover:bg-teal-400/10 dark:hover:bg-teal-400/15 hover:translate-x-1"

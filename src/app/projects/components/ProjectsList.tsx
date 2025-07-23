@@ -20,13 +20,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { 
   Star, 
   GitFork, 
   ExternalLink, 
   Calendar,
-  ChevronLeft, 
-  ChevronRight,
   Filter,
   Search,
   Code,
@@ -99,6 +106,51 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
       behavior: "smooth",
       block: "start"
     });
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total is 5 or less
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Show first page
+      pages.push(1);
+      
+      if (currentPage <= 3) {
+        // Show pages 2, 3, 4, 5
+        for (let i = 2; i <= 5; i++) {
+          pages.push(i);
+        }
+        if (totalPages > 5) {
+          pages.push('ellipsis');
+          pages.push(totalPages);
+        }
+      } else if (currentPage >= totalPages - 2) {
+        // Show last 5 pages
+        if (totalPages > 5) {
+          pages.push('ellipsis');
+        }
+        for (let i = totalPages - 4; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // Show current page with 2 pages on each side
+        pages.push('ellipsis');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('ellipsis');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -250,57 +302,39 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <nav className="inline-flex items-center rounded-lg shadow-sm bg-card p-2 border">
-            {/* Previous Button */}
-            <Button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              variant="ghost"
-              size="sm"
-              className="rounded-lg px-3 py-2 disabled:opacity-40 hover:scale-105 hover:bg-accent transition-all duration-200"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-
-            {/* Page Numbers */}
-            <div className="flex items-center mx-2">
-              {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-                let pageNum;
-                if (totalPages <= 5) {
-                  pageNum = i + 1;
-                } else if (currentPage <= 3) {
-                  pageNum = i + 1;
-                } else if (currentPage >= totalPages - 2) {
-                  pageNum = totalPages - 4 + i;
-                } else {
-                  pageNum = currentPage - 2 + i;
-                }
-
-                return (
-                  <Button
-                    key={pageNum}
-                    onClick={() => handlePageChange(pageNum)}
-                    variant={currentPage === pageNum ? "default" : "ghost"}
-                    size="sm"
-                    className="w-10 h-10 rounded-lg mx-1 hover:scale-105 hover:shadow-md transition-all duration-200"
-                  >
-                    {pageNum}
-                  </Button>
-                );
-              })}
-            </div>
-
-            {/* Next Button */}
-            <Button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              variant="ghost"
-              size="sm"
-              className="rounded-lg px-3 py-2 disabled:opacity-40 hover:scale-105 hover:bg-accent transition-all duration-200"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </nav>
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious 
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  className={currentPage === 1 ? "pointer-events-none opacity-50" : "cursor-pointer hover:scale-105 transition-transform duration-200"}
+                />
+              </PaginationItem>
+              
+              {getPageNumbers().map((page, index) => (
+                <PaginationItem key={index}>
+                  {page === 'ellipsis' ? (
+                    <PaginationEllipsis />
+                  ) : (
+                    <PaginationLink
+                      onClick={() => handlePageChange(page as number)}
+                      isActive={currentPage === page}
+                      className="cursor-pointer hover:scale-105 transition-transform duration-200"
+                    >
+                      {page}
+                    </PaginationLink>
+                  )}
+                </PaginationItem>
+              ))}
+              
+              <PaginationItem>
+                <PaginationNext 
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer hover:scale-105 transition-transform duration-200"}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </motion.div>
       )}
     </div>

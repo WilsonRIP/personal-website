@@ -56,24 +56,24 @@ const config: Config = {
         },
         // Keep the old theme colors commented or remove if fully replaced by CSS variables
         // "bg-primary": {
-        //   light: colors.gray[50],
-        //   dark: colors.gray[900],
+        //   light: colors.gray[50],
+        //   dark: colors.gray[900],
         // },
         // "bg-card": {
-        //   light: colors.white,
-        //   dark: colors.gray[800],
+        //   light: colors.white,
+        //   dark: colors.gray[800],
         // },
         // "border-base": {
-        //   light: colors.gray[200],
-        //   dark: colors.gray[700],
+        //   light: colors.gray[200],
+        //   dark: colors.gray[700],
         // },
         // "color-primary": {
-        //   light: colors.gray[800],
-        //   dark: colors.gray[100],
+        //   light: colors.gray[800],
+        //   dark: colors.gray[100],
         // },
         // "color-secondary": {
-        //   light: colors.gray[600],
-        //   dark: colors.gray[400],
+        //   light: colors.gray[600],
+        //   dark: colors.gray[400],
         // },
       },
       borderRadius: {
@@ -81,29 +81,47 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      // Add fontFamily extension to include custom fonts
+      // Updated fontFamily to prioritize Archivo as the main font
       fontFamily: {
         sans: [
-          "var(--font-geist-sans)", // Assuming this is defined elsewhere (e.g., by Next/font)
+          "var(--font-archivo)", // Archivo as the primary font
+          "Archivo",
           "ui-sans-serif",
           "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "Noto Sans",
           "sans-serif",
-        ], // Keep existing sans
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji",
+        ],
         mono: [
-          "var(--font-geist-mono)", // Assuming this is defined elsewhere (e.g., by Next/font)
+          "var(--font-geist-mono)", // Geist Mono for code
           "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "Liberation Mono",
+          "Courier New",
           "monospace",
-        ], // Keep existing mono
-        // Add your custom fonts here, matching the name from @font-face rules
-        "flowers-kingdom": ['"flowers-kingdom"', "cursive"], // Utility class: font-flowers-kingdom
-        "arista-pro": ['"Arista Pro"', "sans-serif"], // Utility class: font-arista-pro
-        "orange-juice-2": ['"Orange Juice 2.0"', "sans-serif"], // Utility class: font-orange-juice-2
-        "arista-bold": ["var(--font-arista-pro-bold)", "sans-serif"], // <-- Add custom utility
-        "righteous": ["var(--font-righteous)", "sans-serif"], // Utility class: font-righteous
-        "felient-vintegen": ["var(--font-felient-vintegen)", "sans-serif"], // Utility class: font-felient-vintegen
-        "komikax": ["var(--font-komikax)", "sans-serif"], // Utility class: font-komikax
-        "hey-comic": ["var(--font-hey-comic)", "sans-serif"], // Utility class: font-hey-comic
-        "kg-happy": ["var(--font-kg-happy)", "sans-serif"], // Utility class: font-kg-happy
+        ],
+        // Custom decorative fonts for specific use cases
+        "flowers-kingdom": ['"flowers-kingdom"', "cursive"],
+        "arista-pro": ['"Arista Pro"', "sans-serif"],
+        "orange-juice-2": ['"Orange Juice 2.0"', "sans-serif"],
+        "arista-bold": ["var(--font-arista-pro-bold)", "sans-serif"],
+        "righteous": ["var(--font-righteous)", "sans-serif"],
+        "felient-vintegen": ["var(--font-felient-vintegen)", "sans-serif"],
+        "komikax": ["var(--font-komikax)", "sans-serif"],
+        "hey-comic": ["var(--font-hey-comic)", "sans-serif"],
+        "kg-happy": ["var(--font-kg-happy)", "sans-serif"],
       },
       // ... other extensions like keyframes if needed
     },

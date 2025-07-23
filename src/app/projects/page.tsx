@@ -93,11 +93,11 @@ export default async function ProjectsPage() {
 
               {/* Main title */}
               <div className="space-y-4">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                   My Projects
                 </h1>
                 
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                   Explore my GitHub repositories and discover the projects that showcase my 
                   <span className="font-semibold text-blue-600 dark:text-blue-400"> technical skills</span>,
                   <span className="font-semibold text-emerald-600 dark:text-emerald-400"> creative solutions</span>, and

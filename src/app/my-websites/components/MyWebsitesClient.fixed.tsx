@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useInView } from "react-intersection-observer";
 import { Website, websites } from "../data";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
@@ -18,34 +20,28 @@ import {
   Search,
   Sparkles,
   Globe,
-  Eye,
   ArrowUpRight,
   Award
 } from "lucide-react";
-import { useTheme } from "next-themes";
 
-// Enhanced Configuration
-const ANIMATION_CONFIG = {
-  duration: 0.6,
-  stagger: 0.1,
-  spring: { type: "spring", stiffness: 300, damping: 30 },
-} as const;
+
+
 
 type ViewMode = "grid" | "list";
 
 // Loading skeleton component
 const WebsiteCardSkeleton = () => (
-  <div className="h-full bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 animate-pulse">
+  <div className="h-full bg-card border rounded-lg animate-pulse">
     <div className="p-6 space-y-4">
-      <div className="aspect-video bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 rounded-xl"></div>
+      <div className="aspect-video bg-muted rounded-lg"></div>
       <div className="space-y-2">
-        <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+        <div className="h-6 bg-muted rounded w-3/4"></div>
+        <div className="h-4 bg-muted rounded w-full"></div>
+        <div className="h-4 bg-muted rounded w-2/3"></div>
       </div>
       <div className="flex gap-2">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="h-6 w-16 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+          <div key={i} className="h-6 w-16 bg-muted rounded-full"></div>
         ))}
       </div>
     </div>
@@ -59,7 +55,6 @@ export default function MyWebsitesClient() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTech, setSelectedTech] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"featured" | "title" | "recent">("featured");
-  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -104,16 +99,12 @@ export default function MyWebsitesClient() {
 
   if (!mounted) {
     return (
-      <main className={
-        resolvedTheme === "dark"
-          ? "min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
-          : "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30"
-      }>
-        <div className="relative z-10 container mx-auto px-6 py-12">
+      <main className="min-h-screen bg-background">
+        <div className="container mx-auto px-6 py-12">
           <div className="space-y-8">
             <div className="text-center space-y-4">
-              <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-lg w-64 mx-auto animate-pulse"></div>
-              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-96 mx-auto animate-pulse"></div>
+              <div className="h-12 bg-muted rounded-lg w-64 mx-auto animate-pulse"></div>
+              <div className="h-6 bg-muted rounded w-96 mx-auto animate-pulse"></div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
@@ -131,8 +122,8 @@ export default function MyWebsitesClient() {
     visible: {
       opacity: 1,
       transition: {
-        duration: ANIMATION_CONFIG.duration,
-        staggerChildren: ANIMATION_CONFIG.stagger
+        duration: 0.6,
+        staggerChildren: 0.1
       }
     }
   };
@@ -143,147 +134,144 @@ export default function MyWebsitesClient() {
   };
 
   return (
-    <main className={
-      resolvedTheme === "dark"
-        ? "min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
-        : "min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30"
-    }>
-      {/* Enhanced background elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] [background-size:20px_20px]"></div>
-      
-      {/* Animated background blobs */}
-      <div className="absolute top-0 -left-4 w-96 h-96 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-      <div className="absolute top-0 -right-4 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-indigo-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-      <div className="absolute -bottom-8 left-20 w-96 h-96 bg-gradient-to-r from-teal-400/10 to-green-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-
-      <div className="relative z-10 container mx-auto px-6 py-12">
+    <main className="min-h-screen bg-background">
+      <div className="container mx-auto px-6 py-12">
         <motion.div
           className="space-y-12"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {/* Enhanced Header */}
+          {/* Header */}
           <motion.header className="text-center space-y-6" variants={itemVariants}>
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 text-sm font-medium backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted border text-muted-foreground text-sm font-medium">
                 <Sparkles className="h-4 w-4" />
                 Portfolio Showcase
               </div>
 
-              <h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 dark:from-white dark:via-purple-200 dark:to-white bg-clip-text text-transparent leading-tight"
-                style={{ fontFamily: "KOMIKAX, sans-serif" }}
-              >
+              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                 My Websites
               </h1>
 
-              <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 A curated collection of websites I&apos;ve designed and developed, showcasing my expertise in 
-                <span className="font-semibold text-purple-600 dark:text-purple-400"> modern web development</span> and 
-                <span className="font-semibold text-blue-600 dark:text-blue-400"> creative design</span>.
+                <span className="font-semibold"> modern web development</span> and 
+                <span className="font-semibold"> creative design</span>.
               </p>
             </div>
 
             {/* Stats */}
             <div className="flex justify-center gap-8 text-sm">
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{websites.length}</div>
-                <div className="text-slate-500 dark:text-slate-400">Total Projects</div>
+                <div className="text-2xl font-bold text-foreground">{websites.length}</div>
+                <div className="text-muted-foreground">Total Projects</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{featuredWebsites.length}</div>
-                <div className="text-slate-500 dark:text-slate-400">Featured</div>
+                <div className="text-2xl font-bold text-foreground">{featuredWebsites.length}</div>
+                <div className="text-muted-foreground">Featured</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">{allTechnologies.length}</div>
-                <div className="text-slate-500 dark:text-slate-400">Technologies</div>
+                <div className="text-2xl font-bold text-foreground">{allTechnologies.length}</div>
+                <div className="text-muted-foreground">Technologies</div>
               </div>
             </div>
           </motion.header>
 
-          {/* Enhanced Controls */}
+          {/* Controls */}
           <motion.div 
-            className="flex flex-col lg:flex-row gap-4 p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-lg"
+            className="flex flex-col lg:flex-row gap-4 p-6 bg-card border rounded-lg shadow-sm"
             variants={itemVariants}
           >
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+              <Input
                 type="text"
                 placeholder="Search websites..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
+                className="pl-10"
               />
             </div>
 
             {/* Tech Filter */}
             <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-slate-500" />
-              <select
-                value={selectedTech}
-                onChange={(e) => setSelectedTech(e.target.value)}
-                className="px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 min-w-[140px]"
-              >
-                <option value="all">All Technologies</option>
-                {allTechnologies.map(tech => (
-                  <option key={tech} value={tech}>{tech}</option>
-                ))}
-              </select>
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <Select value={selectedTech} onValueChange={setSelectedTech}>
+                <SelectTrigger className="min-w-[140px]">
+                  <SelectValue placeholder="All Technologies" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Technologies</SelectItem>
+                  {allTechnologies.map(tech => (
+                    <SelectItem key={tech} value={tech}>{tech}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Sort */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-slate-500 whitespace-nowrap">Sort by:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as "featured" | "title" | "recent")}
-                className="px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
-              >
-                <option value="featured">Featured First</option>
-                <option value="title">Title</option>
-                <option value="recent">Most Recent</option>
-              </select>
+              <span className="text-sm text-muted-foreground whitespace-nowrap">Sort by:</span>
+              <Select value={sortBy} onValueChange={(value) => setSortBy(value as "featured" | "title" | "recent")}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="featured">Featured First</SelectItem>
+                  <SelectItem value="title">Title</SelectItem>
+                  <SelectItem value="recent">Most Recent</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* View Mode Toggle */}
-            <div className="flex rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-              <button
+            <div className="flex rounded-md border border-input overflow-hidden">
+              <Button
                 onClick={() => setViewMode("grid")}
+                variant={viewMode === "grid" ? "default" : "ghost"}
+                size="sm"
                 className={cn(
-                  "px-4 py-3 flex items-center gap-2 text-sm font-medium transition-all duration-200",
-                  viewMode === "grid"
-                    ? "bg-purple-500 text-white"
-                    : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+                  "rounded-none border-0 transition-all duration-200",
+                  viewMode === "grid" 
+                    ? "shadow-sm scale-105" 
+                    : "hover:bg-accent hover:text-accent-foreground"
                 )}
               >
-                <Grid3X3 className="h-4 w-4" />
+                <Grid3X3 className={cn(
+                  "h-4 w-4 transition-transform duration-200",
+                  viewMode === "grid" && "scale-110"
+                )} />
                 Grid
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setViewMode("list")}
+                variant={viewMode === "list" ? "default" : "ghost"}
+                size="sm"
                 className={cn(
-                  "px-4 py-3 flex items-center gap-2 text-sm font-medium transition-all duration-200",
-                  viewMode === "list"
-                    ? "bg-purple-500 text-white"
-                    : "bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
+                  "rounded-none border-0 transition-all duration-200",
+                  viewMode === "list" 
+                    ? "shadow-sm scale-105" 
+                    : "hover:bg-accent hover:text-accent-foreground"
                 )}
               >
-                <List className="h-4 w-4" />
+                <List className={cn(
+                  "h-4 w-4 transition-transform duration-200",
+                  viewMode === "list" && "scale-110"
+                )} />
                 List
-              </button>
+              </Button>
             </div>
           </motion.div>
 
           {/* Results Summary */}
           <motion.div className="flex items-center justify-between" variants={itemVariants}>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+              <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                 {searchQuery || selectedTech !== "all" ? "Search Results" : "All Projects"}
               </h2>
-              <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-semibold rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-200">
+              <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-semibold rounded-full bg-muted text-muted-foreground">
                 {filteredWebsites.length}
               </span>
             </div>
@@ -295,7 +283,6 @@ export default function MyWebsitesClient() {
                 }}
                 variant="outline"
                 size="sm"
-                className="rounded-xl"
               >
                 Clear filters
               </Button>
@@ -306,10 +293,10 @@ export default function MyWebsitesClient() {
           {featuredWebsites.length > 0 && (
             <motion.section className="space-y-6" variants={itemVariants}>
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20">
-                  <Award className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                <div className="p-2 rounded-lg bg-muted">
+                  <Award className="h-5 w-5 text-foreground" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white">Featured Projects</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Featured Projects</h3>
               </div>
 
               <div className="space-y-6">
@@ -324,10 +311,10 @@ export default function MyWebsitesClient() {
           {regularWebsites.length > 0 && (
             <motion.section className="space-y-6" variants={itemVariants}>
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500/20 to-indigo-500/20">
-                  <Globe className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <div className="p-2 rounded-lg bg-muted">
+                  <Globe className="h-5 w-5 text-foreground" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white">Other Projects</h3>
+                <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Other Projects</h3>
               </div>
 
               <AnimatePresence mode="wait">
@@ -362,13 +349,13 @@ export default function MyWebsitesClient() {
               className="text-center py-16"
               variants={itemVariants}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
-                <Search className="h-8 w-8 text-slate-400" />
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
+                <Search className="h-8 w-8 text-muted-foreground" />
               </div>
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mb-2">
                 No websites found
               </h3>
-              <p className="text-slate-500 dark:text-slate-400 mb-4">
+              <p className="text-xl text-muted-foreground mb-4">
                 Try adjusting your search terms or filters
               </p>
               <Button
@@ -378,7 +365,6 @@ export default function MyWebsitesClient() {
                   setSortBy("featured");
                 }}
                 variant="outline"
-                className="rounded-xl"
               >
                 Clear all filters
               </Button>
@@ -405,7 +391,9 @@ function FeaturedWebsiteCard({ website, index }: { website: Website; index: numb
       transition: {
         duration: 0.6,
         delay: index * 0.2,
-        ...ANIMATION_CONFIG.spring
+        type: "spring",
+        stiffness: 300,
+        damping: 30
       },
     },
   };
@@ -418,42 +406,34 @@ function FeaturedWebsiteCard({ website, index }: { website: Website; index: numb
       animate={inView ? "visible" : "hidden"}
       className="group relative"
     >
-      <div className="relative overflow-hidden rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-xl hover:shadow-2xl transition-all duration-500">
-        {/* Background gradient */}
-        <div
-          className={cn(
-            "absolute -top-40 -right-40 w-80 h-80 rounded-full opacity-10 group-hover:opacity-20 blur-3xl transition-all duration-500",
-            website.color || "bg-gradient-to-br from-purple-500 to-pink-500"
-          )}
-        />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 relative z-10">
+      <div className="relative overflow-hidden rounded-lg bg-card border shadow-sm hover:shadow-md transition-all duration-300">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
           {/* Content */}
           <div className="space-y-6">
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg">
+                <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary text-primary-foreground">
                   <Star className="h-3 w-3 mr-1" />
                   Featured
                 </div>
-                <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200">
-                  <div className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
+                <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+                  <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
                   Live
                 </div>
               </div>
 
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">
+              <h2 className="text-3xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
                 {website.title}
               </h2>
 
-              <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed">
                 {website.description}
               </p>
             </div>
 
             {/* Technologies */}
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
+              <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <Code className="h-4 w-4" />
                 Built with
               </div>
@@ -461,7 +441,7 @@ function FeaturedWebsiteCard({ website, index }: { website: Website; index: numb
                 {website.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="px-3 py-1 rounded-full text-sm font-medium bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200"
+                    className="px-3 py-1 rounded-full text-sm font-medium bg-muted text-muted-foreground border border-border hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
                   >
                     {tech}
                   </span>
@@ -473,14 +453,12 @@ function FeaturedWebsiteCard({ website, index }: { website: Website; index: numb
             <div className="pt-4">
               <Button
                 asChild
-                className="group/btn bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/40 transition-all duration-300 border-0 px-8 py-3 rounded-xl text-base"
+                className="px-8 py-3 text-base"
               >
                 <Link href={website.url} target="_blank" rel="noopener noreferrer">
                   <Globe className="h-5 w-5 mr-2" />
-                  <span className="group-hover/btn:translate-x-1 transition-transform duration-200">
-                    Visit Website
-                  </span>
-                  <ArrowUpRight className="h-5 w-5 ml-2 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-200" />
+                  Visit Website
+                  <ArrowUpRight className="h-5 w-5 ml-2" />
                 </Link>
               </Button>
             </div>
@@ -488,15 +466,13 @@ function FeaturedWebsiteCard({ website, index }: { website: Website; index: numb
 
           {/* Image */}
           <div className="relative order-first lg:order-last">
-            <div className="relative aspect-video overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg group-hover:shadow-xl transition-all duration-500">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
-              
+            <div className="relative aspect-video overflow-hidden rounded-lg border border-border shadow-sm group-hover:shadow-md transition-all duration-300">
               <Image
                 src={website.imageUrl}
                 alt={website.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
                 placeholder="blur"
                 blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=="
                 onError={(e) => {
@@ -505,13 +481,6 @@ function FeaturedWebsiteCard({ website, index }: { website: Website; index: numb
                   target.onerror = null;
                 }}
               />
-
-              <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <Button size="sm" className="bg-white/90 text-slate-800 hover:bg-white rounded-xl">
-                  <Eye className="h-4 w-4 mr-2" />
-                  Preview
-                </Button>
-              </div>
             </div>
           </div>
         </div>
@@ -556,9 +525,9 @@ function WebsiteCard({
         animate={inView ? "visible" : "hidden"}
         className="group relative"
       >
-        <div className="flex gap-6 p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div className="flex gap-6 p-6 bg-card border rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
           {/* Image */}
-          <div className="relative w-48 aspect-video overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 flex-shrink-0">
+          <div className="relative w-48 aspect-video overflow-hidden rounded-lg border border-border flex-shrink-0">
             <Image
               src={website.imageUrl}
               alt={website.title}
@@ -578,10 +547,10 @@ function WebsiteCard({
           {/* Content */}
           <div className="flex-1 space-y-3">
             <div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">
+              <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
                 {website.title}
               </h3>
-              <p className="text-slate-600 dark:text-slate-300 line-clamp-2">
+              <p className="text-muted-foreground line-clamp-2">
                 {website.description}
               </p>
             </div>
@@ -590,13 +559,13 @@ function WebsiteCard({
               {website.technologies.slice(0, 4).map((tech) => (
                 <span
                   key={tech}
-                  className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600"
+                  className="px-2 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border"
                 >
                   {tech}
                 </span>
               ))}
               {website.technologies.length > 4 && (
-                <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-200 text-slate-600 dark:bg-slate-600 dark:text-slate-300">
+                <span className="px-2 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
                   +{website.technologies.length - 4}
                 </span>
               )}
@@ -606,7 +575,6 @@ function WebsiteCard({
               asChild
               variant="outline"
               size="sm"
-              className="rounded-xl hover:bg-purple-50 hover:border-purple-200 dark:hover:bg-purple-950/50 dark:hover:border-purple-700"
             >
               <Link href={website.url} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4 mr-2" />
@@ -627,18 +595,10 @@ function WebsiteCard({
       animate={inView ? "visible" : "hidden"}
       className="group relative"
     >
-      <div className="relative overflow-hidden h-full bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-500">
-        {/* Background gradient */}
-        <div
-          className={cn(
-            "absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-5 group-hover:opacity-15 blur-2xl transition-all duration-500",
-            website.color || "bg-gradient-to-br from-purple-500 to-pink-500"
-          )}
-        />
-
-        <div className="p-6 space-y-4 relative z-10">
+      <div className="relative overflow-hidden h-full bg-card border rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+        <div className="p-6 space-y-4">
           {/* Image */}
-          <div className="relative aspect-video overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+          <div className="relative aspect-video overflow-hidden rounded-lg border border-border">
             <Image
               src={website.imageUrl}
               alt={website.title}
@@ -653,17 +613,15 @@ function WebsiteCard({
                 target.onerror = null;
               }}
             />
-            
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </div>
 
           {/* Content */}
           <div className="space-y-3">
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-300">
+            <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors duration-300">
               {website.title}
             </h3>
             
-            <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2">
+            <p className="text-sm text-muted-foreground line-clamp-2">
               {website.description}
             </p>
 
@@ -671,13 +629,13 @@ function WebsiteCard({
               {website.technologies.slice(0, 3).map((tech) => (
                 <span
                   key={tech}
-                  className="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-600"
+                  className="px-2 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border"
                 >
                   {tech}
                 </span>
               ))}
               {website.technologies.length > 3 && (
-                <span className="px-2 py-1 rounded-full text-xs font-medium bg-slate-200 text-slate-600 dark:bg-slate-600 dark:text-slate-300">
+                <span className="px-2 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
                   +{website.technologies.length - 3}
                 </span>
               )}
@@ -687,14 +645,12 @@ function WebsiteCard({
               asChild
               variant="outline"
               size="sm"
-              className="w-full rounded-xl group-hover:bg-purple-50 group-hover:border-purple-200 dark:group-hover:bg-purple-950/50 dark:group-hover:border-purple-700 transition-all duration-300"
+              className="w-full"
             >
               <Link href={website.url} target="_blank" rel="noopener noreferrer">
                 <Globe className="h-4 w-4 mr-2" />
-                <span className="group-hover:translate-x-1 transition-transform duration-200">
-                  Visit Website
-                </span>
-                <ArrowUpRight className="h-4 w-4 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200" />
+                Visit Website
+                <ArrowUpRight className="h-4 w-4 ml-2" />
               </Link>
             </Button>
           </div>

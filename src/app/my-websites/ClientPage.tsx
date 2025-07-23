@@ -22,7 +22,7 @@ export default function ClientPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
+    <main className="min-h-screen bg-background">
       <PageContainer>
         <MyWebsitesClient />
       </PageContainer>

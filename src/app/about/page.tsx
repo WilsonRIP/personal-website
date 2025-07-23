@@ -22,15 +22,49 @@ import {
   Code2,
   Database,
   Settings,
-  TestTube
+  TestTube,
+  LucideIcon
 } from 'lucide-react';
-import { useTheme } from "next-themes";
 
-/* ––––––––– Config  ––––––––– */
+
+/* ––––––––– Types & Interfaces  ––––––––– */
+
+interface Skill {
+  title: string;
+  icon: LucideIcon;
+}
+
+interface DevStackCategory {
+  name: string;
+  icon: LucideIcon;
+  color: string;
+  bgColor: string;
+  items: string[];
+}
+
+interface SocialLink {
+  name: string;
+  url: string;
+  icon: LucideIcon;
+  color: string;
+  bgColor: string;
+}
+
+interface Stat {
+  label: string;
+  value: string;
+}
+
+interface TabItem {
+  value: string;
+  label: string;
+}
+
+/* ––––––––– Constants  ––––––––– */
 
 const NAME = "Luke (WilsonIIRIP)";
 
-const userSkills = [
+const USER_SKILLS: Skill[] = [
   { title: "Professional Full Stack Developer", icon: Code },
   { title: "Creative Coder", icon: Code2 },
   { title: "Photographer", icon: Camera },
@@ -39,7 +73,7 @@ const userSkills = [
   { title: "Content Creator (Streaming & YouTube)", icon: Radio },
 ];
 
-const devStack = [
+const DEV_STACK: DevStackCategory[] = [
   { 
     name: "Frontend", 
     icon: Code,
@@ -77,7 +111,7 @@ const devStack = [
   },
 ];
 
-const socialLinks = [
+const SOCIAL_LINKS: SocialLink[] = [
   {
     name: "YouTube",
     url: "https://www.youtube.com/@wilsonrip",
@@ -108,27 +142,188 @@ const socialLinks = [
   },
 ];
 
-/* ––––––––– Page  ––––––––– */
+const STATS: Stat[] = [
+  { label: "Months Coding", value: "4+" },
+  { label: "Projects", value: "50+" },
+  { label: "Technologies", value: "20+" },
+  { label: "Sparkling Ice ", value: "∞" }
+];
 
-export default function AboutPage() {
-  const [mounted, setMounted] = React.useState(false);
-  const { resolvedTheme } = useTheme();
-  React.useEffect(() => { setMounted(true); }, []);
+const TAB_ITEMS: TabItem[] = [
+  { value: "journey", label: "My Journey" },
+  { value: "skills", label: "Skills" },
+  { value: "stack", label: "Tech Stack" }
+];
+
+/* ––––––––– Utility Functions  ––––––––– */
+
+const getInitials = (name: string): string => {
+  if (!name || typeof name !== 'string') return '';
+  return name.split(" ")
+    .filter(Boolean)
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join("");
+};
+
+const getFirstName = (name: string): string => {
+  if (!name || typeof name !== 'string') return '';
+  return name.split(" ")[0] || '';
+};
+
+/* ––––––––– Components  ––––––––– */
+
+interface SkillCardProps {
+  skill: Skill;
+  index: number;
+}
+
+const SkillCard: React.FC<SkillCardProps> = React.memo(({ skill, index }) => {
+  const IconComponent = skill.icon;
   
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
+      className="group"
+    >
+      <Card className="h-full border shadow-sm hover:shadow-md transition-all duration-300">
+        <CardContent className="p-6 text-center space-y-4">
+          <div className="w-16 h-16 mx-auto bg-blue-50 dark:bg-blue-950/20 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+            <IconComponent className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+          </div>
+          <h3 className="font-semibold text-lg text-foreground leading-tight">
+            {skill.title}
+          </h3>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+});
+
+SkillCard.displayName = 'SkillCard';
+
+interface DevStackCardProps {
+  category: DevStackCategory;
+  index: number;
+}
+
+const DevStackCard: React.FC<DevStackCardProps> = React.memo(({ category, index }) => {
+  const IconComponent = category.icon;
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
+      className="group"
+    >
+      <Card className="h-full border shadow-sm hover:shadow-md transition-all duration-300">
+        <CardHeader className="pb-4">
+          <div className={`w-12 h-12 rounded-lg ${category.bgColor} flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300`}>
+            <IconComponent className={`h-6 w-6 ${category.color}`} />
+          </div>
+          <h3 className="text-xl font-bold text-foreground">
+            {category.name}
+          </h3>
+        </CardHeader>
+        
+        <CardContent className="pt-0">
+          <ul className="space-y-3">
+            {category.items.map((item) => (
+              <li
+                key={item}
+                className="flex items-center text-sm text-muted-foreground"
+              >
+                <CheckCircle className="w-4 h-4 mr-3 text-emerald-500 shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+});
+
+DevStackCard.displayName = 'DevStackCard';
+
+interface SocialLinkProps {
+  social: SocialLink;
+  index: number;
+}
+
+const SocialLink: React.FC<SocialLinkProps> = ({ social, index }) => {
+  const IconComponent = social.icon;
+  
+  return (
+    <motion.a
+      href={social.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.8 + index * 0.1 }}
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.95 }}
+      className={`group flex items-center gap-3 px-6 py-3 rounded-lg bg-muted/50 border hover:shadow-md transition-all duration-300 ${social.bgColor} ${social.color}`}
+    >
+      <IconComponent className="h-5 w-5 transition-colors duration-300" />
+      <span className="font-semibold text-foreground group-hover:text-current transition-colors duration-300">
+        {social.name}
+      </span>
+    </motion.a>
+  );
+};
+
+interface StatCardProps {
+  stat: Stat;
+  index: number;
+}
+
+const StatCard: React.FC<StatCardProps> = ({ stat, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.5 + index * 0.1 }}
+    className="text-center p-3 rounded-lg bg-muted/50"
+  >
+    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stat.value}</div>
+    <div className="text-sm text-muted-foreground">{stat.label}</div>
+  </motion.div>
+);
+
+/* ––––––––– Main Component  ––––––––– */
+
+export default function AboutPage(): React.JSX.Element {
+  const [mounted, setMounted] = React.useState<boolean>(false);
+  
+  React.useEffect(() => { 
+    setMounted(true); 
+  }, []);
+  
+  // Early return for SSR hydration
   if (!mounted) {
     return (
       <main className="min-h-screen bg-background">
         <div className="container mx-auto px-6 py-12">
-          {/* Loading skeleton */}
+          <div className="w-full max-w-4xl mx-auto space-y-16">
+            <div className="text-center space-y-6">
+              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-full w-48 mx-auto animate-pulse"></div>
+              <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto animate-pulse"></div>
+              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-96 mx-auto animate-pulse"></div>
+            </div>
+          </div>
         </div>
       </main>
     );
   }
   
-  const initials = NAME.split(" ")
-    .map((n) => n[0])
-    .slice(0, 2)
-    .join("");
+  const initials = getInitials(NAME);
+  const firstName = getFirstName(NAME);
 
   return (
     <main className="min-h-screen bg-background">
@@ -152,14 +347,14 @@ export default function AboutPage() {
               Get to know me
             </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              About {NAME.split(" ")[0]}
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+              About {firstName}
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              <span className="font-semibold text-blue-600 dark:text-blue-400">Professional Developer</span>
+              <span className="font-semibold">Professional Developer</span>
               <span className="mx-2">•</span>
-              <span className="font-semibold text-emerald-600 dark:text-emerald-400">Creative Mind</span>
+              <span className="font-semibold">Creative Mind</span>
             </p>
           </motion.header>
 
@@ -213,22 +408,8 @@ export default function AboutPage() {
 
                     {/* Quick Stats */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-6">
-                      {[
-                        { label: "Months Coding", value: "4+" },
-                        { label: "Projects", value: "50+" },
-                        { label: "Technologies", value: "20+" },
-                        { label: "Sparkling Ice ", value: "∞" }
-                      ].map((stat, statIndex) => (
-                        <motion.div
-                          key={stat.label}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.5 + statIndex * 0.1 }}
-                          className="text-center p-3 rounded-lg bg-muted/50"
-                        >
-                          <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stat.value}</div>
-                          <div className="text-sm text-muted-foreground">{stat.label}</div>
-                        </motion.div>
+                      {STATS.map((stat, index) => (
+                        <StatCard key={stat.label} stat={stat} index={index} />
                       ))}
                     </div>
                   </div>
@@ -255,11 +436,7 @@ export default function AboutPage() {
 
             <Tabs defaultValue="skills" className="w-full">
               <TabsList className="flex w-full max-w-md mx-auto bg-muted p-1 rounded-lg">
-                {[
-                  { value: "journey", label: "My Journey" },
-                  { value: "skills", label: "Skills" },
-                  { value: "stack", label: "Tech Stack" }
-                ].map((tab) => (
+                {TAB_ITEMS.map((tab) => (
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
@@ -281,10 +458,7 @@ export default function AboutPage() {
                     <CardContent className="p-8">
                       <div className="prose prose-lg max-w-none text-muted-foreground leading-relaxed">
                         <p className="text-xl">
-                          My journey into code began with a fascination for how websites worked. After mastering HTML, CSS, and vanilla JS, I embraced React and the Next.js framework, then ventured server-side with Node and Express.
-                        </p>
-                        <p className="text-xl">
-                          Today I&apos;m experimenting with Supabase and advanced testing strategies while aiming to build delightful, performant apps that make a difference in users&apos; lives.
+                        Full‑stack dev focused on TypeScript/React/Next.js, building fast, delightful UIs with Tailwind CSS v4 and shipping backends on Node/Express + Supabase. Experimenting with AI tooling and robust testing to ship with confidence.
                         </p>
                       </div>
                     </CardContent>
@@ -300,30 +474,9 @@ export default function AboutPage() {
                   transition={{ duration: 0.5 }}
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
-                  {userSkills.map((skill, index) => {
-                    const IconComponent = skill.icon;
-                    return (
-                      <motion.div
-                        key={skill.title}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        whileHover={{ y: -4 }}
-                        className="group"
-                      >
-                        <Card className="h-full border shadow-sm hover:shadow-md transition-all duration-300">
-                          <CardContent className="p-6 text-center space-y-4">
-                            <div className="w-16 h-16 mx-auto bg-blue-50 dark:bg-blue-950/20 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                              <IconComponent className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                            </div>
-                            <h3 className="font-semibold text-lg text-foreground leading-tight">
-                              {skill.title}
-                            </h3>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    );
-                  })}
+                  {USER_SKILLS.map((skill, index) => (
+                    <SkillCard key={skill.title} skill={skill} index={index} />
+                  ))}
                 </motion.div>
               </TabsContent>
 
@@ -342,44 +495,9 @@ export default function AboutPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {devStack.map((category, index) => {
-                      const IconComponent = category.icon;
-                      return (
-                        <motion.div
-                          key={category.name}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          whileHover={{ y: -4 }}
-                          className="group"
-                        >
-                          <Card className="h-full border shadow-sm hover:shadow-md transition-all duration-300">
-                            <CardHeader className="pb-4">
-                              <div className={`w-12 h-12 rounded-lg ${category.bgColor} flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300`}>
-                                <IconComponent className={`h-6 w-6 ${category.color}`} />
-                              </div>
-                              <h3 className="text-xl font-bold text-foreground">
-                                {category.name}
-                              </h3>
-                            </CardHeader>
-                            
-                            <CardContent className="pt-0">
-                              <ul className="space-y-3">
-                                {category.items.map((item) => (
-                                  <li
-                                    key={item}
-                                    className="flex items-center text-sm text-muted-foreground"
-                                  >
-                                    <CheckCircle className="w-4 h-4 mr-3 text-emerald-500 shrink-0" />
-                                    {item}
-                                  </li>
-                                ))}
-                              </ul>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      );
-                    })}
+                    {DEV_STACK.map((category, index) => (
+                      <DevStackCard key={category.name} category={category} index={index} />
+                    ))}
                   </div>
                 </motion.div>
               </TabsContent>
@@ -409,28 +527,9 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
             >
-              {socialLinks.map((social, index) => {
-                const IconComponent = social.icon;
-                return (
-                  <motion.a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 + index * 0.1 }}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`group flex items-center gap-3 px-6 py-3 rounded-lg bg-muted/50 border hover:shadow-md transition-all duration-300 ${social.bgColor} ${social.color}`}
-                  >
-                    <IconComponent className="h-5 w-5 transition-colors duration-300" />
-                    <span className="font-semibold text-foreground group-hover:text-current transition-colors duration-300">
-                      {social.name}
-                    </span>
-                  </motion.a>
-                );
-              })}
+              {SOCIAL_LINKS.map((social, index) => (
+                <SocialLink key={social.name} social={social} index={index} />
+              ))}
             </motion.div>
 
             {/* CTA Button */}

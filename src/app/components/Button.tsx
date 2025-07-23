@@ -3,12 +3,7 @@
 import { motion, Transition } from "framer-motion";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { Poetsen_One } from "next/font/google";
 
-const poetsen = Poetsen_One({
-  weight: "400",
-  subsets: ["latin"],
-});
 
 // simple size presets (padding + base font size)
 const sizeStyles: Record<"sm" | "md" | "lg", string> = {
@@ -89,7 +84,6 @@ export default function Button({
     <MotionTag
       {...tagProps}
       className={`
-        ${poetsen.className}
         inline-block
         font-semibold
         cursor-pointer

@@ -28,7 +28,7 @@ export default function CookiePolicyPage() {
     // Applying the same gradient background as RootLayout
     <main className="flex min-h-screen flex-col items-center p-6 sm:p-12 md:p-16 lg:p-24 bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10 text-slate-900 dark:text-slate-200">
       <div className="w-full max-w-4xl space-y-8">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 title-komikax" style={{ fontFamily: "KOMIKAX, sans-serif" }}>
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8">
           Cookie Policy
         </h1>
 

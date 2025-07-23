@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Geist_Mono } from "next/font/google";
 import { Alfa_Slab_One } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -11,8 +11,8 @@ import { ThemeProvider } from "@/app/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 
 // Optimize font loading
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
 });
@@ -98,7 +98,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${alfaSlabOne.variable} ${aristaProBold.variable} antialiased bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10`}
+        className={`${archivo.variable} ${geistMono.variable} ${alfaSlabOne.variable} ${aristaProBold.variable} antialiased bg-gradient-to-br from-background via-blue-900/10 to-teal-900/20 dark:from-slate-900 dark:via-teal-900/20 dark:to-blue-900/10`}
       >
         <ThemeProvider
           attribute="class"

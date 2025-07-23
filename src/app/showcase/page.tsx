@@ -101,23 +101,63 @@ export default function PortfolioShowcase() {
     <div className="container mx-auto px-4 py-12">
       {/* Hero Section */}
       <motion.div 
-        className="text-center mb-16"
+        className="text-center mb-16 lg:mb-20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.8 }}
       >
-        <h1 
-          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent leading-[1.1] tracking-tight whitespace-normal break-words px-2 md:px-0 pt-6"
-          style={{ fontFamily: "KOMIKAX, sans-serif" }}
+        {/* Welcome Badge */}
+        <motion.div
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm font-medium mb-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2 }}
         >
-          Client Projects
-        </h1>
-        {/* Decorative gradient bar */}
-        <div className="mx-auto mb-6 h-2 w-32 md:w-48 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 opacity-80" />
-        <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-600 dark:text-slate-400">
-          A showcase of professional projects I&apos;ve developed for clients, 
-          demonstrating my expertise in creating tailored digital solutions.
-        </p>
+          <Briefcase className="h-4 w-4" />
+          Professional Portfolio
+        </motion.div>
+
+        {/* Main Title */}
+        <motion.h1 
+          className="scroll-m-20 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 lg:mb-8 bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          Client Showcase
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p 
+          className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          A curated collection of <span className="font-semibold text-blue-600 dark:text-blue-400">professional projects</span> I&apos;ve developed for clients, 
+          showcasing my expertise in creating <span className="font-semibold text-emerald-600 dark:text-emerald-400">tailored digital solutions</span> that drive results.
+        </motion.p>
+
+        {/* Stats */}
+        <motion.div 
+          className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+            <span>Custom Solutions</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+            <span>Modern Technologies</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-violet-500"></div>
+            <span>Client-Focused</span>
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* Projects List */}
@@ -129,24 +169,18 @@ export default function PortfolioShowcase() {
       >
         {projects.map((project) => {
           const IconComponent = projectIcons[project.icon];
-          const statusColors = {
-            "In Development": "bg-amber-500/20 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
-            "Completed": "bg-green-500/20 text-green-600 dark:bg-green-500/10 dark:text-green-400",
-            "Planned": "bg-blue-500/20 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"
-          };
           
           return (
             <motion.div 
               key={project.id}
-              className="bg-white/10 dark:bg-slate-800/50 backdrop-blur-sm rounded-lg overflow-hidden border border-slate-200/20 dark:border-slate-700/30 shadow-md hover:shadow-lg transition-all duration-300"
+              className="bg-card border rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
               variants={itemVariants}
-              whileHover={{ y: -4, x: 0 }}
             >
               <div className="p-4 md:p-5">
                 <div className="flex flex-col md:flex-row gap-4 md:gap-5">
                   {/* Project Icon */}
-                  <div className={`flex-shrink-0 w-12 h-12 rounded-md ${project.color === 'green' ? 'bg-green-100 dark:bg-green-900/20' : 'bg-pink-100 dark:bg-pink-900/20'} flex items-center justify-center`}>
-                    <IconComponent className={`h-6 w-6 ${project.color === 'green' ? 'text-green-500 dark:text-green-400' : 'text-pink-500 dark:text-pink-400'}`} />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-md bg-muted flex items-center justify-center">
+                    <IconComponent className="h-6 w-6 text-foreground" />
                   </div>
                   
                   {/* Project Content */}
@@ -154,18 +188,18 @@ export default function PortfolioShowcase() {
                     {/* Header with Status */}
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                       <div>
-                        <h2 className="text-xl font-bold text-slate-900 dark:text-white font-flowers-kingdom mb-1">
+                        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
                           {project.name}
                         </h2>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[project.status]}`}>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
                             <Clock className="h-3 w-3 mr-1" />
                             {project.status}
                           </span>
-                          <span className="text-xs text-slate-500 dark:text-slate-400">
+                          <span className="text-xs text-muted-foreground">
                             Client: {project.client}
                           </span>
-                          <span className="text-xs text-slate-500 dark:text-slate-400">
+                          <span className="text-xs text-muted-foreground">
                             {project.year}
                           </span>
                         </div>
@@ -173,30 +207,30 @@ export default function PortfolioShowcase() {
                     </div>
                     
                     {/* Description */}
-                    <p className="text-slate-600 dark:text-slate-300 mb-4 text-sm">
+                    <p className="leading-7 [&:not(:first-child)]:mt-6 mb-4">
                       {project.description}
                     </p>
                     
                     {/* Role */}
                     <div className="mb-2">
-                      <h3 className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 font-medium">
+                      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                         My Role
                       </h3>
-                      <p className="text-slate-700 dark:text-slate-200 font-medium text-sm">
+                      <p className="text-lg font-semibold">
                         {project.role}
                       </p>
                     </div>
                     
                     {/* Technologies */}
                     <div className="mb-3">
-                      <h3 className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 font-medium">
+                      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                         Technologies
                       </h3>
                       <div className="flex flex-wrap gap-1">
                         {project.technologies.map((tech) => (
                           <span 
                             key={tech} 
-                            className={`px-2 py-0.5 ${project.color === 'green' ? 'bg-green-100/20 dark:bg-green-900/20 text-green-600 dark:text-green-400' : 'bg-pink-100/20 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400'} text-xs rounded-full`}
+                            className="px-2 py-0.5 bg-muted text-muted-foreground text-xs rounded-full border border-border"
                           >
                             {tech}
                           </span>
@@ -206,14 +240,14 @@ export default function PortfolioShowcase() {
                     
                     {/* Features */}
                     <div className="mb-2">
-                      <h3 className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1 font-medium">
+                      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
                         Key Features
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-0.5">
                         {project.features.map((feature) => (
                           <div key={feature} className="flex items-start">
-                            <div className={`mt-1 mr-2 h-1 w-1 rounded-full ${project.color === 'green' ? 'bg-green-500' : 'bg-pink-500'}`}></div>
-                            <span className="text-slate-600 dark:text-slate-300 text-xs">{feature}</span>
+                            <div className="mt-1 mr-2 h-1 w-1 rounded-full bg-foreground"></div>
+                            <span className="text-muted-foreground text-xs">{feature}</span>
                           </div>
                         ))}
                       </div>
@@ -228,20 +262,19 @@ export default function PortfolioShowcase() {
 
       {/* Call to Action */}
       <motion.div 
-        className="text-center max-w-2xl mx-auto p-8 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl border border-blue-500/20 dark:border-blue-500/10"
+        className="text-center max-w-2xl mx-auto p-8 bg-card border rounded-lg shadow-sm"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.6 }}
       >
-        <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white font-arista">
+        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mb-4">
           Interested in working together?
         </h2>
-        <p className="text-slate-600 dark:text-slate-300 mb-6">
+        <p className="text-xl text-muted-foreground mb-6">
           I&apos;m always open to new projects and collaborations. Let&apos;s create something amazing together!
         </p>
         <Button 
           asChild
-          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl border-0"
         >
           <Link href="/contact" className="flex items-center gap-2">
             Get in Touch

@@ -1,6 +1,5 @@
 "use client";
 
-import { Mulish } from "next/font/google";
 import { useState, useEffect, memo } from "react";
 import { socialLinks, SocialLink } from "../data/socials";
 import Link from "next/link";
@@ -8,10 +7,7 @@ import Image from "next/image";
 import { motion, LazyMotion, domAnimation } from "framer-motion";
 import { useTheme } from "next-themes";
 
-const mulish = Mulish({
-  weight: ["400", "600", "700"],
-  subsets: ["latin"],
-});
+
 
 // Useful links for the footer
 const footerLinks = [
@@ -50,7 +46,7 @@ const Footer = memo(function Footer() {
   // Prevent hydration mismatch by rendering a placeholder until client-side
   if (!mounted) {
     return (
-      <footer className={`${mulish.className} py-16`}>
+      <footer className={`py-16`}>
         <div className="container mx-auto px-6 md:px-8">
           <div className="animate-pulse">
             <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-40 mb-8"></div>
@@ -64,7 +60,7 @@ const Footer = memo(function Footer() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <footer className={`${mulish.className} ${isDark ? 'bg-gradient-to-br from-slate-900 via-teal-900/20 to-blue-900/10 text-white' : 'bg-gradient-to-br from-background via-blue-900/30 to-teal-900/30 text-gray-800'} py-16 transition-colors duration-300`}>
+      <footer className={`${isDark ? 'bg-gradient-to-br from-slate-900 via-teal-900/20 to-blue-900/10 text-white' : 'bg-gradient-to-br from-background via-blue-900/30 to-teal-900/30 text-gray-800'} py-16 transition-colors duration-300`}>
         <div className="container mx-auto px-6 md:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Left Column - Website Info */}
@@ -74,7 +70,7 @@ const Footer = memo(function Footer() {
               transition={{ duration: 0.5 }}
               className="space-y-6"
             >
-            <h2 className="text-2xl font-arista-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+            <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
               Wilson&apos;s Website
             </h2>
             <p className={`text-sm max-w-md transition-colors duration-300 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>

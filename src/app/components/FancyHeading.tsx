@@ -18,9 +18,9 @@ export default function FancyHeading({
   withAnimation = false,
 }: FancyHeadingProps) {
   const fontClass = {
-    fancy: "title-fancy",
-    bold: "title-bold",
-    stylish: "title-stylish",
+    fancy: "font-extrabold tracking-tight",
+    bold: "font-bold tracking-normal",
+    stylish: "font-semibold tracking-wide",
   }[variant];
 
   const animationClass = withAnimation ? "slide-up" : "";
