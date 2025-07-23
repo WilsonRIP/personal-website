@@ -3,8 +3,7 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { GithubRepo } from "@/lib/github";
-import { useInView } from "react-intersection-observer";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Card,
   CardContent,
@@ -13,6 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 import { 
   Star, 
   GitFork, 
@@ -94,41 +101,28 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
     });
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   return (
     <div id="projects-section" className="space-y-8">
-      {/* Enhanced Header with Filters */}
+      {/* Header with Filters */}
       <motion.div
         className="space-y-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
         {/* Title Section */}
         <motion.div 
           className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-          variants={itemVariants}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
         >
           <div className="flex items-center space-x-3">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-indigo-500/20 backdrop-blur-sm">
+              <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
                 <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-slate-900 to-blue-900 dark:from-white dark:to-blue-200 bg-clip-text text-transparent">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground">
                 Repository Showcase
               </h2>
             </div>
@@ -137,7 +131,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
                 {filteredRepos.length}
               </span>
               {filteredRepos.length !== initialRepos.length && (
-                <span className="text-sm text-slate-500 dark:text-slate-400">
+                <span className="text-sm text-muted-foreground">
                   of {initialRepos.length}
                 </span>
               )}
@@ -145,7 +139,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
           </div>
 
           {/* Results Summary */}
-          <div className="text-sm text-slate-600 dark:text-slate-400">
+          <div className="text-sm text-muted-foreground">
             {searchQuery || selectedLanguage !== "all" ? (
               <span>Filtered results</span>
             ) : (
@@ -156,67 +150,67 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
 
         {/* Filters and Search */}
         <motion.div 
-          className="flex flex-col lg:flex-row gap-4 p-6 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-lg"
-          variants={itemVariants}
+          className="flex flex-col lg:flex-row gap-4 p-6 bg-card border rounded-lg shadow-sm"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
         >
           {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <input
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+            <Input
               type="text"
               placeholder="Search repositories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="pl-10"
             />
           </div>
 
           {/* Language Filter */}
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-slate-500" />
-            <select
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value)}
-              className="px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 min-w-[120px]"
-            >
-              <option value="all">All Languages</option>
-              {languages.map(lang => (
-                <option key={lang} value={lang}>{lang}</option>
-              ))}
-            </select>
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+              <SelectTrigger className="min-w-[140px]">
+                <SelectValue placeholder="All Languages" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Languages</SelectItem>
+                {languages.map(lang => (
+                  <SelectItem key={lang} value={lang}>{lang}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Sort Options */}
           <div className="flex items-center gap-2">
-            <span className="text-sm text-slate-500 whitespace-nowrap">Sort by:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "updated" | "stars" | "name")}
-              className="px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-            >
-              <option value="updated">Last Updated</option>
-              <option value="stars">Stars</option>
-              <option value="name">Name</option>
-            </select>
+            <span className="text-sm text-muted-foreground whitespace-nowrap">Sort by:</span>
+            <Select value={sortBy} onValueChange={(value) => setSortBy(value as "updated" | "stars" | "name")}>
+              <SelectTrigger className="min-w-[140px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="updated">Last Updated</SelectItem>
+                <SelectItem value="stars">Stars</SelectItem>
+                <SelectItem value="name">Name</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </motion.div>
       </motion.div>
 
       {/* Projects Grid */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`${currentPage}-${searchQuery}-${selectedLanguage}-${sortBy}`}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-        >
-          {currentRepos.map((repo, index) => (
-            <ProjectCard key={repo.id} repo={repo} index={index} />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+      >
+        {currentRepos.map((repo, index) => (
+          <ProjectCard key={repo.id} repo={repo} index={index} />
+        ))}
+      </motion.div>
 
       {/* No Results State */}
       {filteredRepos.length === 0 && (
@@ -225,13 +219,13 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
-            <Search className="h-8 w-8 text-slate-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
+            <Search className="h-8 w-8 text-muted-foreground" />
           </div>
-          <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-300 mb-2">
+          <h3 className="text-xl font-semibold text-foreground mb-2">
             No repositories found
           </h3>
-          <p className="text-slate-500 dark:text-slate-400 mb-4">
+          <p className="text-muted-foreground mb-4">
             Try adjusting your search terms or filters
           </p>
           <Button
@@ -241,29 +235,29 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
               setSortBy("updated");
             }}
             variant="outline"
-            className="rounded-xl"
+            className="rounded-lg hover:scale-105 hover:shadow-md transition-all duration-200"
           >
             Clear filters
           </Button>
         </motion.div>
       )}
 
-      {/* Enhanced Pagination */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <motion.div
           className="flex justify-center mt-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.5 }}
         >
-          <nav className="inline-flex items-center rounded-2xl shadow-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-2 border border-slate-200/50 dark:border-slate-700/50">
+          <nav className="inline-flex items-center rounded-lg shadow-sm bg-card p-2 border">
             {/* Previous Button */}
             <Button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               variant="ghost"
               size="sm"
-              className="rounded-xl px-3 py-2 disabled:opacity-40"
+              className="rounded-lg px-3 py-2 disabled:opacity-40 hover:scale-105 hover:bg-accent transition-all duration-200"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -288,11 +282,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
                     onClick={() => handlePageChange(pageNum)}
                     variant={currentPage === pageNum ? "default" : "ghost"}
                     size="sm"
-                    className={`w-10 h-10 rounded-xl mx-1 ${
-                      currentPage === pageNum
-                        ? "bg-blue-500 text-white shadow-lg"
-                        : "hover:bg-slate-100 dark:hover:bg-slate-700"
-                    }`}
+                    className="w-10 h-10 rounded-lg mx-1 hover:scale-105 hover:shadow-md transition-all duration-200"
                   >
                     {pageNum}
                   </Button>
@@ -306,7 +296,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
               disabled={currentPage === totalPages}
               variant="ghost"
               size="sm"
-              className="rounded-xl px-3 py-2 disabled:opacity-40"
+              className="rounded-lg px-3 py-2 disabled:opacity-40 hover:scale-105 hover:bg-accent transition-all duration-200"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -318,51 +308,32 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
 }
 
 function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
-  const { ref, inView } = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        delay: index * 0.1,
-      },
-    },
-  };
-
-  // Enhanced language color mapping
+  // Language color mapping
   const getLanguageColor = (language: string | null) => {
-    if (!language) return { bg: "#8B8B8B", text: "#FFFFFF" };
+    if (!language) return "#8B8B8B";
 
-    const colorMap: Record<string, { bg: string; text: string }> = {
-      JavaScript: { bg: "#F7DF1E", text: "#000000" },
-      TypeScript: { bg: "#3178C6", text: "#FFFFFF" },
-      Python: { bg: "#3776AB", text: "#FFFFFF" },
-      Java: { bg: "#007396", text: "#FFFFFF" },
-      "C#": { bg: "#239120", text: "#FFFFFF" },
-      PHP: { bg: "#777BB4", text: "#FFFFFF" },
-      "C++": { bg: "#00599C", text: "#FFFFFF" },
-      Ruby: { bg: "#CC342D", text: "#FFFFFF" },
-      Swift: { bg: "#F05138", text: "#FFFFFF" },
-      Go: { bg: "#00ADD8", text: "#FFFFFF" },
-      Kotlin: { bg: "#7F52FF", text: "#FFFFFF" },
-      Rust: { bg: "#DEA584", text: "#000000" },
-      HTML: { bg: "#E34F26", text: "#FFFFFF" },
-      CSS: { bg: "#1572B6", text: "#FFFFFF" },
-      Shell: { bg: "#89E051", text: "#000000" },
-      Vue: { bg: "#4FC08D", text: "#FFFFFF" },
-      React: { bg: "#61DAFB", text: "#000000" },
+    const colorMap: Record<string, string> = {
+      JavaScript: "#F7DF1E",
+      TypeScript: "#3178C6",
+      Python: "#3776AB",
+      Java: "#007396",
+      "C#": "#239120",
+      PHP: "#777BB4",
+      "C++": "#00599C",
+      Ruby: "#CC342D",
+      Swift: "#F05138",
+      Go: "#00ADD8",
+      Kotlin: "#7F52FF",
+      Rust: "#DEA584",
+      HTML: "#E34F26",
+      CSS: "#1572B6",
+      Shell: "#89E051",
+      Vue: "#4FC08D",
+      React: "#61DAFB",
     };
 
-    return colorMap[language] || { bg: "#8B8B8B", text: "#FFFFFF" };
+    return colorMap[language] || "#8B8B8B";
   };
-
-  const languageColors = getLanguageColor(repo.language);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -378,80 +349,56 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
 
   return (
     <motion.div
-      ref={ref}
-      variants={cardVariants}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ y: -4 }}
+      className="group h-full"
     >
-      <Card className="group relative overflow-hidden h-full flex flex-col transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/10 border-0 shadow-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:scale-[1.02]">
-        {/* Enhanced background gradient */}
-        <div
-          className="absolute top-0 right-0 w-40 h-40 -mr-20 -mt-20 rounded-full opacity-5 group-hover:opacity-15 blur-2xl transition-all duration-500"
-          style={{ backgroundColor: languageColors.bg }}
-        />
-
-        <CardHeader className="relative z-10 pb-3 pt-4 px-5">
+      <Card className="h-full border shadow-sm hover:shadow-md transition-all duration-300">
+        <CardHeader className="pb-3 pt-4 px-5">
           {/* Language Badge */}
           {repo.language && (
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <div
                   className="w-3 h-3 rounded-full shadow-sm"
-                  style={{ backgroundColor: languageColors.bg }}
+                  style={{ backgroundColor: getLanguageColor(repo.language) }}
                 />
-                <span 
-                  className="text-xs font-bold px-2 py-1 rounded-full shadow-sm"
-                  style={{
-                    backgroundColor: languageColors.bg,
-                    color: languageColors.text
-                  }}
-                >
+                <span className="text-xs font-bold px-2 py-1 rounded-full shadow-sm bg-muted">
                   {repo.language}
                 </span>
               </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+              <div className="text-xs text-muted-foreground flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 {formatDate(repo.pushed_at)}
               </div>
             </div>
           )}
 
-          <CardTitle className="text-lg font-bold text-slate-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 leading-tight">
+          <CardTitle className="text-lg font-bold text-foreground leading-tight">
             {repo.name}
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="relative z-10 flex-grow px-5 py-0">
-          <CardDescription className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed line-clamp-3 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors duration-300">
+        <CardContent className="flex-grow px-5 py-0">
+          <CardDescription className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
             {repo.description || "No description provided"}
           </CardDescription>
         </CardContent>
 
-        <CardFooter className="relative z-10 flex flex-col gap-4 px-5 py-4 mt-auto">
+        <CardFooter className="flex flex-col gap-4 px-5 py-4 mt-auto">
           {/* Stats */}
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-4">
-              <span className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1 group-hover:text-amber-500 dark:group-hover:text-amber-400 transition-colors duration-300">
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <Star className="h-3.5 w-3.5" />
                 {repo.stargazers_count}
               </span>
-              <span className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors duration-300">
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <GitFork className="h-3.5 w-3.5" />
                 {repo.forks_count}
               </span>
-            </div>
-            
-            {/* Quality indicators */}
-            <div className="flex items-center gap-1">
-              {repo.stargazers_count > 5 && (
-                <div className="w-2 h-2 rounded-full bg-amber-400" title="Popular repository" />
-              )}
-              {repo.description && (
-                <div className="w-2 h-2 rounded-full bg-green-400" title="Well documented" />
-              )}
-              {repo.homepage && (
-                <div className="w-2 h-2 rounded-full bg-blue-400" title="Has live demo" />
-              )}
             </div>
           </div>
 
@@ -461,9 +408,9 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
               href={repo.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-xl transition-all duration-200"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-foreground bg-muted hover:bg-muted/80 hover:scale-105 hover:shadow-md rounded-lg transition-all duration-200 group/button"
             >
-              <Code className="h-4 w-4" />
+              <Code className="h-4 w-4 group-hover/button:scale-110 transition-transform duration-200" />
               Code
             </Link>
 
@@ -472,11 +419,11 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
                 href={repo.homepage}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-200"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-background bg-foreground hover:bg-foreground/90 hover:scale-105 hover:shadow-lg rounded-lg transition-all duration-200 group/button"
               >
-                <Eye className="h-4 w-4" />
+                <Eye className="h-4 w-4 group-hover/button:scale-110 transition-transform duration-200" />
                 Live
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="h-3 w-3 group-hover/button:translate-x-0.5 group-hover/button:-translate-y-0.5 transition-transform duration-200" />
               </Link>
             )}
           </div>
