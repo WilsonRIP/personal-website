@@ -46,12 +46,18 @@ interface ProjectsListProps {
 }
 
 export default function ProjectsList({ initialRepos }: ProjectsListProps) {
+  const [mounted, setMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"updated" | "stars" | "name">("updated");
   
   const reposPerPage = 6;
+
+  // Ensure client-side hydration
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Get unique languages for filter
   const languages = useMemo(() => {
@@ -153,19 +159,97 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
     return pages;
   };
 
+  // Show loading state during SSR to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <div id="projects-section" className="space-y-8">
+        {/* Header with Filters */}
+        <div className="space-y-6">
+          {/* Title Section */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
+                  <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                  Repository Showcase
+                </h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center justify-center px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-200">
+                  {initialRepos.length}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Filters and Search */}
+          <div className="flex flex-col lg:flex-row gap-4 p-6 bg-card border rounded-lg shadow-sm">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+              <Input
+                type="text"
+                placeholder="Search repositories..."
+                className="pl-10"
+                disabled
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <Filter className="h-4 w-4 text-muted-foreground" />
+              <Select disabled>
+                <SelectTrigger className="min-w-[140px]">
+                  <SelectValue placeholder="All Languages" />
+                </SelectTrigger>
+              </Select>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground whitespace-nowrap">Sort by:</span>
+              <Select disabled>
+                <SelectTrigger className="min-w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+              </Select>
+            </div>
+          </div>
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {initialRepos.slice(0, 6).map((repo, index) => (
+            <ProjectCard key={repo.id} repo={repo} index={index} />
+          ))}
+        </div>
+
+        {/* Pagination Skeleton */}
+        {Math.ceil(initialRepos.length / 6) > 1 && (
+          <div className="flex justify-center mt-12">
+            <div className="flex items-center gap-2">
+              <div className="h-10 w-10 bg-muted rounded-md animate-pulse"></div>
+              <div className="h-10 w-10 bg-muted rounded-md animate-pulse"></div>
+              <div className="h-10 w-10 bg-muted rounded-md animate-pulse"></div>
+              <div className="h-10 w-10 bg-muted rounded-md animate-pulse"></div>
+              <div className="h-10 w-10 bg-muted rounded-md animate-pulse"></div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div id="projects-section" className="space-y-8">
       {/* Header with Filters */}
       <motion.div
         className="space-y-6"
-        initial={{ opacity: 0, y: 20 }}
+        initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
         {/* Title Section */}
         <motion.div 
           className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-          initial={{ opacity: 0, y: 20 }}
+          initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
@@ -203,7 +287,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
         {/* Filters and Search */}
         <motion.div 
           className="flex flex-col lg:flex-row gap-4 p-6 bg-card border rounded-lg shadow-sm"
-          initial={{ opacity: 0, y: 20 }}
+          initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
@@ -255,7 +339,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
       {/* Projects Grid */}
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        initial={{ opacity: 0, y: 20 }}
+        initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
       >
@@ -268,7 +352,7 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
       {filteredRepos.length === 0 && (
         <motion.div
           className="text-center py-16"
-          initial={{ opacity: 0, y: 20 }}
+          initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
@@ -295,10 +379,10 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
       )}
 
       {/* Pagination */}
-      {totalPages > 1 && (
+      {totalPages > 1 && mounted && (
         <motion.div
           className="flex justify-center mt-12"
-          initial={{ opacity: 0, y: 20 }}
+          initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
@@ -342,6 +426,12 @@ export default function ProjectsList({ initialRepos }: ProjectsListProps) {
 }
 
 function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
+  const [mounted, setMounted] = useState(false);
+  
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Language color mapping
   const getLanguageColor = (language: string | null) => {
     if (!language) return "#8B8B8B";
@@ -383,9 +473,9 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
+      transition={{ delay: mounted ? index * 0.1 : 0 }}
       whileHover={{ y: -4 }}
       className="group h-full"
     >

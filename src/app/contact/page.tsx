@@ -231,9 +231,9 @@ export default function ContactPage() {
               </h1>
 
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Have a question or want to work together? I&apos;d love to hear from you.
+                Ready to bring your ideas to life? Whether you have a project in mind, want to collaborate, or just want to say hello - I&apos;m here to help!
                 <span className="block mt-2 text-lg text-muted-foreground">
-                  Let&apos;s create something amazing together! ✨
+                  Let&apos;s turn your vision into reality together! 🚀
                 </span>
               </p>
             </div>
@@ -277,8 +277,8 @@ export default function ContactPage() {
                   </div>
 
                   <p className="leading-7 [&:not(:first-child)]:mt-6">
-                    I&apos;m always excited to discuss new projects and opportunities. 
-                    Feel free to reach out through any of these channels!
+                    I&apos;m passionate about creating exceptional digital experiences and love connecting with fellow developers, creators, and innovators. 
+                    Drop me a line through any of these channels - I&apos;d love to hear from you!
                   </p>
 
                   <div className="space-y-4">
@@ -342,7 +342,7 @@ export default function ContactPage() {
                       <Heart className="h-6 w-6 text-violet-600 dark:text-violet-400" />
                     </div>
                     <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                      Connect with me
+                      Let&apos;s stay connected
                     </h3>
                   </div>
 
@@ -415,7 +415,7 @@ export default function ContactPage() {
                           Message sent successfully! 🎉
                         </p>
                         <p className="text-sm text-emerald-600 dark:text-emerald-300">
-                          I&apos;ll get back to you within 24 hours.
+                          I&apos;ll get back to you within 24 hours with next steps and ideas!
                         </p>
                       </div>
                     </div>
@@ -437,7 +437,7 @@ export default function ContactPage() {
                           Oops! Something went wrong
                         </p>
                         <p className="text-sm text-red-600 dark:text-red-300">
-                          Please try again or contact me directly via email.
+                          Please try again or reach out directly via email - I&apos;m here to help!
                         </p>
                       </div>
                     </div>
@@ -522,7 +522,7 @@ export default function ContactPage() {
                       value={formData.subject}
                       onChange={handleChange}
 
-                      placeholder="Let&apos;s discuss your amazing project..."
+                      placeholder="What can I help you build today?"
                       className={cn(
                         "h-12 text-base",
                         errors.subject && "border-destructive focus-visible:ring-destructive/20"
@@ -553,7 +553,7 @@ export default function ContactPage() {
                       value={formData.message}
                       onChange={handleChange}
 
-                      placeholder="Tell me about your project, ideas, or just say hello! I&apos;d love to hear from you..."
+                      placeholder="Share your vision, ask questions, or just introduce yourself! I&apos;m excited to learn about your project and see how we can work together to create something incredible..."
                       className={cn(
                         "resize-none",
                         errors.message && "border-destructive focus-visible:ring-destructive/20"

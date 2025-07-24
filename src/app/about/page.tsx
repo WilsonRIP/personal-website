@@ -289,7 +289,7 @@ const StatCard: React.FC<StatCardProps> = ({ stat, index }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.5 + index * 0.1 }}
-    className="text-center p-3 rounded-lg bg-muted/50"
+    className="text-center p-4 rounded-lg bg-transparent border border-blue-200/50 dark:border-blue-800/50 backdrop-blur-sm hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300"
   >
     <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stat.value}</div>
     <div className="text-sm text-muted-foreground">{stat.label}</div>
@@ -440,7 +440,7 @@ export default function AboutPage(): React.JSX.Element {
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200"
+                    className="flex-1 px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:scale-105 hover:shadow-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-lg data-[state=active]:scale-105"
                   >
                     {tab.label}
                   </TabsTrigger>

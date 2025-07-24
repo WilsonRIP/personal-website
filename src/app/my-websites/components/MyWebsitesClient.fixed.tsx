@@ -453,7 +453,7 @@ function FeaturedWebsiteCard({ website, index }: { website: Website; index: numb
             <div className="pt-4">
               <Button
                 asChild
-                className="px-8 py-3 text-base"
+                className="px-8 py-3 text-base bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <Link href={website.url} target="_blank" rel="noopener noreferrer">
                   <Globe className="h-5 w-5 mr-2" />
