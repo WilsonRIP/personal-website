@@ -32,6 +32,7 @@ const navLinks = [
   { href: "/contact", label: "Contact" },
   { href: "/my-websites", label: "My Websites", shortLabel: "Websites" },
   { href: "/showcase", label: "Showcase" },
+  { href: "/store", label: "Store" },
 ];
 
 export default function Navbar() {
@@ -137,7 +138,7 @@ export default function Navbar() {
                       href={href}
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        "font-bold text-sm lg:text-base font-medium whitespace-nowrap relative group transition-colors duration-200 ease-in-out",
+                        "font-bold text-sm lg:text-base whitespace-nowrap relative group transition-colors duration-200 ease-in-out",
                         isActive
                           ? "text-teal-500 dark:text-teal-400 bg-teal-400/10 dark:bg-teal-400/15"
                           : "text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-300 hover:bg-teal-400/10 dark:hover:bg-teal-400/15"
@@ -224,7 +225,7 @@ export default function Navbar() {
                             <Link
                               href={href}
                                                   className={cn(
-                      "font-bold block py-3 mx-4 text-base font-medium rounded-md transition-all duration-200 ease-in-out",
+                      "font-bold block py-3 mx-4 text-base rounded-md transition-all duration-200 ease-in-out",
                                 isActive
                                   ? "text-teal-600 dark:text-teal-400 bg-teal-400/20 dark:bg-teal-400/20 scale-105 shadow-inner"
                                   : "text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-300 hover:bg-teal-400/10 dark:hover:bg-teal-400/15 hover:translate-x-1"

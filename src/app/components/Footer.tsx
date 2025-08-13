@@ -18,6 +18,7 @@ const footerLinks = [
       { name: "Projects", url: "/projects" },
       { name: "About", url: "/about" },
       { name: "Contact", url: "/contact" },
+      { name: "Store", url: "/store" },
     ],
   },
   {
