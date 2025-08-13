@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
 
 // Define the structure for a timeline item
 interface TimelineItem {
@@ -70,43 +71,61 @@ const itemVariants = {
 };
 
 export default function ActivityTimeline() {
+  const formatDate = (iso: string) => {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso;
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  };
+
   return (
-    <div className="w-full max-w-3xl mx-auto mt-12 p-4">
-      <h2 className="text-2xl font-bold mb-8 text-center text-theme-primary">
-        Recent Activity
+    <div className="w-full max-w-4xl mx-auto mt-12 px-4 sm:px-6">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">
+        <span className="bg-gradient-to-r from-[#14b8a6] to-[#3b82f6] bg-clip-text text-transparent">Recent Activity</span>
       </h2>
+
       <motion.div
-        className="relative border-l-2 border-teal-500 dark:border-teal-400 pl-6 space-y-8"
+        className="relative pl-10 sm:pl-14 space-y-6 sm:space-y-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
+        {/* Vertical line */}
+        <div className="pointer-events-none absolute left-4 sm:left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#14b8a6] to-[#3b82f6] opacity-70" />
+
         {sampleTimelineData.map((item) => (
-          <motion.div
-            key={item.id}
-            className="relative flex items-start"
-            variants={itemVariants}
-          >
-            {/* Dot on the timeline */}
-            <div className="absolute -left-[34px] top-1 w-4 h-4 bg-teal-500 dark:bg-teal-400 rounded-full border-4 border-theme-gradient-start dark:border-theme-gradient-end"></div>
-
-            {/* Icon (optional) */}
-            {item.icon && (
-              <div className="mr-4 text-xl flex-shrink-0 w-6 h-6 flex items-center justify-center">
-                {item.icon}
+          <motion.div key={item.id} className="relative" variants={itemVariants}>
+            {/* Dot */}
+            <div className="absolute left-4 sm:left-6 -translate-x-1/2 top-2">
+              <div className="relative w-4 h-4">
+                <span className="absolute inset-0 rounded-full bg-[#14b8a6] shadow-[0_0_0_3px_rgba(20,184,166,0.25)]" />
+                <span className="absolute inset-0 rounded-full animate-ping bg-[#14b8a6]/30" />
               </div>
-            )}
-
-            {/* Content */}
-            <div className={`flex-grow ${!item.icon ? "ml-10" : ""}`}>
-              <p className="text-xs font-semibold text-teal-600 dark:text-teal-300 uppercase tracking-wider mb-1">
-                {item.date}
-              </p>
-              <h3 className="text-lg font-semibold text-theme-primary mb-1">
-                {item.title}
-              </h3>
-              <p className="text-sm text-theme-secondary">{item.description}</p>
             </div>
+
+            <Card className="border-[#e5e7eb] dark:border-[#1f2937]">
+              <CardContent className="p-4 sm:p-5">
+                <div className="flex items-start gap-4">
+                  {item.icon && (
+                    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#ecfeff] dark:bg-[#0b1220] border border-[#bae6fd] dark:border-[#1f2937] flex items-center justify-center text-lg">
+                      {item.icon}
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="text-xs font-semibold tracking-wide text-[#0d9488]">
+                        {formatDate(item.date)}
+                      </div>
+                    </div>
+                    <h3 className="mt-1 text-base sm:text-lg font-semibold">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
         ))}
       </motion.div>

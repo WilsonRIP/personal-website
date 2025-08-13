@@ -47,13 +47,13 @@ type FormStatus = "idle" | "submitting" | "success" | "error";
 // Simple loading skeleton
 const ContactSkeleton = () => (
   <div className="min-h-screen bg-background">
-    <div className="container mx-auto px-6 py-12">
+    <div className="container mx-auto px-4 sm:px-6 py-12">
       <div className="space-y-12">
         <div className="text-center space-y-4">
-          <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg w-64 mx-auto animate-pulse"></div>
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-96 mx-auto animate-pulse"></div>
+          <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg w-full max-w-xs sm:max-w-sm mx-auto animate-pulse"></div>
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-full max-w-md sm:max-w-lg mx-auto animate-pulse"></div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
           <div className="lg:col-span-2 h-96 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
         </div>
@@ -206,7 +206,7 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-4 sm:px-6 py-12">
         <motion.div
           className="space-y-12"
           initial={{ opacity: 0 }}
@@ -239,7 +239,7 @@ export default function ContactPage() {
             </div>
 
             {/* Quick stats */}
-            <div className="flex justify-center gap-8 text-sm">
+            <div className="flex justify-center gap-6 sm:gap-8 text-sm flex-wrap">
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">24h</div>
                 <div className="text-muted-foreground">Response Time</div>
@@ -256,7 +256,7 @@ export default function ContactPage() {
           </motion.header>
 
           {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Contact Information */}
             <motion.div 
               className="lg:col-span-1 space-y-6"
@@ -265,7 +265,7 @@ export default function ContactPage() {
               transition={{ delay: 0.3 }}
             >
               {/* Contact Info Card */}
-              <div className="bg-card border rounded-lg shadow-sm p-6">
+              <div className="bg-card border rounded-lg shadow-sm p-5 sm:p-6 overflow-hidden">
                 <div className="space-y-6">
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
@@ -309,7 +309,7 @@ export default function ContactPage() {
                             <p className="text-sm font-medium text-muted-foreground">
                               {info.label}
                             </p>
-                            <p className="font-semibold text-foreground">
+                            <p className="font-semibold text-foreground break-words">
                               {info.value}
                               {info.action && (
                                 <span className="ml-2 text-xs text-muted-foreground">
@@ -335,7 +335,7 @@ export default function ContactPage() {
               </div>
 
               {/* Social Media Card */}
-              <div className="bg-card border rounded-lg shadow-sm p-6">
+              <div className="bg-card border rounded-lg shadow-sm p-5 sm:p-6 overflow-hidden">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-violet-50 dark:bg-violet-950/20">
@@ -346,7 +346,7 @@ export default function ContactPage() {
                     </h3>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {socialLinks.map((social, index) => (
                       <motion.a
                         key={social.name}
@@ -389,7 +389,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <div className="bg-card border rounded-lg shadow-sm p-8">
+              <div className="bg-card border rounded-lg shadow-sm p-6 sm:p-8 overflow-hidden">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-950/20">
                     <Send className="h-6 w-6 text-blue-600 dark:text-blue-400" />
@@ -445,7 +445,7 @@ export default function ContactPage() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     {/* Name Field */}
                     <div className="space-y-2">
                       <label htmlFor="name" className="flex items-center gap-2 text-sm font-semibold text-foreground">
