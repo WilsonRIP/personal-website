@@ -6,7 +6,7 @@ import { addToCart, clearCart, fetchCart, removeFromCart, setCartQuantity } from
 
 type CartState = {
   items: CartItem[];
-  addItem: (product: Product, quantity?: number) => void;
+  addItem: (product: Product, quantity?: number, selectedAddons?: string[]) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clear: () => void;
@@ -32,8 +32,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const addItem = useCallback((product: Product, quantity = 1) => {
-    addToCart(product.id, quantity)
+  const addItem = useCallback((product: Product, quantity = 1, selectedAddons: string[] = []) => {
+    addToCart(product.id, quantity, selectedAddons)
       .then((res) => setItems(res.items))
       .catch(() => {
         // best-effort fallback
@@ -44,7 +44,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
               ci.product.id === product.id ? { ...ci, quantity: ci.quantity + quantity } : ci
             );
           }
-          return [...prev, { product, quantity }];
+          return [...prev, { product, quantity, selectedAddons }];
         });
       });
   }, []);
@@ -72,10 +72,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const totalItems = useMemo(() => items.reduce((acc, ci) => acc + ci.quantity, 0), [items]);
-  const subtotal = useMemo(
-    () => Number(items.reduce((acc, ci) => acc + ci.product.price * ci.quantity, 0).toFixed(2)),
-    [items]
-  );
+  
+  const subtotal = useMemo(() => {
+    return Number(
+      items.reduce((acc, ci) => {
+        const basePrice = ci.product.price * ci.quantity;
+        const addonPrice = ci.selectedAddons?.reduce((addonAcc, addonId) => {
+          const addon = ci.product.addons?.find(a => a.id === addonId);
+          return addonAcc + (addon?.price || 0);
+        }, 0) || 0;
+        return acc + basePrice + (addonPrice * ci.quantity);
+      }, 0).toFixed(2)
+    );
+  }, [items]);
 
   const value = useMemo(
     () => ({ items, addItem, removeItem, updateQuantity, clear, subtotal, totalItems }),

@@ -8,12 +8,29 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useCart } from "../CartContext";
 import { Minus, Plus, ShoppingCart, Trash2, ShieldCheck, FileDown } from "lucide-react";
+import type { Addon, CartItem } from "../types";
 
 export default function CartSheet() {
   const { items, subtotal, totalItems, updateQuantity, removeItem, clear } = useCart();
 
   const hasItems = items.length > 0;
   const formattedSubtotal = useMemo(() => `$${subtotal.toFixed(2)}`, [subtotal]);
+
+  const getLineTotal = (item: CartItem) => {
+    const basePrice = item.product.price * item.quantity;
+    const addonPrice = item.selectedAddons?.reduce((sum: number, addonId: string) => {
+      const addon = item.product.addons?.find((a: Addon) => a.id === addonId);
+      return sum + (addon?.price || 0);
+    }, 0) || 0;
+    return (basePrice + (addonPrice * item.quantity)).toFixed(2);
+  };
+
+  const getSelectedAddons = (item: CartItem): Addon[] => {
+    if (!item.selectedAddons || item.selectedAddons.length === 0) return [];
+    return item.product.addons?.filter((addon: Addon) => 
+      item.selectedAddons?.includes(addon.id)
+    ) || [];
+  };
 
   return (
     <Sheet>
@@ -49,14 +66,17 @@ export default function CartSheet() {
               </Link>
             </div>
           )}
-          {items.map(({ product, quantity }) => {
-            const lineTotal = (product.price * quantity).toFixed(2);
+          {items.map((item) => {
+            const lineTotal = getLineTotal(item);
+            const selectedAddons = getSelectedAddons(item);
+            const addonTotal = selectedAddons.reduce((sum: number, addon: Addon) => sum + addon.price, 0);
+            
             return (
-              <Card key={product.id} className="border-[#e5e7eb] dark:border-[#1f2937]">
+              <Card key={item.product.id} className="border-[#e5e7eb] dark:border-[#1f2937]">
                 <div className="flex gap-3 p-4 items-start">
                   <Image
-                    src={product.image}
-                    alt={product.name}
+                    src={item.product.image}
+                    alt={item.product.name}
                     width={72}
                     height={72}
                     className="rounded-md object-cover border border-[#e5e7eb] dark:border-[#1f2937]"
@@ -64,38 +84,55 @@ export default function CartSheet() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <div className="font-semibold truncate">{product.name}</div>
+                        <div className="font-semibold truncate">{item.product.name}</div>
                         <div className="text-xs text-[#6b7280] dark:text-[#94a3b8] truncate">
-                          ${product.price.toFixed(2)} each
+                          ${item.product.price.toFixed(2)} each
                         </div>
+                        {addonTotal > 0 && (
+                          <div className="text-xs text-[#0ea5e9] dark:text-[#38bdf8]">
+                            +${addonTotal.toFixed(2)} addons
+                          </div>
+                        )}
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
-                        aria-label={`Remove ${product.name}`}
-                        onClick={() => removeItem(product.id)}
+                        aria-label={`Remove ${item.product.name}`}
+                        onClick={() => removeItem(item.product.id)}
                         className="text-[#ef4444] hover:text-[#dc2626] hover:bg-[#fee2e2]"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
+                    
+                    {selectedAddons.length > 0 && (
+                      <div className="mt-2 space-y-1">
+                        {selectedAddons.map((addon: Addon) => (
+                          <div key={addon.id} className="text-xs text-[#6b7280] dark:text-[#94a3b8] flex items-center gap-1">
+                            <span className="w-1 h-1 bg-[#0ea5e9] rounded-full"></span>
+                            {addon.name} (+${addon.price.toFixed(2)})
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    
                     <div className="mt-3 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => updateQuantity(product.id, quantity - 1)}
-                          aria-label={`Decrease quantity of ${product.name}`}
+                          onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                          aria-label={`Decrease quantity of ${item.product.name}`}
                           className="border-[#e5e7eb] dark:border-[#1f2937] bg-[#f1f5f9] dark:bg-[#0f172a] hover:bg-[#e2e8f0] dark:hover:bg-[#111827] text-[#0f172a] dark:text-[#e5e7eb]"
                         >
                           <Minus className="h-4 w-4" />
                         </Button>
-                        <span className="text-sm w-8 text-center">{quantity}</span>
+                        <span className="text-sm w-8 text-center">{item.quantity}</span>
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => updateQuantity(product.id, quantity + 1)}
-                          aria-label={`Increase quantity of ${product.name}`}
+                          onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                          aria-label={`Increase quantity of ${item.product.name}`}
                           className="border-[#e5e7eb] dark:border-[#1f2937] bg-[#f1f5f9] dark:bg-[#0f172a] hover:bg-[#e2e8f0] dark:hover:bg-[#111827] text-[#0f172a] dark:text-[#e5e7eb]"
                         >
                           <Plus className="h-4 w-4" />

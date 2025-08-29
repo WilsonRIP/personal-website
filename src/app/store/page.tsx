@@ -5,7 +5,7 @@ import { products } from "./data";
 
 export const metadata = {
   title: "Store",
-  description: "Browse products and assets by Wilson RIP.",
+  description: "Professional website development packages with customizable addons.",
 };
 
 function ProductsGrid() {
@@ -24,7 +24,7 @@ export default function StorePage() {
         <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Store</h1>
-            <p className="text-sm text-muted-foreground">Digital products and creator assets</p>
+            <p className="text-sm text-muted-foreground">Professional website development packages with customizable addons</p>
           </div>
           <div className="ml-auto">
             <CartSheet />

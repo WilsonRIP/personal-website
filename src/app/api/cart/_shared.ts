@@ -3,7 +3,11 @@ import { cookies } from "next/headers";
 import { products } from "@/app/store/data";
 import type { CartItem, Product } from "@/app/store/types";
 
-type RawCartItem = { id: string; quantity: number };
+type RawCartItem = { 
+  id: string; 
+  quantity: number; 
+  selectedAddons?: string[];
+};
 
 const CART_COOKIE = "cart";
 
@@ -40,9 +44,24 @@ export function toDetailedCart(rawItems: RawCartItem[]): { items: CartItem[]; su
     const product = productIndex.get(ri.id);
     if (!product) continue;
     if (ri.quantity <= 0) continue;
-    items.push({ product, quantity: ri.quantity });
+    items.push({ 
+      product, 
+      quantity: ri.quantity, 
+      selectedAddons: ri.selectedAddons || []
+    });
   }
-  const subtotal = Number(items.reduce((acc, it) => acc + it.product.price * it.quantity, 0).toFixed(2));
+  
+  const subtotal = Number(
+    items.reduce((acc, it) => {
+      const basePrice = it.product.price * it.quantity;
+      const addonPrice = it.selectedAddons?.reduce((addonAcc, addonId) => {
+        const addon = it.product.addons?.find(a => a.id === addonId);
+        return addonAcc + (addon?.price || 0);
+      }, 0) || 0;
+      return acc + basePrice + (addonPrice * it.quantity);
+    }, 0).toFixed(2)
+  );
+  
   const totalItems = items.reduce((acc, it) => acc + it.quantity, 0);
   return { items, subtotal, totalItems };
 }
@@ -60,14 +79,36 @@ export function setCartAndRespond(rawItems: RawCartItem[]) {
   return res;
 }
 
-export function addOrIncrement(rawItems: RawCartItem[], productId: string, quantity: number) {
+export function addOrIncrement(rawItems: RawCartItem[], productId: string, quantity: number, selectedAddons: string[] = []) {
   const items = [...rawItems];
   const idx = items.findIndex((it) => it.id === productId);
+  
   if (idx >= 0) {
-    items[idx] = { id: productId, quantity: items[idx].quantity + quantity };
+    // Product already exists in cart
+    const existingItem = items[idx];
+    const product = products.find(p => p.id === productId);
+    
+    // If the product has addons and we're trying to add it again with different addons,
+    // update the existing item with the new addon selection instead of incrementing quantity
+    if (product?.addons && product.addons.length > 0 && selectedAddons.length > 0) {
+      items[idx] = { 
+        id: productId, 
+        quantity: existingItem.quantity, // Keep existing quantity
+        selectedAddons: selectedAddons // Update with new addon selection
+      };
+    } else {
+      // For products without addons or when no new addons are selected, increment quantity
+      items[idx] = { 
+        id: productId, 
+        quantity: existingItem.quantity + quantity,
+        selectedAddons: selectedAddons.length > 0 ? selectedAddons : existingItem.selectedAddons
+      };
+    }
   } else {
-    items.push({ id: productId, quantity });
+    // Product doesn't exist, add it to cart
+    items.push({ id: productId, quantity, selectedAddons });
   }
+  
   return items.filter((it) => it.quantity > 0);
 }
 
@@ -78,7 +119,11 @@ export function setQuantity(rawItems: RawCartItem[], productId: string, quantity
     if (quantity <= 0) {
       items.splice(idx, 1);
     } else {
-      items[idx] = { id: productId, quantity };
+      items[idx] = { 
+        id: productId, 
+        quantity,
+        selectedAddons: items[idx].selectedAddons
+      };
     }
   } else if (quantity > 0) {
     items.push({ id: productId, quantity });

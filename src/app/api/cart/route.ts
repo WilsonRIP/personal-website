@@ -9,12 +9,15 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
-  const { productId, quantity = 1 } = body ?? {};
+  const { productId, quantity = 1, selectedAddons = [] } = body ?? {};
   if (typeof productId !== "string" || typeof quantity !== "number") {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
+  if (!Array.isArray(selectedAddons)) {
+    return NextResponse.json({ error: "selectedAddons must be an array" }, { status: 400 });
+  }
   const raw = await readRawCart();
-  const updated = addOrIncrement(raw, productId, quantity);
+  const updated = addOrIncrement(raw, productId, quantity, selectedAddons);
   return setCartAndRespond(updated);
 }
 

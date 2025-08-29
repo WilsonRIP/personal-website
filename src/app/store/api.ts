@@ -19,11 +19,11 @@ export async function fetchCart(): Promise<CartResponse> {
   return handle<CartResponse>(res);
 }
 
-export async function addToCart(productId: string, quantity = 1): Promise<CartResponse> {
+export async function addToCart(productId: string, quantity = 1, selectedAddons: string[] = []): Promise<CartResponse> {
   const res = await fetch("/api/cart", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ productId, quantity }),
+    body: JSON.stringify({ productId, quantity, selectedAddons }),
   });
   return handle<CartResponse>(res);
 }

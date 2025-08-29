@@ -6,9 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
+import type { Addon, CartItem } from "../types";
 
 export default function CheckoutPage() {
   const { items, subtotal, totalItems, clear, removeItem } = useCart();
+
+  const getLineTotal = (item: CartItem) => {
+    const basePrice = item.product.price * item.quantity;
+    const addonPrice = item.selectedAddons?.reduce((sum: number, addonId: string) => {
+      const addon = item.product.addons?.find((a: Addon) => a.id === addonId);
+      return sum + (addon?.price || 0);
+    }, 0) || 0;
+    return (basePrice + (addonPrice * item.quantity)).toFixed(2);
+  };
+
+  const getSelectedAddons = (item: CartItem): Addon[] => {
+    if (!item.selectedAddons || item.selectedAddons.length === 0) return [];
+    return item.product.addons?.filter((addon: Addon) => 
+      item.selectedAddons?.includes(addon.id)
+    ) || [];
+  };
 
   return (
     <main className="container mx-auto px-4 md:px-6 py-10">
@@ -34,41 +51,62 @@ export default function CheckoutPage() {
               <p className="text-sm text-muted-foreground">Your cart is empty.</p>
             </Card>
           ) : (
-            items.map(({ product, quantity }) => (
-              <Card key={product.id} className="p-4 border-[#e5e7eb] dark:border-[#1f2937]">
-                <div className="flex items-start gap-4">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={80}
-                    height={80}
-                    className="rounded-md object-cover border border-[#e5e7eb] dark:border-[#1f2937]"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="min-w-0">
-                        <div className="font-semibold truncate">{product.name}</div>
-                        <div className="text-xs text-[#6b7280] dark:text-[#94a3b8]">
-                          Qty {quantity} · ${product.price.toFixed(2)} each
+            items.map((item) => {
+              const selectedAddons = getSelectedAddons(item);
+              const addonTotal = selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
+              
+              return (
+                <Card key={item.product.id} className="p-4 border-[#e5e7eb] dark:border-[#1f2937]">
+                  <div className="flex items-start gap-4">
+                    <Image
+                      src={item.product.image}
+                      alt={item.product.name}
+                      width={80}
+                      height={80}
+                      className="rounded-md object-cover border border-[#e5e7eb] dark:border-[#1f2937]"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="min-w-0">
+                          <div className="font-semibold truncate">{item.product.name}</div>
+                          <div className="text-xs text-[#6b7280] dark:text-[#94a3b8]">
+                            Qty {item.quantity} · ${item.product.price.toFixed(2)} each
+                          </div>
+                          {addonTotal > 0 && (
+                            <div className="text-xs text-[#0ea5e9] dark:text-[#38bdf8] mt-1">
+                              +${addonTotal.toFixed(2)} addons
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <div className="font-semibold">${getLineTotal(item)}</div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            aria-label={`Remove ${item.product.name}`}
+                            onClick={() => removeItem(item.product.id)}
+                            className="text-[#ef4444] hover:text-[#dc2626] hover:bg-[#fee2e2]"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <div className="font-semibold">${(product.price * quantity).toFixed(2)}</div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          aria-label={`Remove ${product.name}`}
-                          onClick={() => removeItem(product.id)}
-                          className="text-[#ef4444] hover:text-[#dc2626] hover:bg-[#fee2e2]"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
+                      
+                      {selectedAddons.length > 0 && (
+                        <div className="mt-3 space-y-1">
+                          {selectedAddons.map((addon: Addon) => (
+                            <div key={addon.id} className="text-xs text-[#6b7280] dark:text-[#94a3b8] flex items-center gap-1">
+                              <span className="w-1 h-1 bg-[#0ea5e9] rounded-full"></span>
+                              {addon.name} (+${addon.price.toFixed(2)})
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              </Card>
-            ))
+                </Card>
+              );
+            })
           )}
         </section>
 
