@@ -1,14 +1,16 @@
 import { Suspense } from "react";
 import CartSheet from "./components/CartSheet";
 import ProductCard from "./components/ProductCard";
-import { products } from "./data";
+import { getProducts } from "./data";
 
 export const metadata = {
   title: "Store",
   description: "Professional website development packages with customizable addons.",
 };
 
-function ProductsGrid() {
+async function ProductsGrid() {
+  const products = await getProducts();
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {products.map((p) => (
@@ -36,5 +38,3 @@ export default function StorePage() {
       </main>
   );
 }
-
-

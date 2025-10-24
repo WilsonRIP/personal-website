@@ -1,15 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useCart } from "../CartContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { Trash2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
 import type { Addon, CartItem } from "../types";
 
 export default function CheckoutPage() {
   const { items, subtotal, totalItems, clear, removeItem } = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const getLineTotal = (item: CartItem) => {
     const basePrice = item.product.price * item.quantity;
@@ -22,9 +24,43 @@ export default function CheckoutPage() {
 
   const getSelectedAddons = (item: CartItem): Addon[] => {
     if (!item.selectedAddons || item.selectedAddons.length === 0) return [];
-    return item.product.addons?.filter((addon: Addon) => 
+    return item.product.addons?.filter((addon: Addon) =>
       item.selectedAddons?.includes(addon.id)
     ) || [];
+  };
+
+  const handleStripeCheckout = async () => {
+    if (items.length === 0) return;
+
+    setIsProcessing(true);
+
+    try {
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create checkout session');
+      }
+
+      const { url } = await response.json();
+
+      if (url) {
+        // Redirect to Stripe Checkout
+        window.location.href = url;
+      } else {
+        throw new Error('No checkout URL received');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      // You could add error handling here, like showing a toast notification
+      alert('Failed to start checkout. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -54,7 +90,7 @@ export default function CheckoutPage() {
             items.map((item) => {
               const selectedAddons = getSelectedAddons(item);
               const addonTotal = selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
-              
+
               return (
                 <Card key={item.product.id} className="p-4 border-[#e5e7eb] dark:border-[#1f2937]">
                   <div className="flex items-start gap-4">
@@ -91,7 +127,7 @@ export default function CheckoutPage() {
                           </Button>
                         </div>
                       </div>
-                      
+
                       {selectedAddons.length > 0 && (
                         <div className="mt-3 space-y-1">
                           {selectedAddons.map((addon: Addon) => (
@@ -125,15 +161,26 @@ export default function CheckoutPage() {
               <span className="font-semibold">Total</span>
               <span className="font-semibold">${subtotal.toFixed(2)}</span>
             </div>
-            <Button className="mt-6 w-full bg-[#22c55e] hover:bg-[#16a34a]" disabled={items.length === 0}>
-              Pay Now (Demo)
+            <Button
+              className="mt-6 w-full bg-[#22c55e] hover:bg-[#16a34a]"
+              disabled={items.length === 0 || isProcessing}
+              onClick={handleStripeCheckout}
+            >
+              {isProcessing ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                `Pay $${subtotal.toFixed(2)}`
+              )}
             </Button>
-            <p className="mt-3 text-xs text-muted-foreground">Payment processing not yet integrated.</p>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Secure payment powered by Stripe
+            </p>
           </Card>
         </aside>
       </div>
     </main>
   );
 }
-
-

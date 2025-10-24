@@ -3,7 +3,7 @@ import { addOrIncrement, readRawCart, removeItem, setCartAndRespond, setQuantity
 
 export async function GET() {
   const raw = await readRawCart();
-  const detail = toDetailedCart(raw);
+  const detail = await toDetailedCart(raw);
   return NextResponse.json(detail);
 }
 
