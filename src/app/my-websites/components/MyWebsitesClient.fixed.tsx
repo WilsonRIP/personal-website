@@ -391,7 +391,7 @@ function FeaturedWebsiteCard({ website, index }: { website: Website; index: numb
       transition: {
         duration: 0.6,
         delay: index * 0.2,
-        type: "spring",
+        type: "spring" as const,
         stiffness: 300,
         damping: 30
       },

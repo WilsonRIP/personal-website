@@ -7,25 +7,27 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { sessionId: string } }
+  { params }: { params: Promise<{ sessionId: string }> }
 ) {
   try {
-    const sessionId = params.sessionId || req.nextUrl.searchParams.get('session_id');
+    const { sessionId } = await params;
 
-    if (!sessionId) {
+    const resolvedSessionId = sessionId || req.nextUrl.searchParams.get('session_id');
+
+    if (!resolvedSessionId) {
       return NextResponse.json({ error: "Session ID required" }, { status: 400 });
     }
 
     // Retrieve the session from Stripe
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    const stripeSession = await stripe.checkout.sessions.retrieve(resolvedSessionId, {
       expand: ['payment_intent'],
     });
 
-    if (!session) {
+    if (!stripeSession) {
       return NextResponse.json({ error: "Session not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ session });
+    return NextResponse.json({ session: stripeSession });
   } catch (error) {
     console.error("Error retrieving session:", error);
     return NextResponse.json(
