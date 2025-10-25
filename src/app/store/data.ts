@@ -24,7 +24,7 @@ async function fetchProductsFromStripe(): Promise<Product[]> {
     const stripeProducts = await response.json();
 
     // Transform Stripe products to our Product format
-    return stripeProducts.map((product: any) => ({
+    return stripeProducts.map((product: { id: string; name: string; description: string; price: number; image: string; tags: string[]; addons: unknown[] }) => ({
       id: product.id,
       name: product.name,
       description: product.description,

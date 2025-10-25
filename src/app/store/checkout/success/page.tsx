@@ -93,13 +93,13 @@ export default function CheckoutSuccessPage() {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <Package className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <span className="font-medium">What's Next?</span>
+              <span className="font-medium">What&apos;s Next?</span>
             </div>
 
             <div className="text-sm text-muted-foreground space-y-2 text-left">
-              <p>• We'll send you a confirmation email with your order details</p>
+              <p>• We&apos;ll send you a confirmation email with your order details</p>
               <p>• Your website project will begin processing within 1-2 business days</p>
-              <p>• You'll receive regular updates on the progress of your project</p>
+              <p>• You&apos;ll receive regular updates on the progress of your project</p>
               <p>• Feel free to contact us if you have any questions</p>
             </div>
           </div>

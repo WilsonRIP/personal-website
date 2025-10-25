@@ -6,7 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-09-30.clover",
 });
 
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
   try {
     // Check if Stripe keys are available
     if (!process.env.STRIPE_SECRET_KEY) {
@@ -27,14 +27,11 @@ export async function POST(req: NextRequest) {
     const lineItems = [];
 
     for (const item of cartResponse.items) {
-      // Base product price
-      const basePriceInCents = Math.round(item.product.price * 100);
-
       // Calculate addon prices
       let totalAddonPrice = 0;
       if (item.selectedAddons && item.product.addons) {
         totalAddonPrice = item.selectedAddons.reduce((sum: number, addonId: string) => {
-          const addon = item.product.addons?.find((a: any) => a.id === addonId);
+          const addon = item.product.addons?.find((a: { id: string; name: string; description: string; price: number; tags?: string[] }) => a.id === addonId);
           return sum + (addon?.price || 0);
         }, 0);
       }
@@ -60,7 +57,7 @@ export async function POST(req: NextRequest) {
       // Add addon line items separately if they exist
       if (item.selectedAddons && item.product.addons) {
         item.selectedAddons.forEach((addonId: string) => {
-          const addon = item.product.addons?.find((a: any) => a.id === addonId);
+          const addon = item.product.addons?.find((a: { id: string; name: string; description: string; price: number; tags?: string[] }) => a.id === addonId);
           if (addon) {
             lineItems.push({
               price_data: {

@@ -29,8 +29,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: `Price ${priceIds[i]} not found` }, { status: 404 });
       }
 
-      const product = price.product as Stripe.Product;
-
       lineItems.push({
         price: priceIds[i], // Use existing price ID
         quantity: quantities[i],
