@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Package, CreditCard, ArrowRight } from "lucide-react";
 import { useCart } from "../../CartContext";
 
-export default function CheckoutSuccessPage() {
+// Separate component for the content that uses useSearchParams
+function CheckoutSuccessContent() {
   const searchParams = useSearchParams();
   const { clear } = useCart();
   const [orderDetails, setOrderDetails] = useState<{
