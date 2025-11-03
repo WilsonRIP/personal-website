@@ -36,7 +36,7 @@ const projects: Project[] = [
     id: "theseasons",
     name: "The Seasons Roleplay",
     status: "In Development",
-    client: <Link href="https://www.youtube.com/@parkerrYT/videos" target="_blank" className="text-blue-500 hover:text-blue-600 underline">Parkerr</Link>,
+    client: <Link href="https://www.youtube.com/@parkerrYT/videos" target="_blank" className="text-primary hover:text-primary/80 underline">Parkerr</Link>,
     description: "The next generation of community-driven FiveM role-play. Free, open, and built for you.",
     role: "Web Developer",
     technologies: ["TypeScript", "React", "Next.js", "Tailwind CSS"],
@@ -108,7 +108,7 @@ export default function PortfolioShowcase() {
       >
         {/* Welcome Badge */}
         <motion.div
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm font-medium mb-6"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
@@ -119,7 +119,7 @@ export default function PortfolioShowcase() {
 
         {/* Main Title */}
         <motion.h1 
-          className="scroll-m-20 text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 lg:mb-8 bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text"
+          className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 lg:mb-8 text-foreground leading-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -129,32 +129,32 @@ export default function PortfolioShowcase() {
 
         {/* Subtitle */}
         <motion.p 
-          className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8"
+          className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8 font-normal"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          A curated collection of <span className="font-semibold text-blue-600 dark:text-blue-400">professional projects</span> I&apos;ve developed for clients, 
-          showcasing my expertise in creating <span className="font-semibold text-emerald-600 dark:text-emerald-400">tailored digital solutions</span> that drive results.
+          A curated collection of <span className="font-semibold text-primary">professional projects</span> I&apos;ve developed for clients, 
+          showcasing my expertise in creating <span className="font-semibold text-primary">tailored digital solutions</span> that drive results.
         </motion.p>
 
         {/* Stats */}
         <motion.div 
-          className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground"
+          className="flex flex-wrap justify-center gap-6 text-sm md:text-base text-muted-foreground font-medium"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+          <div className="flex items-center gap-2.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-primary"></div>
             <span>Custom Solutions</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+          <div className="flex items-center gap-2.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
             <span>Modern Technologies</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-violet-500"></div>
+          <div className="flex items-center gap-2.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-violet-500"></div>
             <span>Client-Focused</span>
           </div>
         </motion.div>
@@ -176,30 +176,30 @@ export default function PortfolioShowcase() {
               className="bg-card border rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
               variants={itemVariants}
             >
-              <div className="p-4 md:p-5">
-                <div className="flex flex-col md:flex-row gap-4 md:gap-5">
+              <div className="p-6 md:p-8">
+                <div className="flex flex-col md:flex-row gap-6 md:gap-8">
                   {/* Project Icon */}
-                  <div className="flex-shrink-0 w-12 h-12 rounded-md bg-muted flex items-center justify-center">
-                    <IconComponent className="h-6 w-6 text-foreground" />
+                  <div className="flex-shrink-0 w-14 h-14 rounded-lg bg-muted flex items-center justify-center">
+                    <IconComponent className="h-7 w-7 text-foreground" />
                   </div>
                   
                   {/* Project Content */}
-                  <div className="flex-grow">
+                  <div className="flex-grow space-y-6">
                     {/* Header with Status */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
+                    <div className="space-y-4">
                       <div>
-                        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+                        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-3">
                           {project.name}
                         </h2>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-                            <Clock className="h-3 w-3 mr-1" />
+                        <div className="flex flex-wrap items-center gap-3 text-sm">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
+                            <Clock className="h-3.5 w-3.5" />
                             {project.status}
                           </span>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-sm text-muted-foreground">
                             Client: {project.client}
                           </span>
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-sm text-muted-foreground">
                             {project.year}
                           </span>
                         </div>
@@ -207,30 +207,32 @@ export default function PortfolioShowcase() {
                     </div>
                     
                     {/* Description */}
-                    <p className="leading-7 [&:not(:first-child)]:mt-6 mb-4">
-                      {project.description}
-                    </p>
+                    <div className="space-y-3">
+                      <p className="text-base md:text-lg leading-relaxed text-foreground font-normal">
+                        {project.description}
+                      </p>
+                    </div>
                     
                     {/* Role */}
-                    <div className="mb-2">
-                      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-semibold tracking-tight text-foreground">
                         My Role
                       </h3>
-                      <p className="text-lg font-semibold">
+                      <p className="text-base text-muted-foreground font-medium">
                         {project.role}
                       </p>
                     </div>
                     
                     {/* Technologies */}
-                    <div className="mb-3">
-                      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-semibold tracking-tight text-foreground">
                         Technologies
                       </h3>
-                      <div className="flex flex-wrap gap-1">
+                      <div className="flex flex-wrap gap-2">
                         {project.technologies.map((tech) => (
                           <span 
                             key={tech} 
-                            className="px-2 py-0.5 bg-muted text-muted-foreground text-xs rounded-full border border-border"
+                            className="px-3 py-1.5 bg-muted text-foreground text-sm font-medium rounded-md border border-border hover:bg-muted/80 transition-colors"
                           >
                             {tech}
                           </span>
@@ -239,18 +241,18 @@ export default function PortfolioShowcase() {
                     </div>
                     
                     {/* Features */}
-                    <div className="mb-2">
-                      <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                    <div className="space-y-3">
+                      <h3 className="text-xl font-semibold tracking-tight text-foreground">
                         Key Features
                       </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-0.5">
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {project.features.map((feature) => (
-                          <div key={feature} className="flex items-start">
-                            <div className="mt-1 mr-2 h-1 w-1 rounded-full bg-foreground"></div>
-                            <span className="text-muted-foreground text-xs">{feature}</span>
-                          </div>
+                          <li key={feature} className="flex items-start gap-3">
+                            <div className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-primary"></div>
+                            <span className="text-sm text-muted-foreground leading-relaxed">{feature}</span>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -262,23 +264,25 @@ export default function PortfolioShowcase() {
 
       {/* Call to Action */}
       <motion.div 
-        className="text-center max-w-2xl mx-auto p-8 bg-card border rounded-lg shadow-sm"
+        className="text-center max-w-2xl mx-auto p-8 md:p-10 bg-card border rounded-lg shadow-sm"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.6 }}
       >
-        <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground mb-4">
           Interested in working together?
         </h2>
-        <p className="text-xl text-muted-foreground mb-6">
+        <p className="text-base md:text-lg leading-relaxed text-muted-foreground mb-8 max-w-xl mx-auto">
           I&apos;m always open to new projects and collaborations. Let&apos;s create something amazing together!
         </p>
         <Button 
           asChild
+          size="lg"
+          className="text-base px-8 py-6 bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Link href="/contact" className="flex items-center gap-2">
             Get in Touch
-            <ArrowUpRight className="h-4 w-4" />
+            <ArrowUpRight className="h-5 w-5" />
           </Link>
         </Button>
       </motion.div>

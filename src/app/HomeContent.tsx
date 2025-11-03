@@ -25,7 +25,7 @@ function HomeStats({ stats }: { stats: GithubUserStats }) {
       label: "GitHub Repos", 
       value: `${stats.totalRepos}+`, 
       icon: Github,
-      color: "text-blue-600 dark:text-blue-400"
+      color: "text-primary"
     },
     { 
       label: "Total Stars", 
@@ -100,7 +100,7 @@ export default function HomeContent({ githubStats }: { githubStats: GithubUserSt
       >
         {/* Welcome badge */}
         <motion.div
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm font-medium"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
@@ -126,7 +126,7 @@ export default function HomeContent({ githubStats }: { githubStats: GithubUserSt
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <span className="font-semibold text-blue-600 dark:text-blue-400">Web & Software Developer</span>
+            <span className="font-semibold text-primary">Web & Software Developer</span>
             <span className="mx-3">•</span>
             <span className="font-semibold text-emerald-600 dark:text-emerald-400">Creator</span>
             <span className="mx-3">•</span>
@@ -209,8 +209,8 @@ export default function HomeContent({ githubStats }: { githubStats: GithubUserSt
               title: "Full-Stack Development",
               description: "Building complete web applications with modern technologies like Next.js, React, and Node.js.",
               icon: Code,
-              accent: "bg-blue-50 dark:bg-blue-950/20",
-              iconColor: "text-blue-600 dark:text-blue-400",
+              accent: "bg-primary/10",
+              iconColor: "text-primary",
               stats: { label: "Projects", value: "50+" }
             },
             {

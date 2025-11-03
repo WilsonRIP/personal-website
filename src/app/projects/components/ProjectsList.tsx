@@ -532,7 +532,7 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
               href={repo.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-foreground bg-muted hover:bg-muted/80 hover:scale-105 hover:shadow-md rounded-lg transition-all duration-200 group/button"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 hover:scale-105 hover:shadow-md rounded-lg transition-all duration-200 group/button"
             >
               <Code className="h-4 w-4 group-hover/button:scale-110 transition-transform duration-200" />
               Code
@@ -543,7 +543,7 @@ function ProjectCard({ repo, index }: { repo: GithubRepo; index: number }) {
                 href={repo.homepage}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-background bg-foreground hover:bg-foreground/90 hover:scale-105 hover:shadow-lg rounded-lg transition-all duration-200 group/button"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 hover:scale-105 hover:shadow-lg rounded-lg transition-all duration-200 group/button"
               >
                 <Eye className="h-4 w-4 group-hover/button:scale-110 transition-transform duration-200" />
                 Live

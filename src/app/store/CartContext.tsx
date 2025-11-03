@@ -2,13 +2,14 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { CartItem, Product } from "./types";
-import { addToCart, clearCart, fetchCart, removeFromCart, setCartQuantity } from "./api";
+import { addToCart, clearCart, fetchCart, removeFromCart, setCartQuantity, updateCartItemAddons } from "./api";
 
 type CartState = {
   items: CartItem[];
   addItem: (product: Product, quantity?: number, selectedAddons?: string[]) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
+  updateAddons: (productId: string, selectedAddons: string[]) => void;
   clear: () => void;
   totalItems: number;
   subtotal: number;
@@ -67,6 +68,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       );
   }, []);
 
+  const updateAddons = useCallback((productId: string, selectedAddons: string[]) => {
+    updateCartItemAddons(productId, selectedAddons)
+      .then((res) => setItems(res.items))
+      .catch(() =>
+        setItems((prev) =>
+          prev.map((ci) => (ci.product.id === productId ? { ...ci, selectedAddons } : ci))
+        )
+      );
+  }, []);
+
   const clear = useCallback(() => {
     clearCart().finally(() => setItems([]));
   }, []);
@@ -87,8 +98,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   const value = useMemo(
-    () => ({ items, addItem, removeItem, updateQuantity, clear, subtotal, totalItems }),
-    [items, addItem, removeItem, updateQuantity, clear, subtotal, totalItems]
+    () => ({ items, addItem, removeItem, updateQuantity, updateAddons, clear, subtotal, totalItems }),
+    [items, addItem, removeItem, updateQuantity, updateAddons, clear, subtotal, totalItems]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

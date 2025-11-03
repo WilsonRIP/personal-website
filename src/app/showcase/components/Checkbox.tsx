@@ -110,8 +110,8 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           className={clsx(
             "relative inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-colors duration-200 ease-in-out",
             disabled
-              ? "border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-800"
-              : "border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-700",
+              ? "border-border bg-muted"
+              : "border-border bg-card",
             (checked || indeterminate) &&
               "border-teal-500 bg-teal-500 dark:border-teal-600 dark:bg-teal-600",
             "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-teal-400 dark:peer-focus-visible:ring-teal-500 peer-focus-visible:ring-offset-2 dark:peer-focus-visible:ring-offset-gray-800"
@@ -132,7 +132,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         </span>
 
         {label && (
-          <span className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+          <span className="ml-2 text-sm font-medium text-foreground">
             {label}
           </span>
         )}

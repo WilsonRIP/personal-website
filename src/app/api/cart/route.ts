@@ -23,13 +23,35 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
-  const { productId, quantity } = body ?? {};
-  if (typeof productId !== "string" || typeof quantity !== "number") {
+  const { productId, quantity, selectedAddons } = body ?? {};
+  if (typeof productId !== "string") {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
   const raw = await readRawCart();
-  const updated = setQuantity(raw, productId, quantity);
-  return setCartAndRespond(updated);
+  
+  // If quantity is provided, update quantity
+  if (typeof quantity === "number") {
+    const updated = setQuantity(raw, productId, quantity);
+    // If selectedAddons is also provided, update addons for the item
+    if (Array.isArray(selectedAddons)) {
+      const itemIndex = updated.findIndex((it) => it.id === productId);
+      if (itemIndex >= 0) {
+        updated[itemIndex] = { ...updated[itemIndex], selectedAddons };
+      }
+    }
+    return setCartAndRespond(updated);
+  }
+  
+  // If only selectedAddons is provided, update addons only
+  if (Array.isArray(selectedAddons)) {
+    const itemIndex = raw.findIndex((it) => it.id === productId);
+    if (itemIndex >= 0) {
+      raw[itemIndex] = { ...raw[itemIndex], selectedAddons };
+    }
+    return setCartAndRespond(raw);
+  }
+  
+  return NextResponse.json({ error: "quantity or selectedAddons required" }, { status: 400 });
 }
 
 export async function DELETE(req: NextRequest) {

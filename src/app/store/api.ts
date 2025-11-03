@@ -37,6 +37,15 @@ export async function setCartQuantity(productId: string, quantity: number): Prom
   return handle<CartResponse>(res);
 }
 
+export async function updateCartItemAddons(productId: string, selectedAddons: string[]): Promise<CartResponse> {
+  const res = await fetch("/api/cart", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ productId, selectedAddons }),
+  });
+  return handle<CartResponse>(res);
+}
+
 export async function removeFromCart(productId: string): Promise<CartResponse> {
   const res = await fetch(`/api/cart?productId=${encodeURIComponent(productId)}`, { method: "DELETE" });
   return handle<CartResponse>(res);

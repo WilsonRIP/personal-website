@@ -127,34 +127,34 @@
   --shadow-xl: 0 20px 25px -5px var(--shadow-color),
     0 10px 10px -5px var(--shadow-color);
 
-  /* Enhanced light theme variables */
+  /* Enhanced light theme variables - muted and professional */
   --radius: 0.625rem;
-  --background: oklch(0.98 0.01 230); /* Slightly off-white with hint of blue */
-  --foreground: oklch(0.2 0.02 260); /* Rich dark blue-gray */
+  --background: oklch(0.99 0.005 240); /* Soft off-white with very subtle gray-blue */
+  --foreground: oklch(0.25 0.01 260); /* Muted dark gray-blue */
   --card: oklch(1 0 0); /* Pure white */
-  --card-foreground: oklch(0.2 0.02 260); /* Rich dark blue-gray */
+  --card-foreground: oklch(0.25 0.01 260); /* Muted dark gray-blue */
   --popover: oklch(1 0 0); /* Pure white */
-  --popover-foreground: oklch(0.2 0.02 260); /* Rich dark blue-gray */
-  --primary: oklch(0.6 0.18 230); /* Vibrant blue */
-  --primary-foreground: oklch(0.98 0.01 230); /* Off-white */
-  --secondary: oklch(0.95 0.05 250); /* Light lavender */
-  --secondary-foreground: oklch(0.3 0.12 260); /* Dark purple */
-  --muted: oklch(0.96 0.03 240); /* Subtle blue-gray */
-  --muted-foreground: oklch(0.5 0.05 250); /* Medium purple-gray */
-  --accent: oklch(0.9 0.1 180); /* Soft teal */
-  --accent-foreground: oklch(0.2 0.15 200); /* Dark teal */
-  --destructive: oklch(0.65 0.27 25); /* Warm red */
-  --destructive-foreground: oklch(0.98 0.01 25); /* Light red-pink */
-  --border: oklch(0.85 0.05 240); /* Light purple-blue */
-  --input: oklch(0.9 0.05 240); /* Light purple-blue */
-  --ring: oklch(0.6 0.18 230); /* Vibrant blue */
+  --popover-foreground: oklch(0.25 0.01 260); /* Muted dark gray-blue */
+  --primary: oklch(0.5 0.08 230); /* Muted professional blue */
+  --primary-foreground: oklch(0.99 0.005 240); /* Soft off-white */
+  --secondary: oklch(0.96 0.01 260); /* Very subtle gray */
+  --secondary-foreground: oklch(0.35 0.02 260); /* Muted dark gray */
+  --muted: oklch(0.97 0.005 250); /* Very subtle gray-blue */
+  --muted-foreground: oklch(0.45 0.01 260); /* Muted medium gray */
+  --accent: oklch(0.92 0.02 220); /* Very subtle blue-gray */
+  --accent-foreground: oklch(0.3 0.02 240); /* Muted dark gray-blue */
+  --destructive: oklch(0.55 0.15 25); /* Muted red */
+  --destructive-foreground: oklch(0.99 0.005 25); /* Soft off-white */
+  --border: oklch(0.9 0.01 250); /* Very subtle gray border */
+  --input: oklch(0.96 0.01 250); /* Very subtle gray input */
+  --ring: oklch(0.5 0.08 230); /* Muted professional blue */
   
-  /* Chart colors - more harmonious palette */
-  --chart-1: oklch(0.6 0.2 230); /* Blue */
-  --chart-2: oklch(0.6 0.2 180); /* Teal */
-  --chart-3: oklch(0.6 0.2 130); /* Green */
-  --chart-4: oklch(0.6 0.2 80); /* Yellow-green */
-  --chart-5: oklch(0.6 0.2 30); /* Orange */
+  /* Chart colors - muted professional palette */
+  --chart-1: oklch(0.5 0.08 230); /* Muted blue */
+  --chart-2: oklch(0.5 0.08 200); /* Muted blue-gray */
+  --chart-3: oklch(0.5 0.08 170); /* Muted teal-gray */
+  --chart-4: oklch(0.5 0.08 140); /* Muted green-gray */
+  --chart-5: oklch(0.5 0.08 100); /* Muted yellow-gray */
   
   /* Animation variables */
   --animation-fast: 200ms;
@@ -177,33 +177,33 @@
   /* Define a default shadow color for dark mode */
   --shadow-color: rgba(0, 0, 0, 0.4); /* Example dark shadow */
 
-  /* Enhanced dark theme variables */
-  --background: oklch(0.15 0.02 260); /* Dark blue-black */
-  --foreground: oklch(0.9 0.05 250); /* Light lavender */
-  --card: oklch(0.2 0.03 250); /* Dark purple-blue */
-  --card-foreground: oklch(0.9 0.05 250); /* Light lavender */
-  --popover: oklch(0.2 0.03 250); /* Dark purple-blue */
-  --popover-foreground: oklch(0.9 0.05 250); /* Light lavender */
-  --primary: oklch(0.7 0.2 230); /* Vibrant blue - brighter in dark mode */
-  --primary-foreground: oklch(0.15 0.02 260); /* Dark blue-black */
-  --secondary: oklch(0.3 0.1 240); /* Deep blue-purple */
-  --secondary-foreground: oklch(0.9 0.05 250); /* Light lavender */
-  --muted: oklch(0.25 0.05 250); /* Dark muted purple */
-  --muted-foreground: oklch(0.7 0.1 240); /* Medium lavender */
-  --accent: oklch(0.3 0.15 180); /* Deep teal */
-  --accent-foreground: oklch(0.9 0.1 190); /* Light teal */
-  --destructive: oklch(0.7 0.25 25); /* Bright red */
-  --destructive-foreground: oklch(0.15 0.02 25); /* Dark red */
-  --border: oklch(0.3 0.05 240); /* Dark blue-purple border */
-  --input: oklch(0.25 0.05 250); /* Dark muted purple */
-  --ring: oklch(0.7 0.2 230); /* Vibrant blue */
+  /* Enhanced dark theme variables - muted and professional */
+  --background: oklch(0.12 0.005 260); /* Very dark muted gray-blue */
+  --foreground: oklch(0.92 0.01 260); /* Soft light gray */
+  --card: oklch(0.16 0.01 260); /* Muted dark gray */
+  --card-foreground: oklch(0.92 0.01 260); /* Soft light gray */
+  --popover: oklch(0.16 0.01 260); /* Muted dark gray */
+  --popover-foreground: oklch(0.92 0.01 260); /* Soft light gray */
+  --primary: oklch(0.58 0.1 230); /* Muted professional blue */
+  --primary-foreground: oklch(0.12 0.005 260); /* Very dark muted gray-blue */
+  --secondary: oklch(0.22 0.01 260); /* Muted dark gray */
+  --secondary-foreground: oklch(0.92 0.01 260); /* Soft light gray */
+  --muted: oklch(0.18 0.01 260); /* Muted dark gray */
+  --muted-foreground: oklch(0.65 0.01 260); /* Muted medium gray */
+  --accent: oklch(0.2 0.02 240); /* Muted dark gray-blue */
+  --accent-foreground: oklch(0.88 0.01 250); /* Soft light gray */
+  --destructive: oklch(0.6 0.15 25); /* Muted red */
+  --destructive-foreground: oklch(0.12 0.005 25); /* Very dark muted gray */
+  --border: oklch(0.24 0.01 260); /* Muted dark gray border */
+  --input: oklch(0.18 0.01 260); /* Muted dark gray input */
+  --ring: oklch(0.58 0.1 230); /* Muted professional blue */
   
-  /* Chart colors - more vibrant in dark mode */
-  --chart-1: oklch(0.7 0.25 230); /* Bright blue */
-  --chart-2: oklch(0.7 0.25 180); /* Bright teal */
-  --chart-3: oklch(0.7 0.25 130); /* Bright green */
-  --chart-4: oklch(0.7 0.25 80); /* Bright yellow-green */
-  --chart-5: oklch(0.7 0.25 30); /* Bright orange */
+  /* Chart colors - muted professional palette for dark mode */
+  --chart-1: oklch(0.58 0.1 230); /* Muted blue */
+  --chart-2: oklch(0.58 0.1 200); /* Muted blue-gray */
+  --chart-3: oklch(0.58 0.1 170); /* Muted teal-gray */
+  --chart-4: oklch(0.58 0.1 140); /* Muted green-gray */
+  --chart-5: oklch(0.58 0.1 100); /* Muted yellow-gray */
   
   /* Same animation variables from light mode apply */
   --shadow-color: rgba(0, 0, 100, 0.3); /* Blue-tinted shadow for depth */

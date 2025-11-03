@@ -80,7 +80,7 @@ export default function ActivityTimeline() {
   return (
     <div className="w-full max-w-4xl mx-auto mt-12 px-4 sm:px-6">
       <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">
-        <span className="bg-gradient-to-r from-[#14b8a6] to-[#3b82f6] bg-clip-text text-transparent">Recent Activity</span>
+        <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Recent Activity</span>
       </h2>
 
       <motion.div
@@ -90,33 +90,33 @@ export default function ActivityTimeline() {
         animate="visible"
       >
         {/* Vertical line */}
-        <div className="pointer-events-none absolute left-4 sm:left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#14b8a6] to-[#3b82f6] opacity-70" />
+        <div className="pointer-events-none absolute left-4 sm:left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-primary to-accent opacity-70" />
 
         {sampleTimelineData.map((item) => (
           <motion.div key={item.id} className="relative" variants={itemVariants}>
             {/* Dot */}
             <div className="absolute left-4 sm:left-6 -translate-x-1/2 top-2">
               <div className="relative w-4 h-4">
-                <span className="absolute inset-0 rounded-full bg-[#14b8a6] shadow-[0_0_0_3px_rgba(20,184,166,0.25)]" />
-                <span className="absolute inset-0 rounded-full animate-ping bg-[#14b8a6]/30" />
+                <span className="absolute inset-0 rounded-full bg-primary shadow-[0_0_0_3px_hsl(var(--primary)/0.25)]" />
+                <span className="absolute inset-0 rounded-full animate-ping bg-primary/30" />
               </div>
             </div>
 
-            <Card className="border-[#e5e7eb] dark:border-[#1f2937]">
+            <Card>
               <CardContent className="p-4 sm:p-5">
                 <div className="flex items-start gap-4">
                   {item.icon && (
-                    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#ecfeff] dark:bg-[#0b1220] border border-[#bae6fd] dark:border-[#1f2937] flex items-center justify-center text-lg">
+                    <div className="flex-shrink-0 w-9 h-9 rounded-full bg-accent border border-border flex items-center justify-center text-lg">
                       {item.icon}
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="text-xs font-semibold tracking-wide text-[#0d9488]">
+                      <div className="text-xs font-semibold tracking-wide text-primary">
                         {formatDate(item.date)}
                       </div>
                     </div>
-                    <h3 className="mt-1 text-base sm:text-lg font-semibold">
+                    <h3 className="mt-1 text-base sm:text-lg font-semibold text-foreground">
                       {item.title}
                     </h3>
                     <p className="mt-1 text-sm text-muted-foreground">

@@ -53,7 +53,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <>
-      <Card className="border-[#e5e7eb] dark:border-[#1f2937]">
+      <Card>
         <CardHeader>
           <CardTitle className="text-lg">{product.name}</CardTitle>
           <CardAction>
@@ -62,7 +62,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <CardDescription>{product.description}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg border border-[#e5e7eb] dark:border-[#1f2937]">
+          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-lg border border-border">
             <Image
               src={product.image}
               alt={product.name}
@@ -78,7 +78,7 @@ export default function ProductCard({ product }: { product: Product }) {
               {product.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-1 rounded-md border border-[#e5e7eb] dark:border-[#1f2937] text-[#0f172a] dark:text-[#e5e7eb] bg-[#f8fafc] dark:bg-[#0b1220]"
+                  className="text-xs px-2 py-1 rounded-md border border-border text-foreground bg-muted"
                 >
                   {tag}
                 </span>
@@ -87,13 +87,13 @@ export default function ProductCard({ product }: { product: Product }) {
           )}
 
           {hasAddons && (
-            <div className="text-xs text-[#0ea5e9] dark:text-[#38bdf8] font-medium">
+            <div className="text-xs text-primary font-medium">
               ⚡ Customizable with addons available
             </div>
           )}
 
           {isInCart && (
-            <div className="text-xs text-[#16a34a] dark:text-[#22c55e] font-medium">
+            <div className="text-xs text-green-600 dark:text-green-400 font-medium">
               ✓ {existingCartItem?.quantity} in cart
             </div>
           )}
@@ -102,10 +102,10 @@ export default function ProductCard({ product }: { product: Product }) {
           <Button
             className={`${
               isInCart && hasAddons 
-                ? "bg-[#f59e0b] hover:bg-[#d97706]" 
+                ? "bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white" 
                 : isInCart 
-                ? "bg-[#6b7280] hover:bg-[#4b5563] cursor-not-allowed" 
-                : "bg-[#0ea5e9] hover:bg-[#0284c7]"
+                ? "bg-muted text-muted-foreground cursor-not-allowed" 
+                : "bg-primary hover:bg-primary/90 text-primary-foreground"
             }`}
             onClick={handleAddToCart}
             disabled={getButtonDisabled()}

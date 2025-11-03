@@ -72,17 +72,17 @@ export default function AddonModal({ product, onConfirm, onSkip, onClose, isUpda
 
         <div className="space-y-4">
           {/* Base Package Info */}
-          <div className="p-4 rounded-lg border border-[#e5e7eb] dark:border-[#1f2937] bg-[#f8fafc] dark:bg-[#0b1220]">
+          <div className="p-4 rounded-lg border border-border bg-muted">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-[#0f172a] dark:text-[#e5e7eb]">{product.name}</h3>
-                <p className="text-sm text-[#6b7280] dark:text-[#94a3b8]">{product.description}</p>
+                <h3 className="font-semibold text-foreground">{product.name}</h3>
+                <p className="text-sm text-muted-foreground">{product.description}</p>
               </div>
               <div className="text-right">
-                <div className="text-lg font-bold text-[#0f172a] dark:text-[#e5e7eb]">
+                <div className="text-lg font-bold text-foreground">
                   ${product.price.toFixed(2)}
                 </div>
-                <div className="text-xs text-[#6b7280] dark:text-[#94a3b8]">Base Package</div>
+                <div className="text-xs text-muted-foreground">Base Package</div>
               </div>
             </div>
           </div>
@@ -90,12 +90,12 @@ export default function AddonModal({ product, onConfirm, onSkip, onClose, isUpda
           {/* Available Addons */}
           {product.addons && product.addons.length > 0 && (
             <div className="space-y-3">
-              <h4 className="font-semibold text-[#0f172a] dark:text-[#e5e7eb]">
+              <h4 className="font-semibold text-foreground">
                 Available Addons
               </h4>
               <div className="space-y-3">
                 {product.addons.map((addon) => (
-                  <div key={addon.id} className="flex items-start space-x-3 p-4 rounded-lg border border-[#e5e7eb] dark:border-[#1f2937] bg-[#f8fafc] dark:bg-[#0b1220] hover:bg-[#f1f5f9] dark:hover:bg-[#111827] transition-colors">
+                  <div key={addon.id} className="flex items-start space-x-3 p-4 rounded-lg border border-border bg-muted hover:bg-accent/50 transition-colors">
                     <Checkbox
                       id={addon.id}
                       checked={selectedAddons.includes(addon.id)}
@@ -105,15 +105,15 @@ export default function AddonModal({ product, onConfirm, onSkip, onClose, isUpda
                     <div className="flex-1 min-w-0">
                       <label
                         htmlFor={addon.id}
-                        className="text-sm font-medium text-[#0f172a] dark:text-[#e5e7eb] cursor-pointer"
+                        className="text-sm font-medium text-foreground cursor-pointer"
                       >
                         {addon.name}
                       </label>
-                      <p className="text-xs text-[#6b7280] dark:text-[#94a3b8] mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {addon.description}
                       </p>
                       <div className="flex items-center justify-between mt-2">
-                        <span className="text-sm font-semibold text-[#0ea5e9]">
+                        <span className="text-sm font-semibold text-primary">
                           +${addon.price.toFixed(2)}
                         </span>
                         {addon.tags && (
@@ -121,7 +121,7 @@ export default function AddonModal({ product, onConfirm, onSkip, onClose, isUpda
                             {addon.tags.map((tag) => (
                               <span
                                 key={tag}
-                                className="text-xs px-1.5 py-0.5 rounded border border-[#e5e7eb] dark:border-[#1f2937] text-[#6b7280] dark:text-[#94a3b8] bg-[#ffffff] dark:bg-[#1f2937]"
+                                className="text-xs px-1.5 py-0.5 rounded border border-border text-muted-foreground bg-card"
                               >
                                 {tag}
                               </span>
@@ -137,22 +137,22 @@ export default function AddonModal({ product, onConfirm, onSkip, onClose, isUpda
           )}
 
           {/* Total Price */}
-          <div className="p-4 rounded-lg border border-[#e5e7eb] dark:border-[#1f2937] bg-[#f0f9ff] dark:bg-[#0c4a6e]">
+          <div className="p-4 rounded-lg border border-border bg-accent/30">
             <div className="flex items-center justify-between">
               <div>
-                <div className="font-semibold text-[#0f172a] dark:text-[#e5e7eb]">Total Price</div>
+                <div className="font-semibold text-foreground">Total Price</div>
                 {selectedAddons.length > 0 && (
-                  <div className="text-xs text-[#6b7280] dark:text-[#94a3b8]">
+                  <div className="text-xs text-muted-foreground">
                     {selectedAddons.length} addon{selectedAddons.length !== 1 ? 's' : ''} selected
                   </div>
                 )}
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold text-[#0ea5e9]">
+                <div className="text-2xl font-bold text-primary">
                   ${getTotalPrice().toFixed(2)}
                 </div>
                 {selectedAddons.length > 0 && (
-                  <div className="text-xs text-[#6b7280] dark:text-[#94a3b8]">
+                  <div className="text-xs text-muted-foreground">
                     +${getSelectedAddons().reduce((sum, addon) => sum + addon.price, 0).toFixed(2)} addons
                   </div>
                 )}
@@ -166,7 +166,7 @@ export default function AddonModal({ product, onConfirm, onSkip, onClose, isUpda
             <Button
               variant="outline"
               onClick={handleSkip}
-              className="flex-1 sm:flex-none border-[#e5e7eb] dark:border-[#1f2937] text-[#0f172a] dark:text-[#e5e7eb] hover:bg-[#f8fafc] dark:hover:bg-[#0b1220]"
+              className="flex-1 sm:flex-none"
             >
               Skip Addons
             </Button>
@@ -175,8 +175,8 @@ export default function AddonModal({ product, onConfirm, onSkip, onClose, isUpda
             onClick={handleConfirm}
             className={`flex-1 sm:flex-none ${
               isUpdate 
-                ? "bg-[#f59e0b] hover:bg-[#d97706]" 
-                : "bg-[#0ea5e9] hover:bg-[#0284c7]"
+                ? "bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white" 
+                : "bg-primary hover:bg-primary/90 text-primary-foreground"
             }`}
           >
             {isUpdate ? "Update Selection" : "Add to Cart"}

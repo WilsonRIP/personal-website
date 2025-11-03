@@ -6,12 +6,14 @@ import { useCart } from "../CartContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
-import { Trash2, Loader2 } from "lucide-react";
+import { Trash2, Loader2, Plus, Minus, X } from "lucide-react";
 import type { Addon, CartItem } from "../types";
+import AddonModal from "../components/AddonModal";
 
 export default function CheckoutPage() {
-  const { items, subtotal, totalItems, clear, removeItem } = useCart();
+  const { items, subtotal, totalItems, clear, removeItem, updateQuantity, updateAddons } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [editingAddonsFor, setEditingAddonsFor] = useState<string | null>(null);
 
   const getLineTotal = (item: CartItem) => {
     const basePrice = item.product.price * item.quantity;
@@ -27,6 +29,22 @@ export default function CheckoutPage() {
     return item.product.addons?.filter((addon: Addon) =>
       item.selectedAddons?.includes(addon.id)
     ) || [];
+  };
+
+  const handleRemoveAddon = (productId: string, addonId: string) => {
+    const item = items.find(i => i.product.id === productId);
+    if (!item) return;
+    
+    const updatedAddons = item.selectedAddons?.filter(id => id !== addonId) || [];
+    updateAddons(productId, updatedAddons);
+  };
+
+  const handleQuantityChange = (productId: string, delta: number) => {
+    const item = items.find(i => i.product.id === productId);
+    if (!item) return;
+    
+    const newQuantity = Math.max(1, item.quantity + delta);
+    updateQuantity(productId, newQuantity);
   };
 
   const handleStripeCheckout = async () => {
@@ -74,7 +92,7 @@ export default function CheckoutPage() {
           <Button asChild variant="outline">
             <Link href="/store">Back to Store</Link>
           </Button>
-          <Button className="bg-[#ef4444] hover:bg-[#dc2626]" onClick={clear} disabled={items.length === 0}>
+          <Button className="bg-destructive hover:bg-destructive/90 text-destructive-foreground" onClick={clear} disabled={items.length === 0}>
             Clear Cart
           </Button>
         </div>
@@ -83,7 +101,7 @@ export default function CheckoutPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <section className="lg:col-span-2 space-y-4">
           {items.length === 0 ? (
-            <Card className="p-6 border-[#e5e7eb] dark:border-[#1f2937]">
+            <Card className="p-6">
               <p className="text-sm text-muted-foreground">Your cart is empty.</p>
             </Card>
           ) : (
@@ -92,50 +110,105 @@ export default function CheckoutPage() {
               const addonTotal = selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
 
               return (
-                <Card key={item.product.id} className="p-4 border-[#e5e7eb] dark:border-[#1f2937]">
+                <Card key={item.product.id} className="p-4">
                   <div className="flex items-start gap-4">
                     <Image
                       src={item.product.image}
                       alt={item.product.name}
                       width={80}
                       height={80}
-                      className="rounded-md object-cover border border-[#e5e7eb] dark:border-[#1f2937]"
+                      className="rounded-md object-cover border border-border"
                     />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center justify-between gap-4">
-                        <div className="min-w-0">
-                          <div className="font-semibold truncate">{item.product.name}</div>
-                          <div className="text-xs text-[#6b7280] dark:text-[#94a3b8]">
-                            Qty {item.quantity} · ${item.product.price.toFixed(2)} each
+                        <div className="min-w-0 flex-1">
+                          <div className="font-semibold truncate text-foreground">{item.product.name}</div>
+                          <div className="text-xs text-muted-foreground">
+                            ${item.product.price.toFixed(2)} each
                           </div>
                           {addonTotal > 0 && (
-                            <div className="text-xs text-[#0ea5e9] dark:text-[#38bdf8] mt-1">
+                            <div className="text-xs text-primary mt-1">
                               +${addonTotal.toFixed(2)} addons
                             </div>
                           )}
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
-                          <div className="font-semibold">${getLineTotal(item)}</div>
+                          <div className="font-semibold text-foreground">${getLineTotal(item)}</div>
                           <Button
                             variant="ghost"
                             size="sm"
                             aria-label={`Remove ${item.product.name}`}
                             onClick={() => removeItem(item.product.id)}
-                            className="text-[#ef4444] hover:text-[#dc2626] hover:bg-[#fee2e2]"
+                            className="text-destructive hover:text-destructive/90 hover:bg-destructive/10"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
 
+                      {/* Quantity Controls */}
+                      <div className="mt-3 flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">Quantity:</span>
+                        <div className="flex items-center gap-1 border border-border rounded-md">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleQuantityChange(item.product.id, -1)}
+                            disabled={item.quantity <= 1}
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <span className="w-8 text-center text-sm font-medium text-foreground">{item.quantity}</span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            onClick={() => handleQuantityChange(item.product.id, 1)}
+                            aria-label="Increase quantity"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Addons List with Remove Buttons */}
                       {selectedAddons.length > 0 && (
-                        <div className="mt-3 space-y-1">
+                        <div className="mt-3 space-y-2">
+                          <div className="text-xs font-medium text-muted-foreground">Addons:</div>
                           {selectedAddons.map((addon: Addon) => (
-                            <div key={addon.id} className="text-xs text-[#6b7280] dark:text-[#94a3b8] flex items-center gap-1">
-                              <span className="w-1 h-1 bg-[#0ea5e9] rounded-full"></span>
-                              {addon.name} (+${addon.price.toFixed(2)})
+                            <div key={addon.id} className="flex items-center justify-between gap-2 text-xs text-muted-foreground bg-muted p-2 rounded-md">
+                              <div className="flex items-center gap-2 flex-1">
+                                <span className="w-1 h-1 bg-primary rounded-full"></span>
+                                <span>{addon.name}</span>
+                                <span className="text-primary">(+${addon.price.toFixed(2)})</span>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 text-destructive hover:text-destructive/90 hover:bg-destructive/10"
+                                onClick={() => handleRemoveAddon(item.product.id, addon.id)}
+                                aria-label={`Remove ${addon.name}`}
+                              >
+                                <X className="h-3 w-3" />
+                              </Button>
                             </div>
                           ))}
+                        </div>
+                      )}
+
+                      {/* Edit Addons Button */}
+                      {item.product.addons && item.product.addons.length > 0 && (
+                        <div className="mt-3">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-xs"
+                            onClick={() => setEditingAddonsFor(item.product.id)}
+                          >
+                            {selectedAddons.length > 0 ? "Edit Addons" : "Add Addons"}
+                          </Button>
                         </div>
                       )}
                     </div>
@@ -147,22 +220,22 @@ export default function CheckoutPage() {
         </section>
 
         <aside className="space-y-4">
-          <Card className="p-6 border-[#e5e7eb] dark:border-[#1f2937]">
-            <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
+          <Card className="p-6">
+            <h2 className="text-lg font-semibold mb-4 text-foreground">Order Summary</h2>
             <div className="flex items-center justify-between text-sm mb-2">
               <span className="text-muted-foreground">Subtotal</span>
-              <span className="font-medium">${subtotal.toFixed(2)}</span>
+              <span className="font-medium text-foreground">${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex items-center justify-between text-sm mb-6">
               <span className="text-muted-foreground">Tax</span>
-              <span className="font-medium">$0.00</span>
+              <span className="font-medium text-foreground">$0.00</span>
             </div>
             <div className="flex items-center justify-between text-base">
-              <span className="font-semibold">Total</span>
-              <span className="font-semibold">${subtotal.toFixed(2)}</span>
+              <span className="font-semibold text-foreground">Total</span>
+              <span className="font-semibold text-foreground">${subtotal.toFixed(2)}</span>
             </div>
             <Button
-              className="mt-6 w-full bg-[#22c55e] hover:bg-[#16a34a]"
+              className="mt-6 w-full bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white"
               disabled={items.length === 0 || isProcessing}
               onClick={handleStripeCheckout}
             >
@@ -181,6 +254,27 @@ export default function CheckoutPage() {
           </Card>
         </aside>
       </div>
+
+      {/* Addon Modal */}
+      {editingAddonsFor && (() => {
+        const item = items.find(i => i.product.id === editingAddonsFor);
+        if (!item) return null;
+        return (
+          <AddonModal
+            product={item.product}
+            onConfirm={(selectedAddons) => {
+              updateAddons(item.product.id, selectedAddons);
+              setEditingAddonsFor(null);
+            }}
+            onSkip={() => {
+              updateAddons(item.product.id, []);
+              setEditingAddonsFor(null);
+            }}
+            onClose={() => setEditingAddonsFor(null)}
+            isUpdate={true}
+          />
+        );
+      })()}
     </main>
   );
 }

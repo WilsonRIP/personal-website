@@ -77,8 +77,8 @@ const DEV_STACK: DevStackCategory[] = [
   { 
     name: "Frontend", 
     icon: Code,
-    color: "text-blue-600 dark:text-blue-400",
-    bgColor: "bg-blue-50 dark:bg-blue-950/20",
+    color: "text-primary",
+    bgColor: "bg-primary/10",
     items: ["Next.js (React)", "Tailwind CSS", "Framer Motion", "TypeScript"] 
   },
   { 
@@ -123,8 +123,8 @@ const SOCIAL_LINKS: SocialLink[] = [
     name: "GitHub",
     url: "https://github.com/WilsonRIP",
     icon: Github,
-    color: "hover:text-slate-800 dark:hover:text-white",
-    bgColor: "hover:bg-slate-100 dark:hover:bg-slate-800"
+    color: "hover:text-foreground",
+    bgColor: "hover:bg-muted"
   },
   {
     name: "Twitch",
@@ -191,8 +191,8 @@ const SkillCard: React.FC<SkillCardProps> = React.memo(({ skill, index }) => {
     >
       <Card className="h-full border shadow-sm hover:shadow-md transition-all duration-300">
         <CardContent className="p-6 text-center space-y-4">
-          <div className="w-16 h-16 mx-auto bg-blue-50 dark:bg-blue-950/20 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-            <IconComponent className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+          <div className="w-16 h-16 mx-auto bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+            <IconComponent className="h-8 w-8 text-primary" />
           </div>
           <h3 className="font-semibold text-lg text-foreground leading-tight">
             {skill.title}
@@ -289,9 +289,9 @@ const StatCard: React.FC<StatCardProps> = ({ stat, index }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.5 + index * 0.1 }}
-    className="text-center p-4 rounded-lg bg-transparent border border-blue-200/50 dark:border-blue-800/50 backdrop-blur-sm hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300"
+    className="text-center p-4 rounded-lg bg-transparent border border-primary/50 backdrop-blur-sm hover:border-primary transition-all duration-300"
   >
-    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stat.value}</div>
+    <div className="text-2xl font-bold text-primary">{stat.value}</div>
     <div className="text-sm text-muted-foreground">{stat.label}</div>
   </motion.div>
 );
@@ -312,9 +312,9 @@ export default function AboutPage(): React.JSX.Element {
         <div className="container mx-auto px-6 py-12">
           <div className="w-full max-w-4xl mx-auto space-y-16">
             <div className="text-center space-y-6">
-              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-full w-48 mx-auto animate-pulse"></div>
-              <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto animate-pulse"></div>
-              <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-96 mx-auto animate-pulse"></div>
+              <div className="h-8 bg-muted rounded-full w-48 mx-auto animate-pulse"></div>
+              <div className="h-12 bg-muted rounded w-64 mx-auto animate-pulse"></div>
+              <div className="h-6 bg-muted rounded w-96 mx-auto animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -338,7 +338,7 @@ export default function AboutPage(): React.JSX.Element {
             className="text-center space-y-6"
           >
             <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
@@ -384,7 +384,7 @@ export default function AboutPage(): React.JSX.Element {
                           (e.currentTarget as HTMLImageElement).src = `data:image/svg+xml,${encodeURIComponent(svg)}`;
                         }}
                       />
-                      <AvatarFallback className="bg-blue-600 text-white text-2xl font-bold">
+                      <AvatarFallback className="bg-primary text-primary-foreground text-2xl font-bold">
                         {initials}
                       </AvatarFallback>
                     </Avatar>
@@ -398,7 +398,7 @@ export default function AboutPage(): React.JSX.Element {
                       </h2>
                       <div className="space-y-4 text-lg text-muted-foreground leading-relaxed">
                         <p>
-                          Hi there! I&apos;m <span className="font-semibold text-blue-600 dark:text-blue-400">{NAME}</span>, a Professional Developer based in the United States. I specialize in building robust and engaging digital experiences, combining technical skill with creative coding.
+                          Hi there! I&apos;m <span className="font-semibold text-primary">{NAME}</span>, a Professional Developer based in the United States. I specialize in building robust and engaging digital experiences, combining technical skill with creative coding.
                         </p>
                         <p>
                           Outside of development, I&apos;m passionate about photography, video/photo editing, and content creation through streaming and YouTube. I thrive on learning and exploring new technologies.

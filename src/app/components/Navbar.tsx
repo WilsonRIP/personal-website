@@ -95,10 +95,9 @@ export default function Navbar() {
     <header
       className={cn(
         "sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ease-in-out",
+        "bg-background/95 border-b border-border",
         isScrolled ? "py-2 shadow-md" : "py-3 shadow-sm",
-        isDark
-          ? "bg-gradient-to-br from-slate-900/95 via-teal-900/30 to-blue-900/20 text-white shadow-gray-700/30"
-          : "bg-gradient-to-br from-background/95 via-blue-900/20 to-teal-900/30 text-gray-800 shadow-black/10"
+        "text-foreground"
       )}
     >
       <div className="container mx-auto flex items-center h-10 md:h-12 px-4 md:px-6">
@@ -117,7 +116,7 @@ export default function Navbar() {
           />
           <span
             className={cn(
-              "font-bold ml-2 hidden sm:inline text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500"
+              "font-bold ml-2 hidden sm:inline text-foreground"
             )}
           >
             Wilson
@@ -140,15 +139,15 @@ export default function Navbar() {
                         navigationMenuTriggerStyle(),
                         "font-bold text-sm lg:text-base whitespace-nowrap relative group transition-colors duration-200 ease-in-out",
                         isActive
-                          ? "text-teal-500 dark:text-teal-400 bg-teal-400/10 dark:bg-teal-400/15"
-                          : "text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-300 hover:bg-teal-400/10 dark:hover:bg-teal-400/15"
+                          ? "text-primary bg-primary/10"
+                          : "text-foreground hover:text-primary hover:bg-primary/10"
                       )}
                       data-state={isActive ? "active" : "inactive"}
                     >
                       {displayLabel}
                       <span
                         className={cn(
-                          "absolute left-0 -bottom-[1px] h-0.5 w-full rounded bg-teal-500 dark:bg-teal-400",
+                          "absolute left-0 -bottom-[1px] h-0.5 w-full rounded bg-primary",
                           "transform origin-left scale-x-0 transition-transform duration-300 ease-out",
                           "group-hover:scale-x-100",
                           isActive && "scale-x-100"
@@ -178,7 +177,7 @@ export default function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="z-50 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                  className="z-50"
                   aria-label="Toggle Menu"
                 >
                   <Menu className="h-6 w-6" />
@@ -187,13 +186,10 @@ export default function Navbar() {
               <SheetContent
                 side="left"
                 className={cn(
-                  "w-3/4 sm:w-1/2 backdrop-blur-md shadow-lg border-r",
-                  isDark
-                    ? "bg-slate-900/95 border-slate-700"
-                    : "bg-background/95 border-slate-200"
+                  "w-3/4 sm:w-1/2 backdrop-blur-md shadow-lg border-r border-border bg-background/95"
                 )}
               >
-                <SheetHeader className="mb-4 border-b pb-4 dark:border-slate-700">
+                <SheetHeader className="mb-4 border-b border-border pb-4">
                   <SheetTitle className="text-center">
                     <Link
                       href="/"
@@ -206,7 +202,7 @@ export default function Navbar() {
                         height={24}
                         className="rounded-full transition-transform duration-300 group-hover:scale-110"
                       />
-                      <span className="font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+                      <span className="font-bold text-lg text-foreground">
                         Wilson
                       </span>
                     </Link>
@@ -219,7 +215,7 @@ export default function Navbar() {
                       return (
                         <li key={href} className="w-full text-center">
                           {index > 0 && (
-                            <hr className="my-1 border-slate-200 dark:border-slate-700 mx-4" />
+                            <hr className="my-1 border-border mx-4" />
                           )}
                           <SheetClose asChild>
                             <Link
@@ -227,8 +223,8 @@ export default function Navbar() {
                                                   className={cn(
                       "font-bold block py-3 mx-4 text-base rounded-md transition-all duration-200 ease-in-out",
                                 isActive
-                                  ? "text-teal-600 dark:text-teal-400 bg-teal-400/20 dark:bg-teal-400/20 scale-105 shadow-inner"
-                                  : "text-gray-700 dark:text-gray-300 hover:text-teal-600 dark:hover:text-teal-300 hover:bg-teal-400/10 dark:hover:bg-teal-400/15 hover:translate-x-1"
+                                  ? "text-primary bg-primary/20 scale-105 shadow-inner"
+                                  : "text-foreground hover:text-primary hover:bg-primary/10 hover:translate-x-1"
                               )}
                             >
                               {label}

@@ -442,14 +442,14 @@ const Calculator: React.FC = () => {
   // const fullExpression = `${formatOperand(state.previousOperand) ?? ''} ${state.operation ?? ''} ${state.overwrite ? '' : formatOperand(state.currentOperand) ?? ''}`;
 
   return (
-    <div className="p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-xs mx-auto">
+    <div className="p-4 sm:p-6 bg-card border border-border rounded-xl shadow-lg w-full max-w-xs mx-auto">
       {/* Display */}
-      <div className="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 mb-4 text-right overflow-hidden">
-        <div className="text-gray-500 dark:text-gray-400 text-sm h-6 truncate">
+      <div className="bg-muted rounded-lg p-4 mb-4 text-right overflow-hidden">
+        <div className="text-muted-foreground text-sm h-6 truncate">
           {formatOperand(state.previousOperand)} {state.operation}
         </div>
         <div
-          className="text-gray-900 dark:text-white text-3xl sm:text-4xl font-bold min-h-[40px] break-words"
+          className="text-foreground text-3xl sm:text-4xl font-bold min-h-[40px] break-words"
           style={{ wordBreak: "break-all" }} // Ensure long numbers wrap
         >
           {displayValue}
@@ -458,7 +458,7 @@ const Calculator: React.FC = () => {
 
       {/* Feedback Message */}
       {feedbackMessage && (
-        <div className="text-center text-sm text-yellow-600 dark:text-yellow-400 mb-2 h-5">
+        <div className="text-center text-sm text-amber-600 dark:text-amber-400 mb-2 h-5">
           {feedbackMessage}
         </div>
       )}
@@ -485,7 +485,7 @@ const Calculator: React.FC = () => {
           let customClasses = "";
           if (button.type === "operator")
             customClasses =
-              "bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white";
+              "bg-primary hover:bg-primary/90 text-primary-foreground";
           if (button.type === "equals")
             customClasses =
               "bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white";

@@ -18,8 +18,8 @@ const ShowcaseSidebar: React.FC<ShowcaseSidebarProps> = ({
   onSelectItem,
 }) => {
   return (
-    <aside className="sticky top-20 h-[calc(100vh-5rem)] w-56 flex-shrink-0 p-6 border-r border-gray-200 dark:border-gray-700/50 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-r-lg hidden md:block overflow-y-auto">
-      <h3 className="text-xl font-bold mb-5 text-gray-800 dark:text-gray-200">
+    <aside className="sticky top-20 h-[calc(100vh-5rem)] w-56 flex-shrink-0 p-6 border-r border-border bg-background/50 backdrop-blur-sm rounded-r-lg hidden md:block overflow-y-auto">
+      <h3 className="text-xl font-bold mb-5 text-foreground">
         Components
       </h3>
       <nav>
@@ -32,10 +32,10 @@ const ShowcaseSidebar: React.FC<ShowcaseSidebarProps> = ({
                   variant={isActive ? "secondary" : "ghost"}
                   size="sm"
                   onClick={() => onSelectItem(item.id)}
-                  className={`block w-full justify-start text-left px-3 py-2 mb-1 rounded-xl transition-all duration-150 ease-in-out font-medium focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-opacity-75 ${
+                  className={`block w-full justify-start text-left px-3 py-2 mb-1 rounded-xl transition-all duration-150 ease-in-out font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75 ${
                     isActive
-                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300"
-                      : "text-gray-700 hover:text-gray-900 hover:bg-gray-200/70 dark:text-gray-400 dark:hover:text-gray-100 dark:hover:bg-gray-700/50"
+                      ? "bg-primary/10 text-primary"
+                      : "text-foreground hover:text-primary hover:bg-muted"
                   }`}
                 >
                   {item.name}
