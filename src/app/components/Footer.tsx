@@ -5,7 +5,6 @@ import { socialLinks, SocialLink } from "../data/socials";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, LazyMotion, domAnimation } from "framer-motion";
-import { useTheme } from "next-themes";
 
 
 
@@ -33,7 +32,6 @@ const footerLinks = [
 
 // Memoized Footer component for better performance
 const Footer = memo(function Footer() {
-  const { resolvedTheme } = useTheme();
   const [currentYear] = useState(new Date().getFullYear());
   const [mounted, setMounted] = useState(false);
   
@@ -41,8 +39,6 @@ const Footer = memo(function Footer() {
   useEffect(() => {
     setMounted(true);
   }, []);
-  
-  const isDark = resolvedTheme === 'dark';
   
   // Prevent hydration mismatch by rendering a placeholder until client-side
   if (!mounted) {

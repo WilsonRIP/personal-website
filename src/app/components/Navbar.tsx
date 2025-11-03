@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useTheme } from "next-themes";
 import ThemeToggle from "./ThemeToggle";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -37,14 +36,10 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { resolvedTheme } = useTheme();
   const [isMobile, setIsMobile] = useState(false);
   const [isCompactView, setIsCompactView] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
-
-  // Theme detection
-  const isDark = resolvedTheme === "dark";
 
   // Only render component after mounting on client to avoid hydration mismatch
   useEffect(() => {
