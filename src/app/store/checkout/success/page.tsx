@@ -125,3 +125,21 @@ function CheckoutSuccessContent() {
     </main>
   );
 }
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense fallback={
+      <main className="container mx-auto px-4 md:px-6 py-16">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="animate-pulse space-y-4">
+            <div className="h-16 w-16 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto"></div>
+            <div className="h-8 w-64 bg-gray-200 dark:bg-gray-700 rounded mx-auto"></div>
+            <div className="h-4 w-96 bg-gray-200 dark:bg-gray-700 rounded mx-auto"></div>
+          </div>
+        </div>
+      </main>
+    }>
+      <CheckoutSuccessContent />
+    </Suspense>
+  );
+}
