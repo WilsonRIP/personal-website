@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { fetchCart } from "../../../store/api";
+import { readRawCart, toDetailedCart } from "../../cart/_shared";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-09-30.clover",
@@ -16,8 +16,9 @@ export async function POST() {
       );
     }
 
-    // Get cart data
-    const cartResponse = await fetchCart();
+    // Get cart data directly from shared functions
+    const rawCart = await readRawCart();
+    const cartResponse = await toDetailedCart(rawCart);
 
     if (cartResponse.items.length === 0) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
@@ -27,29 +28,29 @@ export async function POST() {
     const lineItems = [];
 
     for (const item of cartResponse.items) {
-      // Calculate addon prices
-      let totalAddonPrice = 0;
-      if (item.selectedAddons && item.product.addons) {
-        totalAddonPrice = item.selectedAddons.reduce((sum: number, addonId: string) => {
-          const addon = item.product.addons?.find((a: { id: string; name: string; description: string; price: number; tags?: string[] }) => a.id === addonId);
-          return sum + (addon?.price || 0);
-        }, 0);
+      // Create line item for the base product (without addons)
+      const productData: {
+        name: string;
+        description?: string;
+        images: string[];
+      } = {
+        name: item.product.name,
+        images: item.product.image.startsWith('http')
+          ? [item.product.image]
+          : [`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}${item.product.image}`],
+      };
+
+      // Only include description if it's not empty (Stripe doesn't allow empty strings)
+      if (item.product.description && item.product.description.trim().length > 0) {
+        productData.description = item.product.description;
       }
 
-      const totalPriceInCents = Math.round((item.product.price + totalAddonPrice) * 100);
-
-      // Create a dynamic price for this product with addons
+      // Add base product line item (addons will be added as separate line items)
       lineItems.push({
         price_data: {
           currency: "usd",
-          product_data: {
-            name: item.product.name,
-            description: item.product.description,
-            images: item.product.image.startsWith('http')
-              ? [item.product.image]
-              : [`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}${item.product.image}`],
-          },
-          unit_amount: totalPriceInCents,
+          product_data: productData,
+          unit_amount: Math.round(item.product.price * 100),
         },
         quantity: item.quantity,
       });
@@ -59,13 +60,22 @@ export async function POST() {
         item.selectedAddons.forEach((addonId: string) => {
           const addon = item.product.addons?.find((a: { id: string; name: string; description: string; price: number; tags?: string[] }) => a.id === addonId);
           if (addon) {
+            const addonProductData: {
+              name: string;
+              description?: string;
+            } = {
+              name: `${addon.name} (Addon)`,
+            };
+
+            // Only include description if it's not empty (Stripe doesn't allow empty strings)
+            if (addon.description && addon.description.trim().length > 0) {
+              addonProductData.description = addon.description;
+            }
+
             lineItems.push({
               price_data: {
                 currency: "usd",
-                product_data: {
-                  name: `${addon.name} (Addon)`,
-                  description: addon.description,
-                },
+                product_data: addonProductData,
                 unit_amount: Math.round(addon.price * 100),
               },
               quantity: item.quantity,

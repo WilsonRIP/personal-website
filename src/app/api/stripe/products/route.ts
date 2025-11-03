@@ -78,8 +78,23 @@ export async function GET() {
       const defaultPrice = stripeProduct.default_price as Stripe.Price;
       const price = defaultPrice ? defaultPrice.unit_amount! / 100 : 0; // Convert cents to dollars
 
-      // For now, we'll create a simple product structure
-      // In a real implementation, you'd store addon information in Stripe product metadata
+      // Parse addons from metadata
+      // Addons can be stored in metadata as JSON string with key "addons"
+      // Format: {"addons": "[{\"id\":\"ecommerce\",\"name\":\"E-commerce\",\"description\":\"...\",\"price\":15.0}]"}
+      let addons = [];
+      if (stripeProduct.metadata?.addons) {
+        try {
+          addons = JSON.parse(stripeProduct.metadata.addons);
+          // Ensure addons is an array
+          if (!Array.isArray(addons)) {
+            addons = [];
+          }
+        } catch (error) {
+          console.warn(`Failed to parse addons for product ${stripeProduct.id}:`, error);
+          addons = [];
+        }
+      }
+
       return {
         id: stripeProduct.id,
         name: stripeProduct.name,
@@ -87,8 +102,7 @@ export async function GET() {
         price: price,
         image: stripeProduct.images[0] || '/window.svg', // Use first image or fallback
         tags: stripeProduct.metadata?.tags?.split(',') || [],
-        // Addons would need to be handled separately - either as separate products or metadata
-        addons: [], // For now, empty - you can implement addons as separate Stripe products
+        addons: addons, // Parse from metadata
       };
     });
 

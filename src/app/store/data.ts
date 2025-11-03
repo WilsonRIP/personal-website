@@ -115,3 +115,60 @@ export async function getProducts(): Promise<Product[]> {
 
 // For backward compatibility, export a products getter
 export const products: Product[] = [];
+
+/**
+ * Fetch a single product by ID from Stripe
+ */
+export async function getProductById(productId: string): Promise<Product | null> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/stripe/products/${productId}`, {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const product = await response.json();
+    return product as Product;
+  } catch (error) {
+    console.error(`Error fetching product ${productId}:`, error);
+    return null;
+  }
+}
+
+/**
+ * Fetch price data by Price ID from Stripe
+ */
+export async function getPriceById(priceId: string): Promise<{
+  priceId: string;
+  productId: string;
+  product: Product | null;
+  unitAmount: number | null;
+  currency: string;
+  price: number;
+} | null> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/stripe/prices/${priceId}`, {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return null;
+      }
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const priceData = await response.json();
+    return priceData;
+  } catch (error) {
+    console.error(`Error fetching price ${priceId}:`, error);
+    return null;
+  }
+}
