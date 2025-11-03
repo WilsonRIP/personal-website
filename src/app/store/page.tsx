@@ -9,15 +9,34 @@ export const metadata = {
 };
 
 async function ProductsGrid() {
-  const products = await getProducts();
+  try {
+    const products = await getProducts();
 
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {products.map((p) => (
-        <ProductCard key={p.id} product={p} />
-      ))}
-    </div>
-  );
+    if (!products || products.length === 0) {
+      return (
+        <div className="text-center py-12">
+          <p className="text-muted-foreground">No products available at the moment.</p>
+          <p className="text-sm text-muted-foreground mt-2">Please check back later.</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((p) => (
+          <ProductCard key={p.id} product={p} />
+        ))}
+      </div>
+    );
+  } catch (error) {
+    console.error('Error loading products:', error);
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">Failed to load products.</p>
+        <p className="text-sm text-muted-foreground mt-2">Please try refreshing the page.</p>
+      </div>
+    );
+  }
 }
 
 export default function StorePage() {
