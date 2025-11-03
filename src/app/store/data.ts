@@ -1,4 +1,4 @@
-import type { Product } from "./types";
+import type { Product, Addon } from "./types";
 
 // Cache for products to avoid repeated API calls
 // Note: In serverless environments, this cache is per-instance only
@@ -53,15 +53,36 @@ async function fetchProductsFromStripe(): Promise<Product[]> {
       }
 
       // Transform Stripe products to our Product format
-      return stripeProducts.map((product: { id: string; name: string; description: string; price: number; image: string; tags: string[]; addons: unknown[] }) => ({
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        image: product.image,
-        tags: product.tags,
-        addons: product.addons || [],
-      }));
+      return stripeProducts.map((product: { id: string; name: string; description: string; price: number; image: string; tags: string[]; addons?: unknown[] }) => {
+        // Validate and type addons
+        let addons: Addon[] = [];
+        if (product.addons && Array.isArray(product.addons)) {
+          addons = product.addons.filter((addon): addon is Addon => {
+            return (
+              typeof addon === 'object' &&
+              addon !== null &&
+              'id' in addon &&
+              'name' in addon &&
+              'description' in addon &&
+              'price' in addon &&
+              typeof (addon as { id: unknown }).id === 'string' &&
+              typeof (addon as { name: unknown }).name === 'string' &&
+              typeof (addon as { description: unknown }).description === 'string' &&
+              typeof (addon as { price: unknown }).price === 'number'
+            );
+          }) as Addon[];
+        }
+
+        return {
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          image: product.image,
+          tags: product.tags,
+          addons: addons,
+        };
+      });
     } catch (error: unknown) {
       if (timeoutId) clearTimeout(timeoutId);
       
