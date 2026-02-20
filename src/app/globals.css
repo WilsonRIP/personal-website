@@ -127,34 +127,34 @@
   --shadow-xl: 0 20px 25px -5px var(--shadow-color),
     0 10px 10px -5px var(--shadow-color);
 
-  /* Enhanced light theme variables - muted and professional */
+  /* Enhanced light theme variables - "Midnight Studio Light" */
   --radius: 0.625rem;
-  --background: oklch(0.99 0.005 240); /* Soft off-white with very subtle gray-blue */
-  --foreground: oklch(0.25 0.01 260); /* Muted dark gray-blue */
-  --card: oklch(1 0 0); /* Pure white */
-  --card-foreground: oklch(0.25 0.01 260); /* Muted dark gray-blue */
-  --popover: oklch(1 0 0); /* Pure white */
-  --popover-foreground: oklch(0.25 0.01 260); /* Muted dark gray-blue */
-  --primary: oklch(0.5 0.08 230); /* Muted professional blue */
-  --primary-foreground: oklch(0.99 0.005 240); /* Soft off-white */
-  --secondary: oklch(0.96 0.01 260); /* Very subtle gray */
-  --secondary-foreground: oklch(0.35 0.02 260); /* Muted dark gray */
-  --muted: oklch(0.97 0.005 250); /* Very subtle gray-blue */
-  --muted-foreground: oklch(0.45 0.01 260); /* Muted medium gray */
-  --accent: oklch(0.92 0.02 220); /* Very subtle blue-gray */
-  --accent-foreground: oklch(0.3 0.02 240); /* Muted dark gray-blue */
-  --destructive: oklch(0.55 0.15 25); /* Muted red */
-  --destructive-foreground: oklch(0.99 0.005 25); /* Soft off-white */
-  --border: oklch(0.9 0.01 250); /* Very subtle gray border */
-  --input: oklch(0.96 0.01 250); /* Very subtle gray input */
-  --ring: oklch(0.5 0.08 230); /* Muted professional blue */
+  --background: #F4F4F5; /* Light gray background */
+  --foreground: #09090B; /* Deep black text */
+  --card: #FFFFFF; /* Pure white */
+  --card-foreground: #09090B; 
+  --popover: #FFFFFF; 
+  --popover-foreground: #09090B; 
+  --primary: #9D4EDD; /* Neon Purple */
+  --primary-foreground: #FFFFFF; 
+  --secondary: #E4E4E7; /* Light gray */
+  --secondary-foreground: #18181B; 
+  --muted: #E4E4E7; 
+  --muted-foreground: #71717A; /* Medium gray */
+  --accent: #00F0FF; /* Vivid Cyan */
+  --accent-foreground: #09090B; 
+  --destructive: #EF4444; /* Stark Red */
+  --destructive-foreground: #FFFFFF; 
+  --border: #E4E4E7; 
+  --input: #E4E4E7; 
+  --ring: #9D4EDD; 
   
-  /* Chart colors - muted professional palette */
-  --chart-1: oklch(0.5 0.08 230); /* Muted blue */
-  --chart-2: oklch(0.5 0.08 200); /* Muted blue-gray */
-  --chart-3: oklch(0.5 0.08 170); /* Muted teal-gray */
-  --chart-4: oklch(0.5 0.08 140); /* Muted green-gray */
-  --chart-5: oklch(0.5 0.08 100); /* Muted yellow-gray */
+  /* Chart colors */
+  --chart-1: #9D4EDD; 
+  --chart-2: #00F0FF; 
+  --chart-3: #FF2A6D; /* Neon Pink */
+  --chart-4: #05D5FF; 
+  --chart-5: #FFD166; 
   
   /* Animation variables */
   --animation-fast: 200ms;
@@ -163,58 +163,57 @@
   --ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #09090B;
+  --sidebar-primary: #9D4EDD;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E4E4E7;
+  --sidebar-accent-foreground: #09090B;
+  --sidebar-border: #E4E4E7;
+  --sidebar-ring: #9D4EDD;
 }
 
 .dark {
   /* Define a default shadow color for dark mode */
-  --shadow-color: rgba(0, 0, 0, 0.4); /* Example dark shadow */
+  --shadow-color: rgba(0, 0, 0, 0.8);
 
-  /* Enhanced dark theme variables - muted and professional */
-  --background: oklch(0.12 0.005 260); /* Very dark muted gray-blue */
-  --foreground: oklch(0.92 0.01 260); /* Soft light gray */
-  --card: oklch(0.16 0.01 260); /* Muted dark gray */
-  --card-foreground: oklch(0.92 0.01 260); /* Soft light gray */
-  --popover: oklch(0.16 0.01 260); /* Muted dark gray */
-  --popover-foreground: oklch(0.92 0.01 260); /* Soft light gray */
-  --primary: oklch(0.58 0.1 230); /* Muted professional blue */
-  --primary-foreground: oklch(0.12 0.005 260); /* Very dark muted gray-blue */
-  --secondary: oklch(0.22 0.01 260); /* Muted dark gray */
-  --secondary-foreground: oklch(0.92 0.01 260); /* Soft light gray */
-  --muted: oklch(0.18 0.01 260); /* Muted dark gray */
-  --muted-foreground: oklch(0.65 0.01 260); /* Muted medium gray */
-  --accent: oklch(0.2 0.02 240); /* Muted dark gray-blue */
-  --accent-foreground: oklch(0.88 0.01 250); /* Soft light gray */
-  --destructive: oklch(0.6 0.15 25); /* Muted red */
-  --destructive-foreground: oklch(0.12 0.005 25); /* Very dark muted gray */
-  --border: oklch(0.24 0.01 260); /* Muted dark gray border */
-  --input: oklch(0.18 0.01 260); /* Muted dark gray input */
-  --ring: oklch(0.58 0.1 230); /* Muted professional blue */
+  /* Enhanced dark theme variables - "Midnight Studio" */
+  --background: #0A0A0A; /* Cinematic Deep Black */
+  --foreground: #FAFAFA; /* Sharp White */
+  --card: #121212; /* Barely elevated surface */
+  --card-foreground: #FAFAFA; 
+  --popover: #121212; 
+  --popover-foreground: #FAFAFA; 
+  --primary: #9D4EDD; /* Neon Purple */
+  --primary-foreground: #FAFAFA; 
+  --secondary: #1F1F1F; /* Dark gray */
+  --secondary-foreground: #FAFAFA; 
+  --muted: #1F1F1F; 
+  --muted-foreground: #A1A1AA; /* Muted gray for readable secondary text */
+  --accent: #00F0FF; /* Vivid Cyan */
+  --accent-foreground: #0A0A0A; 
+  --destructive: #FF2A6D; /* Neon Pink/Red */
+  --destructive-foreground: #FAFAFA; 
+  --border: #27272A; /* Subtle hard boundary */
+  --input: #27272A; 
+  --ring: #00F0FF; /* Glow-like ring */
   
-  /* Chart colors - muted professional palette for dark mode */
-  --chart-1: oklch(0.58 0.1 230); /* Muted blue */
-  --chart-2: oklch(0.58 0.1 200); /* Muted blue-gray */
-  --chart-3: oklch(0.58 0.1 170); /* Muted teal-gray */
-  --chart-4: oklch(0.58 0.1 140); /* Muted green-gray */
-  --chart-5: oklch(0.58 0.1 100); /* Muted yellow-gray */
+  /* Chart colors */
+  --chart-1: #9D4EDD; 
+  --chart-2: #00F0FF; 
+  --chart-3: #FF2A6D; 
+  --chart-4: #05D5FF; 
+  --chart-5: #FFD166; 
   
-  /* Same animation variables from light mode apply */
-  --shadow-color: rgba(0, 0, 100, 0.3); /* Blue-tinted shadow for depth */
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --shadow-color: rgba(157, 78, 221, 0.15); /* Purple-tinted shadow for depth */
+  --sidebar: #0A0A0A;
+  --sidebar-foreground: #FAFAFA;
+  --sidebar-primary: #9D4EDD;
+  --sidebar-primary-foreground: #FAFAFA;
+  --sidebar-accent: #1F1F1F;
+  --sidebar-accent-foreground: #FAFAFA;
+  --sidebar-border: #27272A;
+  --sidebar-ring: #00F0FF;
 }
 
 /*
@@ -344,12 +343,42 @@ body {
     border-color: var(--border);
   }
   body {
-    /* Applying background and text color from theme variables */
     background-color: var(--background);
     color: var(--foreground);
-    /* Ensure Archivo is applied as the default font */
     font-family: var(--font-archivo), "Archivo", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   }
+}
+
+/* Midnight Studio Unique Utilities */
+.text-glow {
+  text-shadow: 0 0 20px rgba(157, 78, 221, 0.5); /* Primary glow */
+}
+
+.text-glow-accent {
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.5); /* Cyan glow */
+}
+
+.box-glow {
+  box-shadow: 0 0 40px -10px rgba(157, 78, 221, 0.3);
+}
+
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* For massive heading contrasts */
+.display-text {
+  font-family: var(--font-arista-pro-bold), "Arista Pro", sans-serif;
+  text-transform: uppercase;
+  line-height: 0.9;
 }
 
 /*

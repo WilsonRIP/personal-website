@@ -93,7 +93,7 @@ export default function ContactPage() {
       textArea.select();
       document.execCommand("copy");
       document.body.removeChild(textArea);
-      
+
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     }
@@ -214,43 +214,39 @@ export default function ContactPage() {
           transition={{ duration: 0.6 }}
         >
           {/* Header */}
-          <motion.header 
-            className="text-center space-y-6"
+          <motion.header
+            className="text-center md:text-left flex flex-col md:flex-row justify-between border-b border-border pb-8 mt-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm font-medium">
+            <div className="space-y-6 md:w-2/3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 text-primary uppercase tracking-widest text-xs font-bold">
                 <Sparkles className="h-4 w-4" />
                 Let&apos;s Connect
               </div>
 
-              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                Get In Touch
+              <h1 className="display-text text-5xl md:text-7xl">
+                GET IN TOUCH
               </h1>
 
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-lg md:text-2xl text-muted-foreground font-mono leading-relaxed">
                 Ready to bring your ideas to life? Whether you have a project in mind, want to collaborate, or just want to say hello - I&apos;m here to help!
-                <span className="block mt-2 text-lg text-muted-foreground">
-                  Let&apos;s turn your vision into reality together! 🚀
+                <span className="block mt-4 text-sm font-bold text-foreground uppercase border-l-2 border-primary pl-4 py-2">
+                  Let&apos;s turn your vision into reality 🚀
                 </span>
               </p>
             </div>
 
             {/* Quick stats */}
-            <div className="flex justify-center gap-6 sm:gap-8 text-sm flex-wrap">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">24h</div>
-                <div className="text-muted-foreground">Response Time</div>
+            <div className="flex flex-col justify-end gap-6 sm:gap-8 mt-8 md:mt-0 font-mono uppercase tracking-widest md:w-1/3 text-right">
+              <div>
+                <div className="text-3xl font-bold text-primary">24h</div>
+                <div className="text-xs text-muted-foreground">Response Time</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">100%</div>
-                <div className="text-muted-foreground">Reply Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-violet-600 dark:text-violet-400">N/A★</div>
-                <div className="text-muted-foreground">Client Rating</div>
+              <div>
+                <div className="text-3xl font-bold text-accent">100%</div>
+                <div className="text-xs text-muted-foreground">Reply Rate</div>
               </div>
             </div>
           </motion.header>
@@ -258,7 +254,7 @@ export default function ContactPage() {
           {/* Main Content */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Contact Information */}
-            <motion.div 
+            <motion.div
               className="lg:col-span-1 space-y-6"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -277,7 +273,7 @@ export default function ContactPage() {
                   </div>
 
                   <p className="leading-7 [&:not(:first-child)]:mt-6">
-                    I&apos;m passionate about creating exceptional digital experiences and love connecting with fellow developers, creators, and innovators. 
+                    I&apos;m passionate about creating exceptional digital experiences and love connecting with fellow developers, creators, and innovators.
                     Drop me a line through any of these channels - I&apos;d love to hear from you!
                   </p>
 
@@ -383,7 +379,7 @@ export default function ContactPage() {
             </motion.div>
 
             {/* Contact Form */}
-            <motion.div 
+            <motion.div
               className="lg:col-span-2"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}

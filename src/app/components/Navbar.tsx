@@ -89,9 +89,9 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 backdrop-blur-lg transition-all duration-300 ease-in-out",
-        "bg-background/95 border-b border-border",
-        isScrolled ? "py-2 shadow-md" : "py-3 shadow-sm",
+        "fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out rounded-full",
+        "bg-background/70 backdrop-blur-xl border border-white/10 dark:border-white/5",
+        isScrolled ? "py-2 px-6 shadow-2xl w-[90%] max-w-4xl" : "py-3 px-6 md:px-8 shadow-xl w-[95%] max-w-5xl",
         "text-foreground"
       )}
     >
@@ -132,20 +132,20 @@ export default function Navbar() {
                       href={href}
                       className={cn(
                         navigationMenuTriggerStyle(),
-                        "font-bold text-sm lg:text-base whitespace-nowrap relative group transition-colors duration-200 ease-in-out",
+                        "font-bold text-sm lg:text-base whitespace-nowrap relative group transition-all duration-300 ease-in-out bg-transparent",
                         isActive
-                          ? "text-primary bg-primary/10"
-                          : "text-foreground hover:text-primary hover:bg-primary/10"
+                          ? "text-primary text-glow"
+                          : "text-muted-foreground hover:text-foreground hover:text-glow-accent"
                       )}
                       data-state={isActive ? "active" : "inactive"}
                     >
                       {displayLabel}
                       <span
                         className={cn(
-                          "absolute left-0 -bottom-[1px] h-0.5 w-full rounded bg-primary",
-                          "transform origin-left scale-x-0 transition-transform duration-300 ease-out",
-                          "group-hover:scale-x-100",
-                          isActive && "scale-x-100"
+                          "absolute left-1/2 -bottom-[2px] h-[2px] rounded-full bg-primary",
+                          "transform -translate-x-1/2 scale-x-0 transition-transform duration-500 ease-out",
+                          "group-hover:scale-x-100 group-hover:bg-accent group-hover:shadow-[0_0_10px_var(--accent)]",
+                          isActive && "scale-x-50 shadow-[0_0_10px_var(--primary)]"
                         )}
                       />
                     </Link>
@@ -215,8 +215,8 @@ export default function Navbar() {
                           <SheetClose asChild>
                             <Link
                               href={href}
-                                                  className={cn(
-                      "font-bold block py-3 mx-4 text-base rounded-md transition-all duration-200 ease-in-out",
+                              className={cn(
+                                "font-bold block py-3 mx-4 text-base rounded-md transition-all duration-200 ease-in-out",
                                 isActive
                                   ? "text-primary bg-primary/20 scale-105 shadow-inner"
                                   : "text-foreground hover:text-primary hover:bg-primary/10 hover:translate-x-1"

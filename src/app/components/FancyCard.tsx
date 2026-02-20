@@ -29,10 +29,10 @@ export default function FancyCard({
 
   // Hover effect class
   const hoverClass = withHoverEffect ? "hover-lift" : "";
-  
+
   // Border class
   const borderClass = withBorder ? "border border-border" : "";
-  
+
   // Shadow class with dark mode consideration
   const shadowClass = withShadow ? "shadow-md dark:shadow-lg" : "";
 

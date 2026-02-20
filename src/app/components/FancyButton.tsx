@@ -61,8 +61,8 @@ export default function FancyButton({
   // If href is provided, render as Link
   if (href) {
     return (
-      <Link 
-        href={href} 
+      <Link
+        href={href}
         className={commonClasses}
         aria-disabled={disabled}
       >

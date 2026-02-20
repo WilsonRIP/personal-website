@@ -18,7 +18,7 @@ const ProjectsListSkeleton = () => (
       <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-lg w-48 animate-pulse"></div>
       <div className="h-6 w-8 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
     </div>
-    
+
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {[...Array(6)].map((_, i) => (
         <div key={i} className="h-64 bg-card border rounded-lg shadow-sm animate-pulse">
@@ -50,13 +50,13 @@ const ProjectsStatsSkeleton = () => (
         <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-32"></div>
         <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
       </div>
-      
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
         ))}
       </div>
-      
+
       <div className="space-y-4">
         <div className="flex gap-4 border-b border-border">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-24"></div>
@@ -81,47 +81,43 @@ export default async function ProjectsPage() {
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-6 py-12">
         <div className="w-full max-w-6xl mx-auto space-y-16">
-          
+
           {/* Header */}
-          <header className="text-center">
-            <div className="space-y-8">
-              {/* Welcome badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm font-medium">
+          <header className="text-center md:text-left flex flex-col md:flex-row md:items-end justify-between border-b border-border pb-8 mt-16">
+            <div className="space-y-6 md:w-2/3">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 text-primary uppercase tracking-widest text-xs font-bold">
                 <Sparkles className="h-4 w-4" />
                 GitHub Portfolio Showcase
               </div>
 
-              {/* Main title */}
-              <div className="space-y-4">
-                <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                  My Projects
-                </h1>
-                
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                  Explore my GitHub repositories and discover the projects that showcase my 
-                  <span className="font-semibold text-blue-600 dark:text-blue-400"> technical skills</span>,
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400"> creative solutions</span>, and
-                  <span className="font-semibold text-violet-600 dark:text-violet-400"> development journey</span>.
-                </p>
-              </div>
+              <h1 className="display-text text-5xl md:text-7xl">
+                MY PROJECTS
+              </h1>
 
-              {/* CTA Section */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a
-                  href={socialLinks[3]?.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center px-8 py-3 rounded-lg font-semibold bg-foreground text-background shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105"
-                >
-                  <Github className="h-5 w-5 mr-2" />
-                  View GitHub Profile
-                  <ExternalLink className="h-4 w-4 ml-2 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200" />
-                </a>
+              <p className="text-lg md:text-2xl text-muted-foreground font-mono leading-relaxed">
+                Explore my GitHub repositories and discover the projects that showcase my
+                <span className="font-bold text-foreground border-b border-primary"> technical skills</span>,
+                <span className="font-bold text-foreground border-b border-accent"> creative solutions</span>, and
+                <span className="font-bold text-foreground border-b border-destructive"> development journey</span>.
+              </p>
+            </div>
 
-                <div className="flex items-center gap-2 px-6 py-3 rounded-lg bg-muted/50 border text-sm text-muted-foreground">
-                  <Code2 className="h-4 w-4" />
-                  <span className="font-medium">{repos.length} repositories</span>
-                </div>
+            {/* CTA Section */}
+            <div className="flex flex-col sm:flex-row gap-6 mt-8 md:mt-0 justify-end md:w-1/3">
+              <a
+                href={socialLinks[3]?.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex justify-center items-center px-8 h-14 font-semibold bg-foreground text-background hover:bg-muted-foreground uppercase tracking-widest text-sm shadow-[4px_4px_0_var(--primary)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0_var(--primary)] transition-all"
+              >
+                <Github className="h-5 w-5 mr-3" />
+                GitHub Profile
+                <ExternalLink className="h-4 w-4 ml-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+              </a>
+
+              <div className="flex items-center justify-center gap-3 px-6 h-14 bg-card border border-border text-sm font-mono text-muted-foreground uppercase tracking-widest">
+                <Code2 className="h-4 w-4 text-primary" />
+                <span className="font-bold">{repos.length} Repos</span>
               </div>
             </div>
           </header>

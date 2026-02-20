@@ -6,10 +6,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { 
-  Github, 
-  Youtube, 
-  Twitch, 
+import {
+  Github,
+  Youtube,
+  Twitch,
   MessageCircle,
   Code,
   Camera,
@@ -74,40 +74,40 @@ const USER_SKILLS: Skill[] = [
 ];
 
 const DEV_STACK: DevStackCategory[] = [
-  { 
-    name: "Frontend", 
+  {
+    name: "Frontend",
     icon: Code,
     color: "text-primary",
     bgColor: "bg-primary/10",
-    items: ["Next.js (React)", "Tailwind CSS", "Framer Motion", "TypeScript"] 
+    items: ["Next.js (React)", "Tailwind CSS", "Framer Motion", "TypeScript"]
   },
-  { 
-    name: "Backend", 
+  {
+    name: "Backend",
     icon: Settings,
     color: "text-emerald-600 dark:text-emerald-400",
     bgColor: "bg-emerald-50 dark:bg-emerald-950/20",
-    items: ["Node.js", "Express", "Python (Flask/Django – exploring)"] 
+    items: ["Node.js", "Express", "Python (Flask/Django – exploring)"]
   },
-  { 
-    name: "Database", 
+  {
+    name: "Database",
     icon: Database,
     color: "text-violet-600 dark:text-violet-400",
     bgColor: "bg-violet-50 dark:bg-violet-950/20",
-    items: ["PostgreSQL (with Prisma)", "MongoDB", "Supabase"] 
+    items: ["PostgreSQL (with Prisma)", "MongoDB", "Supabase"]
   },
-  { 
-    name: "DevOps/Tools", 
+  {
+    name: "DevOps/Tools",
     icon: Settings,
     color: "text-orange-600 dark:text-orange-400",
     bgColor: "bg-orange-50 dark:bg-orange-950/20",
-    items: ["Docker", "Git/GitHub", "Vercel", "GitHub Actions"] 
+    items: ["Docker", "Git/GitHub", "Vercel", "GitHub Actions"]
   },
-  { 
-    name: "Testing", 
+  {
+    name: "Testing",
     icon: TestTube,
     color: "text-pink-600 dark:text-pink-400",
     bgColor: "bg-pink-50 dark:bg-pink-950/20",
-    items: ["Jest", "React Testing Library", "Cypress (exploring)"] 
+    items: ["Jest", "React Testing Library", "Cypress (exploring)"]
   },
 ];
 
@@ -180,7 +180,7 @@ interface SkillCardProps {
 
 const SkillCard: React.FC<SkillCardProps> = React.memo(({ skill, index }) => {
   const IconComponent = skill.icon;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -212,7 +212,7 @@ interface DevStackCardProps {
 
 const DevStackCard: React.FC<DevStackCardProps> = React.memo(({ category, index }) => {
   const IconComponent = category.icon;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -230,7 +230,7 @@ const DevStackCard: React.FC<DevStackCardProps> = React.memo(({ category, index 
             {category.name}
           </h3>
         </CardHeader>
-        
+
         <CardContent className="pt-0">
           <ul className="space-y-3">
             {category.items.map((item) => (
@@ -258,7 +258,7 @@ interface SocialLinkProps {
 
 const SocialLink: React.FC<SocialLinkProps> = ({ social, index }) => {
   const IconComponent = social.icon;
-  
+
   return (
     <motion.a
       href={social.url}
@@ -300,11 +300,11 @@ const StatCard: React.FC<StatCardProps> = ({ stat, index }) => (
 
 export default function AboutPage(): React.JSX.Element {
   const [mounted, setMounted] = React.useState<boolean>(false);
-  
-  React.useEffect(() => { 
-    setMounted(true); 
+
+  React.useEffect(() => {
+    setMounted(true);
   }, []);
-  
+
   // Early return for SSR hydration
   if (!mounted) {
     return (
@@ -321,7 +321,7 @@ export default function AboutPage(): React.JSX.Element {
       </main>
     );
   }
-  
+
   const initials = getInitials(NAME);
   const firstName = getFirstName(NAME);
 
@@ -329,33 +329,35 @@ export default function AboutPage(): React.JSX.Element {
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-6 py-12">
         <div className="w-full max-w-4xl mx-auto space-y-16">
-          
+
           {/* Header */}
           <motion.header
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center space-y-6"
+            className="text-center md:text-left flex flex-col md:flex-row md:items-end justify-between border-b border-border pb-8 mt-16"
           >
-            <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Sparkles className="h-4 w-4" />
-              Get to know me
-            </motion.div>
+            <div className="space-y-6 md:w-2/3">
+              <motion.div
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 text-primary uppercase tracking-widest text-xs font-bold"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+              >
+                <Sparkles className="h-4 w-4" />
+                GET TO KNOW ME
+              </motion.div>
 
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-              About {firstName}
-            </h1>
-            
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              <span className="font-semibold">Professional Developer</span>
-              <span className="mx-2">•</span>
-              <span className="font-semibold">Creative Mind</span>
-            </p>
+              <h1 className="display-text text-5xl md:text-7xl">
+                ABOUT<br />{firstName}
+              </h1>
+
+              <p className="text-lg md:text-2xl text-muted-foreground font-mono leading-relaxed">
+                <span className="font-bold text-foreground border-b border-primary">Professional Developer</span>
+                <span className="mx-4 text-muted-foreground/50">/</span>
+                <span className="font-bold text-foreground border-b border-accent">Creative Mind</span>
+              </p>
+            </div>
           </motion.header>
 
           {/* Intro Section */}
@@ -419,13 +421,13 @@ export default function AboutPage(): React.JSX.Element {
           </motion.section>
 
           {/* Tabs Section */}
-          <motion.section 
+          <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             className="space-y-8"
           >
-            <motion.h2 
+            <motion.h2
               className="text-3xl font-bold text-center text-foreground"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -458,7 +460,7 @@ export default function AboutPage(): React.JSX.Element {
                     <CardContent className="p-8">
                       <div className="prose prose-lg max-w-none text-muted-foreground leading-relaxed">
                         <p className="text-xl">
-                        Full‑stack dev focused on TypeScript/React/Next.js, building fast, delightful UIs with Tailwind CSS v4 and shipping backends on Node/Express + Supabase. Experimenting with AI tooling and robust testing to ship with confidence.
+                          Full‑stack dev focused on TypeScript/React/Next.js, building fast, delightful UIs with Tailwind CSS v4 and shipping backends on Node/Express + Supabase. Experimenting with AI tooling and robust testing to ship with confidence.
                         </p>
                       </div>
                     </CardContent>
@@ -521,7 +523,7 @@ export default function AboutPage(): React.JSX.Element {
             </div>
 
             {/* Social Links */}
-            <motion.div 
+            <motion.div
               className="flex flex-wrap justify-center gap-4 mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

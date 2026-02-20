@@ -3,309 +3,191 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  ArrowRight, 
-  Sparkles, 
-  Code, 
-  Star, 
-  Github, 
-  GitBranch,
-  ExternalLink,
-  TrendingUp
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  ArrowRight,
+  Code,
+  Terminal,
+  Cpu,
+  MonitorPlay,
+  Star,
+  Github,
+  TrendingUp,
+  ExternalLink
 } from "lucide-react";
 import { WEBSITE_NAME } from "@/lib/types";
 import { type GithubUserStats } from "@/lib/githubStats";
 import RotatingStatsCards from "./components/RotatingStatsCards";
 
-// Client component for rendering stats
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, filter: "blur(4px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { type: "spring", stiffness: 80, damping: 20 }
+  }
+};
+
 function HomeStats({ stats }: { stats: GithubUserStats }) {
   const quickStats = [
-    { 
-      label: "GitHub Repos", 
-      value: `${stats.totalRepos}+`, 
-      icon: Github,
-      color: "text-primary"
-    },
-    { 
-      label: "Total Stars", 
-      value: stats.totalStars > 0 ? `${stats.totalStars}+` : "0", 
-      icon: Star,
-      color: "text-yellow-600 dark:text-yellow-400"
-    },
-    { 
-      label: "Technologies", 
-      value: `${stats.topLanguages.length}+`, 
-      icon: Code,
-      color: "text-emerald-600 dark:text-emerald-400"
-    },
-    { 
-      label: "Experience", 
-      value: "4+ Months", 
-      icon: GitBranch,
-      color: "text-violet-600 dark:text-violet-400"
-    },
+    { label: "REPOSITORIES", value: stats.totalRepos, icon: Github, color: "text-primary text-glow" },
+    { label: "TOTAL STARS", value: stats.totalStars, icon: Star, color: "text-accent text-glow-accent" },
+    { label: "LANGUAGES", value: stats.topLanguages.length, icon: Code, color: "text-destructive text-glow" },
+    { label: "ACTIVE YEARS", value: "1+", icon: TrendingUp, color: "text-foreground" },
   ];
 
   return (
-    <motion.section
-      className="space-y-8"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.6 }}
+    <motion.div
+      className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 lg:mt-32 border-t border-border pt-12"
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
     >
-      <div className="text-center space-y-4">
-        <h2 className="text-2xl font-bold text-foreground">
-          Quick Stats
-        </h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto">
-          A snapshot of my development activity and contributions
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {quickStats.map((stat, index) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 + index * 0.1 }}
-            className="text-center p-4 rounded-lg bg-card border shadow-sm hover:shadow-md transition-all duration-300"
-          >
-            <div className={`w-12 h-12 mx-auto mb-3 rounded-lg bg-muted/50 flex items-center justify-center`}>
-              <stat.icon className={`h-6 w-6 ${stat.color}`} />
-            </div>
-            <div className={`text-2xl font-bold ${stat.color} mb-1`}>
-              {stat.value}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {stat.label}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.section>
+      {quickStats.map((stat, idx) => (
+        <motion.div key={stat.label} variants={itemVariants} className="flex flex-col items-center md:items-start space-y-2">
+          <div className="flex items-center gap-2 mb-2">
+            <stat.icon className={`h-5 w-5 ${stat.color}`} />
+            <span className="text-xs tracking-[0.2em] text-muted-foreground uppercase font-bold">{stat.label}</span>
+          </div>
+          <div className={`text-5xl md:text-6xl font-bold tracking-tighter ${stat.color} font-mono`}>
+            {stat.value}
+          </div>
+        </motion.div>
+      ))}
+    </motion.div>
   );
 }
 
 export default function HomeContent({ githubStats }: { githubStats: GithubUserStats }) {
   return (
-    <>
-      {/* Enhanced Hero Section */}
+    <div className="relative pt-24 pb-16 md:pt-32">
+      {/* Background ambient glow */}
+      <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-primary/20 rounded-full blur-[120px] -z-10 mix-blend-screen pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-accent/20 rounded-full blur-[100px] -z-10 mix-blend-screen pointer-events-none" />
+
+      {/* Hero Section */}
       <motion.section
-        className="text-center space-y-12"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        className="flex flex-col items-center md:items-start text-center md:text-left w-full space-y-6"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
       >
-        {/* Welcome badge */}
-        <motion.div
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Sparkles className="h-4 w-4" />
-          Welcome to my digital space
+        <motion.div variants={itemVariants} className="flex items-center gap-3">
+          <span className="w-12 h-[2px] bg-primary hidden md:block"></span>
+          <span className="text-sm md:text-base tracking-[0.3em] uppercase text-primary font-bold">Vibe Coder / Content Creator</span>
         </motion.div>
 
-        {/* Main title */}
-        <div className="space-y-8">
-          <motion.h1
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-foreground leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            {WEBSITE_NAME}
-          </motion.h1>
-
-          <motion.p 
-            className="text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <span className="font-semibold text-primary">Web & Software Developer</span>
-            <span className="mx-3">•</span>
-            <span className="font-semibold text-emerald-600 dark:text-emerald-400">Creator</span>
-            <span className="mx-3">•</span>
-            <span className="font-semibold text-violet-600 dark:text-violet-400">Problem Solver</span>
-          </motion.p>
-        </div>
-
-        {/* CTA buttons */}
-        <motion.div 
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
+        <motion.h1
+          variants={itemVariants}
+          className="display-text text-[12vw] leading-[0.85] text-foreground relative z-10 break-words"
+          style={{ textShadow: '0 10px 30px rgba(0,0,0,0.8)' }}
         >
-          <Button
-            asChild
-            size="lg"
-            className="px-10 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            <Link href="/projects" className="flex items-center gap-2">
-              View Projects
-              <ArrowRight className="h-5 w-5" />
+          LUKE <br className="hidden md:block" />WILSON
+        </motion.h1>
+
+        <motion.p
+          variants={itemVariants}
+          className="text-lg md:text-2xl text-muted-foreground max-w-2xl font-mono leading-relaxed"
+        >
+          Crafting <span className="text-foreground font-bold border-b border-primary">unforgettable</span> digital experiences. I build bold, distinctive web applications that refuse to look like everything else.
+        </motion.p>
+
+        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-6 mt-8 w-full md:w-auto">
+          <Button asChild size="lg" className="h-14 px-8 bg-foreground text-background hover:bg-muted-foreground rounded-none shadow-[4px_4px_0_var(--accent)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0_var(--accent)] transition-all">
+            <Link href="/projects" className="uppercase tracking-widest font-bold text-sm">
+              Explore Work
+              <ArrowRight className="ml-3 h-4 w-4" />
             </Link>
           </Button>
-
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="px-10 py-4 rounded-xl font-semibold text-lg border-2 hover:bg-muted/50 transition-all duration-300"
-          >
-            <Link href="/contact" className="flex items-center gap-2">
-              Get In Touch
-              <ExternalLink className="h-5 w-5" />
+          <Button asChild variant="outline" size="lg" className="h-14 px-8 border-border text-foreground hover:bg-secondary rounded-none shadow-[4px_4px_0_var(--primary)] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-[2px_2px_0_var(--primary)] transition-all">
+            <Link href="/contact" className="uppercase tracking-widest font-bold text-sm">
+              Contact Me
             </Link>
           </Button>
         </motion.div>
       </motion.section>
 
-      {/* Quick Stats Section */}
+      {/* Quick Stats */}
       <HomeStats stats={githubStats} />
 
-      {/* Rotating Analytics Section */}
+      {/* What I Do Section - Staggered List Layout */}
       <motion.section
-        className="space-y-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9 }}
+        className="mt-32 space-y-16"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={containerVariants}
       >
-        <div className="text-center space-y-4">
-          <h2 className="text-3xl font-bold text-foreground">
-            GitHub Analytics Overview
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Explore comprehensive statistics from my development activity
+        <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between border-b border-border pb-6">
+          <h2 className="display-text text-5xl md:text-7xl">THE ARSENAL</h2>
+          <p className="text-muted-foreground font-mono mt-4 md:mt-0 md:text-right max-w-xs uppercase text-xs tracking-widest">
+            Specialized in building end-to-end production tools and cinematic frontends.
           </p>
-        </div>
-        <RotatingStatsCards stats={githubStats} autoRotate={true} rotationInterval={2500} />
-      </motion.section>
+        </motion.div>
 
-      {/* Featured Cards Section */}
-      <motion.section
-        className="space-y-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        <div className="text-center space-y-4">
-          <h2 className="text-3xl font-bold text-foreground">
-            What I Do
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Specializing in modern web development and creating exceptional digital experiences
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 space-y-4">
           {[
-            {
-              title: "Full-Stack Development",
-              description: "Building complete web applications with modern technologies like Next.js, React, and Node.js.",
-              icon: Code,
-              accent: "bg-primary/10",
-              iconColor: "text-primary",
-              stats: { label: "Projects", value: "50+" }
-            },
-            {
-              title: "Creative Solutions",
-              description: "Designing intuitive user interfaces and implementing innovative features that solve real problems.",
-              icon: Star,
-              accent: "bg-emerald-50 dark:bg-emerald-950/20",
-              iconColor: "text-emerald-600 dark:text-emerald-400",
-              stats: { label: "Technologies", value: `${githubStats.topLanguages.length}+` }
-            },
-            {
-              title: "Continuous Learning",
-              description: "Always exploring new technologies and best practices to deliver cutting-edge solutions.",
-              icon: TrendingUp,
-              accent: "bg-violet-50 dark:bg-violet-950/20",
-              iconColor: "text-violet-600 dark:text-violet-400",
-              stats: { label: "Experience", value: "4+ Months" }
-            }
-          ].map((card, index) => (
+            { tag: "01", title: "FRONTEND ENGINEERING", desc: "React, Next.js, and raw CSS crafting distinctive, non-generic user interfaces.", icon: MonitorPlay },
+            { tag: "02", title: "CREATIVE CODING", desc: "Framer Motion, advanced visual effects, and pushing browser rendering limits.", icon: Cpu },
+            { tag: "03", title: "FULL-STACK ARCHITECTURE", desc: "Robust APIs, real-time databases, and scalable backend services.", icon: Terminal }
+          ].map((item, idx) => (
             <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 + index * 0.1 }}
-              whileHover={{ y: -4 }}
+              key={idx}
+              variants={itemVariants}
+              whileHover={{ x: 10 }}
+              className="group flex flex-col md:flex-row justify-between items-start md:items-center p-8 bg-card border border-border hover:border-primary transition-colors cursor-pointer"
             >
-              <Card className="h-full border shadow-sm hover:shadow-md transition-all duration-300">
-                <CardHeader className="pb-4">
-                  <div className={`w-12 h-12 rounded-lg ${card.accent} flex items-center justify-center mb-4`}>
-                    <card.icon className={`h-6 w-6 ${card.iconColor}`} />
-                  </div>
-                  <CardTitle className="text-xl font-bold text-foreground">
-                    {card.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground leading-relaxed">
-                    {card.description}
-                  </p>
-                  <div className="flex items-center justify-between pt-2">
-                    <div className="text-sm text-muted-foreground">
-                      {card.stats.label}
-                    </div>
-                    <div className="text-lg font-semibold text-foreground">
-                      {card.stats.value}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="flex items-center gap-6 md:gap-12">
+                <span className="font-mono text-muted-foreground text-xl border-b border-transparent group-hover:border-primary pb-1 group-hover:text-primary transition-colors">{item.tag}</span>
+                <h3 className="text-2xl md:text-4xl font-bold tracking-tight uppercase group-hover:text-glow transition-all">{item.title}</h3>
+              </div>
+              <div className="mt-4 md:mt-0 flex items-center gap-6 w-full md:w-1/3 justify-between md:justify-end">
+                <p className="text-sm text-muted-foreground font-mono hidden md:block max-w-[250px]">{item.desc}</p>
+                <div className="p-4 bg-secondary group-hover:bg-primary/20 rounded-full transition-colors">
+                  <item.icon className="w-6 h-6 text-foreground group-hover:text-primary" />
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
       </motion.section>
 
-      {/* CTA Section */}
+      {/* Rotating Analytics Section */}
       <motion.section
-        className="text-center space-y-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.0 }}
+        className="mt-32 space-y-12 bg-secondary/30 p-8 md:p-16 border border-border relative overflow-hidden"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={containerVariants}
       >
-        <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-foreground">
-            Ready to Build Something Amazing?
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Let&apos;s collaborate on your next project. I&apos;m passionate about creating innovative solutions that make a difference.
+        <div className="absolute -right-20 -bottom-20 rotate-12 opacity-5 pointer-events-none">
+          <Github className="w-[400px] h-[400px] text-foreground" />
+        </div>
+
+        <motion.div variants={itemVariants} className="space-y-4 relative z-10">
+          <h2 className="display-text text-4xl md:text-6xl">TELEMETRY</h2>
+          <p className="text-muted-foreground font-mono uppercase tracking-widest text-sm max-w-xl">
+            Real-time GitHub activity tracking and repository analytics synced automatically.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button
-            asChild
-            size="lg"
-            className="px-10 py-4 rounded-xl font-semibold text-lg"
-          >
-            <Link href="/projects" className="flex items-center gap-2">
-              Explore My Work
-              <ArrowRight className="h-5 w-5" />
-            </Link>
-          </Button>
-
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="px-10 py-4 rounded-xl font-semibold text-lg border-2"
-          >
-            <Link href="/contact" className="flex items-center gap-2">
-              Start a Conversation
-              <ExternalLink className="h-5 w-5" />
-            </Link>
-          </Button>
-        </div>
+        <motion.div variants={itemVariants} className="relative z-10 box-glow overflow-visible">
+          <RotatingStatsCards stats={githubStats} autoRotate={true} rotationInterval={3500} />
+        </motion.div>
       </motion.section>
-    </>
+    </div>
   );
-} 
+}

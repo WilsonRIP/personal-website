@@ -107,6 +107,7 @@ export default function RootLayout({
           disableTransitionOnChange
           storageKey="website-theme"
         >
+          <div className="noise-overlay" />
           <Navbar />
           {children}
           <Footer />
