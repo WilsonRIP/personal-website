@@ -1,15 +1,12 @@
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
 import { readRawCart, toDetailedCart } from "../../cart/_shared";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-09-30.clover",
-});
+import { getStripe } from "../_utils";
 
 export async function POST() {
   try {
+    const stripe = getStripe();
     // Check if Stripe keys are available
-    if (!process.env.STRIPE_SECRET_KEY) {
+    if (!stripe) {
       return NextResponse.json(
         { error: "Stripe not configured. Please set up Stripe API keys." },
         { status: 500 }

@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-09-30.clover",
-});
+import { getStripe } from "../_utils";
 
 export async function GET() {
   try {
+    const stripe = getStripe();
     // Check if Stripe keys are available
-    if (!process.env.STRIPE_SECRET_KEY) {
+    if (!stripe) {
       console.warn('STRIPE_SECRET_KEY not found, returning fallback products');
       // Return fallback products when Stripe is not configured
       return NextResponse.json([

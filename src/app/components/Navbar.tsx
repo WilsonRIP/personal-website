@@ -1,16 +1,11 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import ThemeToggle from "./ThemeToggle";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
 import {
   Sheet,
   SheetContent,
@@ -19,10 +14,8 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -36,204 +29,157 @@ const navLinks = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isMobile, setIsMobile] = useState(false);
-  const [isCompactView, setIsCompactView] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Only render component after mounting on client to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Check screen size
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768);
-      setIsCompactView(window.innerWidth < 1024);
-    };
-
-    // Initial check
-    checkScreenSize();
-
-    // Add resize event listener
-    window.addEventListener("resize", checkScreenSize);
-
-    // Clean up
-    return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
-
-  // Add scroll detection
+  // Scroll detection
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent hydration mismatch by rendering a placeholder until client-side
-  if (!mounted) {
-    return (
-      <header
-        className={cn(
-          "sticky top-0 z-50 h-16 md:h-[68px] backdrop-blur-lg"
-        )}
-      >
-        <div className="container mx-auto flex items-center px-4 md:px-6 h-full"></div>
-      </header>
-    );
-  }
+  // Sync sheet state for accessibility (optional, if you need to know if it's open)
+  const handleOpenChange = (open: boolean) => {
+    setIsMobileMenuOpen(open);
+  };
 
   return (
     <header
+      role="banner"
       className={cn(
-        "fixed top-4 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out rounded-full",
+        "fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl md:w-[90%] md:max-w-4xl",
+        "transition-all duration-500 ease-in-out rounded-full",
         "bg-background/70 backdrop-blur-xl border border-white/10 dark:border-white/5",
-        isScrolled ? "py-2 px-6 shadow-2xl w-[90%] max-w-4xl" : "py-3 px-6 md:px-8 shadow-xl w-[95%] max-w-5xl",
+        isScrolled ? "py-2 px-4 shadow-2xl" : "py-3 px-4 md:px-6 shadow-xl",
         "text-foreground"
       )}
     >
-      <div className="container mx-auto flex items-center h-10 md:h-12 px-4 md:px-6">
+      <div className="container mx-auto flex items-center justify-between h-10 md:h-12">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center text-xl md:text-2xl font-semibold tracking-wide mr-auto md:mr-8 group"
+          className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md px-2 py-1 -ml-2"
+          aria-label="Wilson Home"
         >
           <Image
             src="/icon.png"
-            alt="Cat"
+            alt=""
             width={32}
             height={32}
             className="w-7 h-7 rounded-full transition-transform duration-300 group-hover:scale-110"
             priority
           />
-          <span
-            className={cn(
-              "font-bold ml-2 hidden sm:inline text-foreground"
-            )}
-          >
+          <span className="font-bold text-lg md:text-xl tracking-wide text-foreground hidden sm:inline-block">
             Wilson
           </span>
         </Link>
 
-        {/* Desktop Navigation - Use NavigationMenu */}
-        {!isMobile && (
-          <NavigationMenu className="hidden md:flex flex-grow justify-center">
-            <NavigationMenuList className="flex flex-wrap gap-x-1 lg:gap-x-2">
-              {navLinks.map(({ href, label, shortLabel }) => {
-                const isActive = pathname === href;
-                const displayLabel =
-                  isCompactView && shortLabel ? shortLabel : label;
-                return (
-                  <NavigationMenuItem key={href}>
-                    <Link
-                      href={href}
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        "font-bold text-sm lg:text-base whitespace-nowrap relative group transition-all duration-300 ease-in-out bg-transparent",
-                        isActive
-                          ? "text-primary text-glow"
-                          : "text-muted-foreground hover:text-foreground hover:text-glow-accent"
-                      )}
-                      data-state={isActive ? "active" : "inactive"}
-                    >
-                      {displayLabel}
-                      <span
-                        className={cn(
-                          "absolute left-1/2 -bottom-[2px] h-[2px] rounded-full bg-primary",
-                          "transform -translate-x-1/2 scale-x-0 transition-transform duration-500 ease-out",
-                          "group-hover:scale-x-100 group-hover:bg-accent group-hover:shadow-[0_0_10px_var(--accent)]",
-                          isActive && "scale-x-50 shadow-[0_0_10px_var(--primary)]"
-                        )}
-                      />
-                    </Link>
-                  </NavigationMenuItem>
-                );
-              })}
-            </NavigationMenuList>
-          </NavigationMenu>
-        )}
+        {/* Desktop Navigation */}
+        <nav
+          aria-label="Main navigation"
+          className="hidden md:flex items-center gap-1 lg:gap-2 flex-1 justify-center"
+        >
+          <ul className="flex items-center gap-1 lg:gap-2">
+            {navLinks.map(({ href, label, shortLabel }) => {
+              const isActive = pathname === href;
+              // Simple logic to shorten text on smaller desktop screens if needed
+              const displayLabel = label;
 
-        {/* Theme Toggle */}
-        {!isMobile && (
-          <div className="ml-auto pl-4">
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "px-3 py-2 text-sm font-medium rounded-md transition-all duration-200",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                      isActive
+                        ? "text-primary bg-primary/10"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    )}
+                  >
+                    {displayLabel}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Right Side Actions */}
+        <div className="flex items-center gap-2">
+          {/* Desktop Theme Toggle */}
+          <div className="hidden md:block">
             <ThemeToggle aria-label="Toggle theme" />
           </div>
-        )}
 
-        {/* Mobile Content (Theme Toggle + Menu Button) */}
-        {isMobile && (
-          <div className="flex items-center gap-2 ml-4">
+          {/* Mobile Menu Trigger */}
+          <div className="flex md:hidden items-center gap-2">
             <ThemeToggle aria-label="Toggle theme" />
-            <Sheet>
+            <Sheet open={isMobileMenuOpen} onOpenChange={handleOpenChange}>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="z-50"
-                  aria-label="Toggle Menu"
+                  className="hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-primary"
+                  aria-label="Open main menu"
+                  aria-expanded={isMobileMenuOpen}
                 >
-                  <Menu className="h-6 w-6" />
+                  <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent
-                side="left"
-                className={cn(
-                  "w-3/4 sm:w-1/2 backdrop-blur-md shadow-lg border-r border-border bg-background/95"
-                )}
+                side="right"
+                className="w-[300px] sm:w-[400px] backdrop-blur-xl bg-background/95 border-l border-border"
               >
-                <SheetHeader className="mb-4 border-b border-border pb-4">
-                  <SheetTitle className="text-center">
-                    <Link
-                      href="/"
-                      className="flex items-center justify-center gap-2 group"
-                    >
-                      <Image
-                        src="/icon.png"
-                        alt="Cat"
-                        width={24}
-                        height={24}
-                        className="rounded-full transition-transform duration-300 group-hover:scale-110"
-                      />
-                      <span className="font-bold text-lg text-foreground">
-                        Wilson
-                      </span>
-                    </Link>
+                <SheetHeader className="mb-6 border-b border-border pb-4">
+                  <SheetTitle className="flex items-center gap-2 justify-start text-foreground">
+                    <Image
+                      src="/icon.png"
+                      alt=""
+                      width={24}
+                      height={24}
+                      className="rounded-full"
+                    />
+                    <span className="font-bold text-lg">Wilson</span>
                   </SheetTitle>
                 </SheetHeader>
-                <nav>
-                  <ul className="flex flex-col items-center py-2 space-y-1">
-                    {navLinks.map(({ href, label }, index) => {
-                      const isActive = pathname === href;
-                      return (
-                        <li key={href} className="w-full text-center">
-                          {index > 0 && (
-                            <hr className="my-1 border-border mx-4" />
+
+                <nav aria-label="Mobile navigation" className="flex flex-col gap-1">
+                  {navLinks.map(({ href, label }) => {
+                    const isActive = pathname === href;
+                    return (
+                      <SheetClose asChild key={href}>
+                        <Link
+                          href={href}
+                          aria-current={isActive ? "page" : undefined}
+                          className={cn(
+                            "flex items-center w-full px-4 py-3 text-base font-medium rounded-md transition-colors",
+                            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                            isActive
+                              ? "text-primary bg-primary/10"
+                              : "text-foreground hover:bg-muted/50"
                           )}
-                          <SheetClose asChild>
-                            <Link
-                              href={href}
-                              className={cn(
-                                "font-bold block py-3 mx-4 text-base rounded-md transition-all duration-200 ease-in-out",
-                                isActive
-                                  ? "text-primary bg-primary/20 scale-105 shadow-inner"
-                                  : "text-foreground hover:text-primary hover:bg-primary/10 hover:translate-x-1"
-                              )}
-                            >
-                              {label}
-                            </Link>
-                          </SheetClose>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                        >
+                          {label}
+                          {isActive && (
+                            <span className="ml-auto text-xs opacity-70">
+                              Current
+                            </span>
+                          )}
+                        </Link>
+                      </SheetClose>
+                    );
+                  })}
                 </nav>
               </SheetContent>
             </Sheet>
           </div>
-        )}
+        </div>
       </div>
     </header>
   );

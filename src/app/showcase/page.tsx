@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { ArrowUpRight, Clock, Code, Users, Palette, Briefcase, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -32,6 +32,24 @@ const projectIcons = {
 
 // Project data
 const projects: Project[] = [
+  {
+    id: "eyn",
+    name: "EYN",
+    status: "Completed",
+    client: <Link href="https://eyn.tools" target="_blank" className="text-primary hover:text-primary/80 underline">eyn.tools</Link>,
+    description: "Developer tools and utilities platform built for productivity and workflow optimization.",
+    role: "Full Stack Developer",
+    technologies: ["TypeScript", "React", "Next.js", "Tailwind CSS"],
+    features: [
+      "Developer tools suite",
+      "Workflow optimization",
+      "Modern responsive design",
+      "Fast and performant",
+    ],
+    color: "violet",
+    icon: "code",
+    year: 2025
+  },
   {
     id: "theseasons",
     name: "The Seasons Roleplay",
@@ -73,7 +91,7 @@ const projects: Project[] = [
 ];
 
 // Animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -83,13 +101,13 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
-      type: "spring" as const,
+      type: "spring",
       stiffness: 100,
       damping: 12
     }
@@ -100,7 +118,7 @@ export default function PortfolioShowcase() {
   return (
     <div className="container mx-auto px-4 py-12">
       {/* Hero Section */}
-      <motion.div 
+      <motion.div
         className="text-center mb-16 lg:mb-20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -118,7 +136,7 @@ export default function PortfolioShowcase() {
         </motion.div>
 
         {/* Main Title */}
-        <motion.h1 
+        <motion.h1
           className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 lg:mb-8 text-foreground leading-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -128,18 +146,18 @@ export default function PortfolioShowcase() {
         </motion.h1>
 
         {/* Subtitle */}
-        <motion.p 
+        <motion.p
           className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8 font-normal"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          A curated collection of <span className="font-semibold text-primary">professional projects</span> I&apos;ve developed for clients, 
+          A curated collection of <span className="font-semibold text-primary">professional projects</span> I&apos;ve developed for clients,
           showcasing my expertise in creating <span className="font-semibold text-primary">tailored digital solutions</span> that drive results.
         </motion.p>
 
         {/* Stats */}
-        <motion.div 
+        <motion.div
           className="flex flex-wrap justify-center gap-6 text-sm md:text-base text-muted-foreground font-medium"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -161,7 +179,7 @@ export default function PortfolioShowcase() {
       </motion.div>
 
       {/* Projects List */}
-      <motion.div 
+      <motion.div
         className="space-y-8 mb-16"
         variants={containerVariants}
         initial="hidden"
@@ -169,9 +187,9 @@ export default function PortfolioShowcase() {
       >
         {projects.map((project) => {
           const IconComponent = projectIcons[project.icon];
-          
+
           return (
-            <motion.div 
+            <motion.div
               key={project.id}
               className="bg-card border rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
               variants={itemVariants}
@@ -182,7 +200,7 @@ export default function PortfolioShowcase() {
                   <div className="flex-shrink-0 w-14 h-14 rounded-lg bg-muted flex items-center justify-center">
                     <IconComponent className="h-7 w-7 text-foreground" />
                   </div>
-                  
+
                   {/* Project Content */}
                   <div className="flex-grow space-y-6">
                     {/* Header with Status */}
@@ -205,14 +223,14 @@ export default function PortfolioShowcase() {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Description */}
                     <div className="space-y-3">
                       <p className="text-base md:text-lg leading-relaxed text-foreground font-normal">
                         {project.description}
                       </p>
                     </div>
-                    
+
                     {/* Role */}
                     <div className="space-y-2">
                       <h3 className="text-xl font-semibold tracking-tight text-foreground">
@@ -222,7 +240,7 @@ export default function PortfolioShowcase() {
                         {project.role}
                       </p>
                     </div>
-                    
+
                     {/* Technologies */}
                     <div className="space-y-3">
                       <h3 className="text-xl font-semibold tracking-tight text-foreground">
@@ -230,8 +248,8 @@ export default function PortfolioShowcase() {
                       </h3>
                       <div className="flex flex-wrap gap-2">
                         {project.technologies.map((tech) => (
-                          <span 
-                            key={tech} 
+                          <span
+                            key={tech}
                             className="px-3 py-1.5 bg-muted text-foreground text-sm font-medium rounded-md border border-border hover:bg-muted/80 transition-colors"
                           >
                             {tech}
@@ -239,7 +257,7 @@ export default function PortfolioShowcase() {
                         ))}
                       </div>
                     </div>
-                    
+
                     {/* Features */}
                     <div className="space-y-3">
                       <h3 className="text-xl font-semibold tracking-tight text-foreground">
@@ -263,7 +281,7 @@ export default function PortfolioShowcase() {
       </motion.div>
 
       {/* Call to Action */}
-      <motion.div 
+      <motion.div
         className="text-center max-w-2xl mx-auto p-8 md:p-10 bg-card border rounded-lg shadow-sm"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -275,7 +293,7 @@ export default function PortfolioShowcase() {
         <p className="text-base md:text-lg leading-relaxed text-muted-foreground mb-8 max-w-xl mx-auto">
           I&apos;m always open to new projects and collaborations. Let&apos;s create something amazing together!
         </p>
-        <Button 
+        <Button
           asChild
           size="lg"
           className="text-base px-8 py-6 bg-primary hover:bg-primary/90 text-primary-foreground"

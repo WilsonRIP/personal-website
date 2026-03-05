@@ -34,7 +34,7 @@ export default function CheckoutPage() {
   const handleRemoveAddon = (productId: string, addonId: string) => {
     const item = items.find(i => i.product.id === productId);
     if (!item) return;
-    
+
     const updatedAddons = item.selectedAddons?.filter(id => id !== addonId) || [];
     updateAddons(productId, updatedAddons);
   };
@@ -42,7 +42,7 @@ export default function CheckoutPage() {
   const handleQuantityChange = (productId: string, delta: number) => {
     const item = items.find(i => i.product.id === productId);
     if (!item) return;
-    
+
     const newQuantity = Math.max(1, item.quantity + delta);
     updateQuantity(productId, newQuantity);
   };

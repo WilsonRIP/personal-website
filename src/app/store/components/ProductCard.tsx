@@ -72,7 +72,7 @@ export default function ProductCard({ product }: { product: Product }) {
               priority={false}
             />
           </div>
-          
+
           {product.tags && (
             <div className="flex flex-wrap gap-2">
               {product.tags.map((tag) => (
@@ -100,13 +100,12 @@ export default function ProductCard({ product }: { product: Product }) {
         </CardContent>
         <CardFooter className="justify-end">
           <Button
-            className={`${
-              isInCart && hasAddons 
-                ? "bg-amber-600 hover:bg-amber-700 dark:bg-amber-500 dark:hover:bg-amber-600 text-white" 
-                : isInCart 
-                ? "bg-muted text-muted-foreground cursor-not-allowed" 
-                : "bg-primary hover:bg-primary/90 text-primary-foreground"
-            }`}
+            className={`${isInCart && hasAddons
+                ? "bg-primary hover:bg-primary/90 text-primary-foreground"
+                : isInCart
+                  ? "bg-muted text-muted-foreground cursor-not-allowed"
+                  : "bg-primary hover:bg-primary/90 text-primary-foreground"
+              }`}
             onClick={handleAddToCart}
             disabled={getButtonDisabled()}
             aria-label={`${getButtonText()} for ${product.name}`}

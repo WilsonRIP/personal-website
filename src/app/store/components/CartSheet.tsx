@@ -27,7 +27,7 @@ export default function CartSheet() {
 
   const getSelectedAddons = (item: CartItem): Addon[] => {
     if (!item.selectedAddons || item.selectedAddons.length === 0) return [];
-    return item.product.addons?.filter((addon: Addon) => 
+    return item.product.addons?.filter((addon: Addon) =>
       item.selectedAddons?.includes(addon.id)
     ) || [];
   };
@@ -70,7 +70,7 @@ export default function CartSheet() {
             const lineTotal = getLineTotal(item);
             const selectedAddons = getSelectedAddons(item);
             const addonTotal = selectedAddons.reduce((sum: number, addon: Addon) => sum + addon.price, 0);
-            
+
             return (
               <Card key={item.product.id}>
                 <div className="flex gap-3 p-4 items-start">
@@ -104,7 +104,7 @@ export default function CartSheet() {
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
-                    
+
                     {selectedAddons.length > 0 && (
                       <div className="mt-2 space-y-1">
                         {selectedAddons.map((addon: Addon) => (
@@ -115,7 +115,7 @@ export default function CartSheet() {
                         ))}
                       </div>
                     )}
-                    
+
                     <div className="mt-3 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <Button

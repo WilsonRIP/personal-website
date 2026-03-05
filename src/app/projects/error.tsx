@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { 
-  AlertTriangle, 
-  RefreshCw, 
-  Home, 
-  Bug, 
+import {
+  AlertTriangle,
+  RefreshCw,
+  Home,
+  Bug,
   Wifi,
   Server,
   Clock
@@ -40,17 +40,17 @@ export default function Error({ error, reset }: ErrorProps) {
   const handleRetry = async () => {
     setIsRetrying(true);
     setRetryCount(prev => prev + 1);
-    
+
     // Add a small delay for better UX
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     setIsRetrying(false);
     reset();
   };
 
   const getErrorIcon = () => {
     const message = error.message?.toLowerCase() || "";
-    
+
     if (message.includes("network") || message.includes("fetch")) {
       return <Wifi className="h-12 w-12" />;
     } else if (message.includes("server") || message.includes("500")) {
@@ -58,13 +58,13 @@ export default function Error({ error, reset }: ErrorProps) {
     } else if (message.includes("timeout")) {
       return <Clock className="h-12 w-12" />;
     }
-    
+
     return <AlertTriangle className="h-12 w-12" />;
   };
 
   const getErrorTitle = () => {
     const message = error.message?.toLowerCase() || "";
-    
+
     if (message.includes("network") || message.includes("fetch")) {
       return "Connection Problem";
     } else if (message.includes("server") || message.includes("500")) {
@@ -72,13 +72,13 @@ export default function Error({ error, reset }: ErrorProps) {
     } else if (message.includes("timeout")) {
       return "Request Timeout";
     }
-    
+
     return "Something Went Wrong";
   };
 
   const getErrorDescription = () => {
     const message = error.message?.toLowerCase() || "";
-    
+
     if (message.includes("network") || message.includes("fetch")) {
       return "We're having trouble connecting to our servers. Please check your internet connection and try again.";
     } else if (message.includes("server") || message.includes("500")) {
@@ -86,14 +86,14 @@ export default function Error({ error, reset }: ErrorProps) {
     } else if (message.includes("timeout")) {
       return "The request is taking longer than expected. This might be due to high traffic or server load.";
     }
-    
+
     return "We encountered an unexpected error while loading your projects. Don't worry, this has been reported to our team.";
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
@@ -102,7 +102,7 @@ export default function Error({ error, reset }: ErrorProps) {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
@@ -111,7 +111,7 @@ export default function Error({ error, reset }: ErrorProps) {
     <div className="min-h-[60vh] bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.05)_1px,transparent_0)] [background-size:20px_20px]"></div>
-      
+
       {/* Animated background blobs */}
       <div className="absolute top-20 -left-10 w-64 h-64 bg-gradient-to-r from-red-400/10 to-orange-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
       <div className="absolute top-40 -right-10 w-64 h-64 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
@@ -131,11 +131,11 @@ export default function Error({ error, reset }: ErrorProps) {
             <div className="relative">
               <motion.div
                 className="flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-red-500/20 to-orange-500/20 backdrop-blur-sm border border-red-500/30"
-                animate={{ 
+                animate={{
                   scale: [1, 1.1, 1],
                   rotate: [0, 5, -5, 0]
                 }}
-                transition={{ 
+                transition={{
                   duration: 2,
                   repeat: Infinity,
                   repeatType: "reverse"
@@ -145,15 +145,15 @@ export default function Error({ error, reset }: ErrorProps) {
                   {getErrorIcon()}
                 </div>
               </motion.div>
-              
+
               {/* Pulse effect */}
               <motion.div
                 className="absolute inset-0 rounded-full bg-red-500/20"
-                animate={{ 
+                animate={{
                   scale: [1, 1.5, 1],
                   opacity: [0.5, 0, 0.5]
                 }}
-                transition={{ 
+                transition={{
                   duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut"

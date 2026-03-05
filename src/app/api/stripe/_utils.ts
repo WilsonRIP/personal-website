@@ -1,16 +1,31 @@
 import Stripe from "stripe";
 import type { Product } from "@/app/store/types";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-09-30.clover",
-});
+let _stripe: Stripe | null = null;
+
+/**
+ * Lazily get Stripe instance. Only creates when key exists and when first needed.
+ * Avoids "Neither apiKey nor config.authenticator provided" during Next.js build.
+ */
+export function getStripe(): Stripe | null {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return null;
+  }
+  if (!_stripe) {
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: "2026-01-28.clover",
+    });
+  }
+  return _stripe;
+}
 
 /**
  * Fetch a product by ID from Stripe (server-side)
  */
 export async function fetchProductById(productId: string): Promise<Product | null> {
   try {
-    if (!process.env.STRIPE_SECRET_KEY) {
+    const stripe = getStripe();
+    if (!stripe) {
       return null;
     }
 
@@ -62,7 +77,8 @@ export async function fetchPriceById(priceId: string): Promise<{
   price: number;
 } | null> {
   try {
-    if (!process.env.STRIPE_SECRET_KEY) {
+    const stripe = getStripe();
+    if (!stripe) {
       return null;
     }
 

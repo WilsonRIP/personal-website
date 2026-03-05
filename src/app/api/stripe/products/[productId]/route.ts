@@ -1,19 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-09-30.clover",
-});
+import { getStripe } from "../../_utils";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ productId: string }> }
 ) {
   try {
+    const stripe = getStripe();
     const { productId } = await params;
 
     // Check if Stripe keys are available
-    if (!process.env.STRIPE_SECRET_KEY) {
+    if (!stripe) {
       return NextResponse.json(
         { error: "Stripe not configured" },
         { status: 500 }
